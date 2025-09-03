@@ -33,7 +33,7 @@ def show_docs(file_path):
                     data.append(row)
                 
                 df = pd.DataFrame(data, columns=header)
-                st.dataframe(df, use_container_width=True)
+                st.dataframe(df, width="stretch")   # <--- substitui use_container_width=True
             else:
                 # Fallback to markdown if table not found or malformed
                 with open(file_path, "r", encoding="utf-8") as f:
@@ -47,7 +47,7 @@ def show_docs(file_path):
 
     elif file_path.endswith(".tsv"):
         df = pd.read_csv(file_path, sep='\t')
-        st.dataframe(df, use_container_width=True)
+        st.dataframe(df, width="stretch")   # <--- substitui use_container_width=True
     elif file_path.endswith(".txt"):
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()

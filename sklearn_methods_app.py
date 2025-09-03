@@ -28,10 +28,8 @@ def show_sklearn_methods():
 
     # Exibe com gradiente de cores (viridis) e apenas 1 casa decimal
     st.dataframe(
-        df.style.background_gradient(cmap="viridis", subset=numeric_cols)
-               .format(precision=1),
-        use_container_width=True
-    )
+        df.style.background_gradient(cmap="viridis", subset=numeric_cols).format(precision=1),
+        width="stretch")   # <--- substitui use_container_width=True
 
 # -----------------------------
 # Função para exibir categorias
@@ -47,12 +45,20 @@ def show_sklearn_categories():
         return
 
     st.subheader("Categorias de Métodos do Scikit-Learn")
-    
+    st.markdown("---")
     for _, row in df.iterrows():
-        st.subheader(row["Categoria"])
-        col1, col2 = st.columns(2)
+        
+        col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.markdown(f"**Descrição Sintetizada:** {row.get('Descricao_Sintetica','')}")
-            st.markdown(f"**Descrição Completa / Principais Métodos:** {row.get('Descricao_Completa','')}")
+            st.subheader(f"{row['Categoria']}")
+            
         with col2:
-            st.markdown(f"**Exemplo Prático Simplificado:** {row.get('Exemplo','')}")
+            st.markdown(f"Descrição Sintetizada")
+            st.markdown(f"`{row.get('Descricao_Sintetica','')}`")
+        with col3:
+            st.markdown(f"Descrição Completa / Principais Métodos:")
+            st.markdown(f"`{row.get('Descricao_Completa','')}`")
+        with col4:
+            st.markdown(f"Exemplo Prático Simplificado:")
+            st.markdown(f"`{row.get('Exemplo','')}`")
+        st.markdown("---")

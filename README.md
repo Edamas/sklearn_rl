@@ -235,3 +235,25 @@
 * 16.3. PEDREGOSA, F. et al. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, v. 12, p. 2825–2830, 2011.
 * 16.4. RUSSELL, S.; NORVIG, P. Artificial Intelligence: A Modern Approach. 4. ed. New Jersey: Pearson, 2020.
 * 16.5. ZOPH, B.; LE, Q. V. Neural Architecture Search with Reinforcement Learning. In: International Conference on Learning Representations (ICLR), 2017.
+
+🗂️ Estrutura de Arquivos e Cuidados com o Código
+
+<p align="justify"> Este projeto utiliza uma estrutura organizada de arquivos para garantir reprodutibilidade, manutenibilidade e compatibilidade com a versão atual do Streamlit. Alguns pontos críticos incluem:</p>
+
+* `app.py` – arquivo principal do Streamlit. Deve conter apenas funções de controle do fluxo do app e chamadas às funções dos módulos auxiliares.
+* `config.json` – centraliza todas as configurações arbitrárias como dimensões de imagens, tamanhos de camadas da rede, limites de ação, etc., evitando hardcoding.
+* `modules/` – contém funções e classes auxiliares, como agentes RL, processamento de visão, atualização de mapas de calor, e funções de plotagem.
+* `data/` – datasets utilizados para treino e validação.
+* `notebooks/` – notebooks explicativos ou de depuração.
+
+### Cuidados com o código e erros comuns
+
+* Evitar o uso de funções desatualizadas do Streamlit, como `st.beta_*` (ex.: `st.beta_container()`, `st.beta_columns()`). Use sempre `st.container()`, `st.columns()`, `st.tabs()`, `st.expander()` conforme a versão atual.
+* Garantir que todos os gráficos (Plotly, Matplotlib) sejam atualizados corretamente dentro de containers ou colunas do Streamlit, evitando re-renderizações desnecessárias.
+* Manter coerência entre a visão do agente e o radar/matriz de descoberta, garantindo que cores e escalas estejam consistentes.
+* Nunca depender de caminhos absolutos; utilize sempre `os.path.join()` e variáveis relativas ao projeto.
+* Testar atualizações de mapas de calor e visualizações em múltiplos episódios para garantir que a informação não seja sobrescrita ou perdida.
+* Separar lógica de RL, visualização e manipulação de arquivos para reduzir complexidade e facilitar debug.
+* Documentar todas as funções com docstrings, incluindo tipos de entrada e saída.
+
+<p align="justify"> Seguindo estas práticas, minimizam-se erros comuns de incompatibilidade com o Streamlit e problemas de execução do agente, mantendo o código robusto e modular.</p>
