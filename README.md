@@ -2,7 +2,21 @@
 
 # **Análise de Desempenho de Agente de Inteligência Artificial Autônomo na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquinas (AutoML)**
 
+<p>
+  <a href="https://sklearn-rl.streamlit.app/" target="_blank" style="text-decoration: none;">
+    <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg" 
+         alt="Streamlit App" width="250"/>
+  </a>
+</p>
+
+<p>
+  <a href="https://sklearn-rl.streamlit.app/" target="_blank" style="font-size: 2.1em; color: #0c6efd;">
+    https://sklearn-rl.streamlit.app/
+  </a>
+</p>
+
 </div>
+
 
 ---
 

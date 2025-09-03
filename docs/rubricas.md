@@ -1,5 +1,5 @@
 # 1. `Entrega 1 - Projeto`
-1.1	`Colaborativa`
+##### 1.1	`Colaborativa`
 	1.1.1 	Individual: Contribuir para a construção conjunta buscando objetivos comuns
 	1.1.2 	Individual: se integrar com o grupo
 	1.1.3 	Individual: participar de todas as reuniões
@@ -7,7 +7,7 @@
 	1.1.5 	Individual: Contribuiu entregando o combinado de forma completa
 	1.1.6 	Individual: Contribuir com qualidade
 	1.1.7 	Individual: Ser pontual, respeitando o prazo/tempo combinado
-1.2	`Comunicativa`
+##### 1.2	`Comunicativa`
 	1.2.1 	Empregar habilidades para comunicar-se utilizando as variadas linguagens
 	1.2.2 	Garantir que a estruturação da escrita geral facilita a compreensão.
 	1.2.3 	Garantir que a escrita não contém erros de ortografia
