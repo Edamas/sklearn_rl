@@ -1,0 +1,207 @@
+UNIVERSIDADE VIRTUAL DO ESTADO DE SÃO PAULO
+
+
+
+
+
+
+Cintia Aguena Zanetti
+Edna Aparecida Nascimento 
+Elysio Damasceno da Silva Neto
+Gustavo Daniel Martinez Madeira
+José Donizete De Lima
+Pascoal Fernandes Neto
+Wesllei Moreira de Sousa Sabino
+Wilson Matos de Carvalho Neto
+
+
+
+
+
+
+
+
+Análise de Desempenho de Agente de Inteligência Artificial Autônoma na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquina (AutoML) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+São Paulo - SP
+2025
+UNIVERSIDADE VIRTUAL DO ESTADO DE SÃO PAULO
+
+
+
+
+
+
+
+Cintia Aguena Zanetti
+Edna Aparecida Nascimento 
+Elysio Damasceno da Silva Neto
+Gustavo Daniel Martinez Madeira
+José Donizete De Lima
+Pascoal Fernandes Neto
+Wesllei Moreira de Sousa Sabino
+Wilson Matos de Carvalho Neto
+
+
+
+
+
+Análise de Desempenho de Agente de Inteligência Artificial Autônoma na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquina (AutoML) 
+
+
+
+
+Trabalho de Conclusão de Curso apresentado ao curso de Bacharelado em Ciências de Dados da Universidade Virtual do Estado de São Paulo como requisito parcial para obtenção do título de Graduação em Ciências de Dados. 
+
+
+
+
+
+
+
+
+São Paulo - SP
+2025
+ 
+RESUMO
+
+Este trabalho tem como objetivo analisar o desempenho de agentes de inteligência artificial autônomos na utilização da suíte Scikit-learn em projetos de aprendizado de máquina no contexto de AutoML (Automated Machine Learning). A crescente demanda por soluções capazes de automatizar etapas como a preparação de dados, a seleção de algoritmos e o ajuste de hiperparâmetros evidencia a relevância de ferramentas que reduzam a dependência de conhecimento técnico especializado, otimizando tempo e recursos. Nesse cenário, os agentes autônomos se destacam por sua capacidade de realizar tarefas complexas de forma automática, possibilitando maior eficiência na construção, avaliação e validação de modelos.
+
+
+PALAVRAS-CHAVE: Inteligência Artificial, Agentes Autônomos, Machine Learning, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SUMÁRIO
+
+1 INTRODUÇÃO	5
+2 DESENVOLVIMENTO	6
+2.1 OBJETIVO GERAL	6
+2.1.1 OBJETIVOS ESPECÍFICOS	6
+
+2.2 JUSTIFICATIVA E DELIMITAÇÃO DO PROBLEMA	6
+
+3 FUNDAMENTAÇÃO TEÓRICA	6
+
+2.5 METODOLOGIA	8
+	
+4 CONSIDERAÇÕES FINAIS	8
+5 REFERÊNCIAS	23
+
+
+
+
+
+
+
+
+
+
+1 INTRODUÇÃO
+O avanço da Inteligência Artificial (IA) e do Aprendizado de Máquina (Machine Learning – ML) tem impulsionado o desenvolvimento de sistemas cada vez mais autônomos, capazes de executar tarefas complexas com mínima intervenção humana. Nesse contexto, os agentes autônomos e as ferramentas de AutoML (Aprendizado de Máquina Automatizado) assumem papel central, pois automatizam etapas cruciais do processo de modelagem, como a seleção de algoritmos, o ajuste de hiperparâmetros e a validação de modelos.
+
+Entre as bibliotecas mais consolidadas para ML, o Scikit-learn destaca-se por sua versatilidade, robustez e ampla adoção acadêmica e industrial. Ele oferece recursos que podem ser potencializados quando integrados a sistemas de AutoML, ampliando a eficiência e reduzindo custos computacionais. Assim, este trabalho propõe analisar como agentes de inteligência artificial autônomos podem utilizar essa suíte para otimizar o desempenho em projetos de aprendizado de máquina, comparando os resultados obtidos com aqueles provenientes de abordagens tradicionais.
+
+
+2 DESENVOLVIMENTO
+2.1 OBJETIVO GERAL
+	Analisar o desempenho de agentes de Inteligência Artificial Autônomos na utilização da suíte Scikit-learn para tarefas de aprendizado de máquina em projetos AutoML.
+2.1.1 OBJETIVOS ESPECÍFICOS
+
+- Investigar a aplicabilidade de agentes autônomos em diferentes contextos de aprendizado de máquina.
+
+- Comparar os resultados obtidos por AutoML com agentes autônomos em relação a modelos configurados manualmente.
+
+- Analisar métricas de desempenho como acurácia, precisão, recall, F1-score, tempo de execução e custo computacional.
+
+- Avaliar a escalabilidade da abordagem em diferentes conjuntos de dados.
+
+- Identificar desafios, limitações e possíveis melhorias no uso de agentes autônomos com Scikit-learn 
+
+
+
+
+
+2.2 JUSTIFICATIVA E DELIMITAÇÃO DO PROBLEMA
+O campo do Aprendizado de Máquina (Machine Learning – ML) caracteriza-se por sua amplitude e complexidade. A construção de um pipeline de ML, que envolve etapas como o pré-processamento de dados, a seleção de algoritmos, a otimização de hiperparâmetros e a avaliação de modelos, demanda elevado nível de conhecimento técnico e considerável investimento de tempo. Essa complexidade configura-se como uma barreira de entrada, dificultando que profissionais e pesquisadores, mesmo aqueles que dispõem de dados relevantes, utilizem de maneira eficaz as potencialidades do ML.
+A automação desses processos, conhecida como AutoML (Automated Machine Learning), surge como uma alternativa para democratizar o acesso a técnicas de aprendizado de máquina. No entanto, grande parte das ferramentas de AutoML atualmente disponíveis ainda se fundamenta em estratégias exaustivas, como a busca em grade, que são computacionalmente onerosas e pouco eficientes. Nesse sentido, observa-se uma lacuna na literatura quanto ao uso de abordagens mais inteligentes e adaptativas para a construção de pipelines em ML.
+Este Trabalho de Conclusão de Curso propõe-se a preencher essa lacuna por meio da investigação da viabilidade de uma abordagem inovadora: a utilização de um agente de Inteligência Artificial Autônomo baseado em Aprendizado por Reforço (Reinforcement Learning – RL). O RL é uma subárea da Inteligência Artificial que se dedica ao estudo de como agentes inteligentes devem tomar decisões sequenciais em um ambiente, de modo a maximizar uma recompensa cumulativa.
+Com base nessa perspectiva, busca-se empregar um agente capaz de aprender, por meio de tentativa e erro, a construir pipelines de ML de forma autônoma e otimizada, selecionando os recursos mais adequados da biblioteca Scikit-learn. Além de demonstrar a viabilidade técnica dessa abordagem, o estudo também pretende analisar a estratégia aprendida pelo agente, o que pode gerar contribuições relevantes para a ciência de dados, ao revelar combinações e sequências de ferramentas que poderiam não ser facilmente identificadas por um cientista humano.
+A relevância do presente trabalho manifesta-se em três dimensões principais. No âmbito acadêmico, a pesquisa contribui para o avanço do estado da arte em AutoML, ao explorar uma metodologia ainda pouco empregada, com potencial para gerar publicações científicas e apresentações em eventos especializados. No campo da inovação tecnológica, os resultados podem fundamentar o desenvolvimento de ferramentas mais eficientes e inteligentes, superando as limitações das abordagens atualmente utilizadas. Por fim, no aspecto mercadológico, a automação de tarefas complexas em ML apresenta elevado potencial de aplicação comercial, atraindo o interesse de empresas de tecnologia, pesquisadores e profissionais de ciência de dados.
+
+3 FUNDAMENTAÇÃO TEÓRICA
+A fundamentação teórica aborda conceitos fundamentais sobre agentes inteligentes, sistemas autônomos, AutoML e a biblioteca Scikit-learn.
+Autores como Russell e Norvig (2020) apresentam os fundamentos da Inteligência Artificial, destacando a evolução dos sistemas baseados em agentes. No campo do aprendizado de máquina, Pedregosa et al. (2011) descrevem o papel do Scikit-learn como uma ferramenta essencial, consolidada pela sua simplicidade e eficiência. 
+Já Feurer et al. (2019) analisam o Auto-sklearn, uma extensão voltada à automação de experimentos em ML, que combina meta-aprendizado e otimização bayesiana para seleção de modelos e ajuste de hiperparâmetros.
+ O AutoML pode ser definido como o conjunto de técnicas que visam automatizar todo ou parte do ciclo de vida do aprendizado de máquina, desde a seleção de algoritmos até a engenharia de hiperparâmetros e avaliação de desempenho. Ele possibilita que profissionais com diferentes níveis de conhecimento em estatística e ciência de dados desenvolvam soluções robustas sem necessidade de expertise avançada em ML. 
+O Scikit-learn, por sua vez, é uma biblioteca open-source em Python, amplamente utilizada em tarefas de classificação, regressão, clustering e redução de dimensionalidade. Seu ecossistema fornece uma interface unificada para treinamento, validação cruzada, métricas e integração de pipelines, sendo considerado padrão de referência para experimentação acadêmica e aplicações industriais. 
+Quando associado a frameworks de AutoML, o Scikit-learn se torna ainda mais poderoso, viabilizando a construção de pipelines automatizados que reduzem esforço humano e aumentam a reprodutibilidade dos experimentos.
+
+
+2.5 METODOLOIA
+A metodologia proposta neste trabalho compreende as seguintes etapas:
+
+1. Seleção de dados: escolha de conjuntos de dados padrão de uso consolidado na literatura de aprendizado de máquina.
+
+2. Implementação de agente autônomo: configuração de um pipeline AutoML que utilize a suíte Scikit-learn.
+
+3. Configuração manual: treinamento de modelos equivalentes de forma manual, incluindo ajuste de hiperparâmetros.
+
+4. Comparação de desempenho: aplicação de métricas padronizadas, como acurácia, precisão, recall, F1-score, tempo de execução e custo computacional.
+
+5. Discussão dos resultados: identificação de ganhos, limitações e possíveis melhorias
+
+RESULTADOS ESPERADOS
+Espera-se que os agentes de inteligência artificial autônomos apresentem desempenho competitivo em relação às abordagens manuais, especialmente em termos de tempo de execução e automação do processo de modelagem. Entretanto, é possível que surjam desafios relacionados à interpretabilidade dos modelos gerados e à demanda por maior capacidade computacional. Tais aspectos serão analisados com vistas a fornecer uma visão crítica sobre o uso de AutoML em diferentes contextos.
+4 CONSIDERAÇÕES FINAIS
+Este trabalho propõe uma análise sistemática sobre a aplicabilidade de agentes autônomos em projetos de aprendizado de máquina com a suíte Scikit-learn, dentro do contexto de AutoML. Os resultados almejam contribuir para a compreensão das vantagens e limitações do uso de tais sistemas em ambientes acadêmicos e corporativos, além de abrir espaço para pesquisas futuras sobre a integração de AutoML e agentes inteligentes.
+REFERÊNCIAS
+ABNT – Associação Brasileira de Normas Técnicas. NBR 14724: Informação e documentação. Trabalhos Acadêmicos - Apresentação. Rio de Janeiro: ABNT, 2002.
+
+FEURER, M. et al. Auto-sklearn 2.0: Hands-free AutoML via Meta-Learning. In: Advances in Neural Information Processing Systems, 2019.
+
+PEDREGOSA, F. et al. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, v. 12, p. 2825–2830, 2011.
+
+RUSSELL, S.; NORVIG, P. Artificial Intelligence: A Modern Approach. 4. ed. New Jersey: Pearson, 2020.
+
+ZOPH, B.; LE, Q. V. Neural Architecture Search with Reinforcement Learning. In: International Conference on Learning Representations (ICLR), 2017.
+
+

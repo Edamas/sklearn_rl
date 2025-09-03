@@ -1,0 +1,40 @@
+Título	Análise de Desempenho de Agente de Inteligência Artificial Autônomo na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquinas (AutoML)
+Descrição	Uma pesquisa científica que investiga a viabilidade de usar um agente de Aprendizado por Reforço (RL) para aprender a selecionar e sequenciar autonomamente as ferramentas da biblioteca Scikit-learn, construindo um fluxo de trabalho de pré-processamento e modelagem para maximizar uma métrica de performance.
+Modalidade	Pesquisa Científica
+Síntese	Dataset -> Ambiente de RL -> Agente autônomo seleciona ferramentas -> Análise da Estratégia.
+SCORE	43
+Complexidade	-4
+Incerteza Técnica	-3
+Viabilidade 📅	2
+Apelo 🚀	5
+Tendência 🔥	5
+Inovação 💡	5
+Contrib. Social 🤝	4
+Relação com BCD 🤖	5
+Adequação ao TCC 🎓	5
+Potencial 💰	5
+Facilidade de Aquisição 📥	5
+Qualidade dos Dados ✨	4
+Nível de Atualização 🕒	5
+Peso+	5
+Peso-	-5
+Outras Vantagens	Define o estado da arte na automação do aprendizado de máquina. Altíssimo potencial de publicação científica e de criação de propriedade intelectual.
+Outras desvantagens	A complexidade teórica e de implementação de um ambiente de RL para esta tarefa é extremamente alta. O treinamento do agente pode ser computacionalmente caro.
+Observações, Links, Vídeos, etc.	
+Datasets	Datasets públicos do OpenML ou Kaggle, servindo como os "ambientes" onde o agente de RL será treinado e avaliado.
+Algoritmos	Aprendizado por Reforço (Q-Learning, PPO), Meta-Aprendizagem, Scikit-learn.
+justificativa (problema/demanda/sintoma)	A construção de um fluxo de trabalho de aprendizado de máquina é um processo artesanal e dependente da experiência do cientista de dados. Falta uma abordagem que aprenda a *estratégia* de quais ferramentas usar e em que ordem.
+Embasamento teórico	**Teoria da Descoberta de Políticas de Modelagem (DPM):** A pesquisa se baseia na teoria de que a construção de um fluxo de trabalho pode ser modelada como um Processo de Decisão Markoviano (MDP). O "estado" é a condição atual do dataset, as "ações" são as funções do Scikit-learn (e.g., `StandardScaler`, `RandomForestClassifier`), e a "recompensa" é a performance final. Um agente de RL pode aprender uma "política" (uma estratégia) ótima para construir esses fluxos.
+Solução/Estratégia (sugerida ou adotada)	A estratégia é transformar a plataforma em um ambiente de treinamento e visualização para um agente de RL. 1. **Ambiente:** O backend se torna um ambiente de RL. 2. **Espaço de Ações:** Criar uma biblioteca de ações correspondentes às principais classes do Scikit-learn. 3. **Agente:** Implementar um agente de RL (e.g., PPO) que interage com o ambiente. 4. **Análise:** Investigar a política aprendida pelo agente e comparar sua performance com baselines.
+Objetivo Geral	Investigar a viabilidade de utilizar Aprendizado por Reforço para a construção autônoma de fluxos de trabalho de aprendizado de máquina.
+Objetivos específicos	1. Modelar o processo de construção de um fluxo de trabalho como um ambiente de Aprendizado por Reforço. 2. Implementar um agente de RL capaz de selecionar e sequenciar operações do Scikit-learn. 3. Treinar o agente para otimizar métricas de performance (e.g., F1-score). 4. Comparar a performance dos fluxos de trabalho gerados pelo agente com baselines padrão.
+Premissas (sobre o projeto)	Um agente de RL pode aprender estratégias de modelagem que generalizam para diferentes datasets. A análise da política aprendida pode gerar insights sobre a própria ciência de dados.
+Restrições (do projeto)	Este é um projeto de P&amp;D de alta complexidade e risco. O espaço de estados e ações é vasto, o que pode tornar o treinamento do agente muito lento.
+Fornecedores	Bibliotecas Python (Gymnasium, Stable-Baselines3, Scikit-learn, Streamlit).
+Atividades chave	Pesquisa e Desenvolvimento em RL; Design do ambiente de RL (estados, ações, recompensas); Implementação do agente de RL; Análise comparativa dos resultados.
+Recursos chave	O ambiente de RL (IP principal); O agente de RL treinado (a "política"); A plataforma de visualização.
+proposta de valor	**Contribuir para o estado da arte em AutoML,** provando, através de experimentação científica, que um agente autônomo pode aprender a utilizar as ferramentas do Scikit-learn para construir fluxos de trabalho eficientes.
+Relacionamento	Publicação dos resultados em conferências de IA (NeurIPS, ICML); Colaboração com a comunidade de código aberto.
+Canais	Artigos científicos; Repositório de código aberto (GitHub).
+Segmentos de Clientes	Pesquisadores de automação de aprendizado de máquina e RL; Cientistas de dados sênior.
+Estrutura	Introdução (Apresentação da Teoria DPM), Metodologia (Modelagem do Ambiente de RL, Arquitetura do Agente), Resultados (Análise da Política Aprendida, Comparação com Baselines), Conclusão.
