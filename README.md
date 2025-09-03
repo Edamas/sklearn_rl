@@ -153,10 +153,14 @@
     *   PESQUISAR PRINCIPAIS BASES CIENTÍFICAS E BIBLIOTECAS VIRTUAIS
     *   PESQUISAR (NAS BASES) POR LIVROS E ARTIGOS QUE AUXILIEM NA SOLUÇÃO DE DETERMINADO PROBLEMA
     *   PESQUISAR FERRAMENTAS DE GERENCIAMENTO DE ARQUIVOS E REFERÊNCIAS, SELECIONAR UMA E UTILIZÁ-LA
-*   **Avaliação:**
-    *   **0% a 45%:** O grupo não acessa bases científicas, ferramentas de gerenciamento de arquivos e referências.
-    *   **46% a 70%:** O grupo acessa poucas bases científicas, ferramentas de gerenciamento de arquivos e de referências.
-    *   **71% a 100%:** O grupo acessa as principais bases científicas e bibliotecas virtuais na busca de livros e artigos que auxiliem na solução de determinado problema. Utiliza ferramentas de gerenciamento de arquivos e de referências.
+
+#### 12.1.2. Investigativa
+
+*   **Descrição:** Habilidades para utilizar os saberes acadêmicos já construídos e relacioná-los com o problema em estudo.
+*   **Critérios:**
+    *   Delinear a área de estudo
+    *   Apresentar os principais autores relevantes sobre o tema escolhido
+    *   Relacionar as principais referências com o tema
 
 ### 12.2. Entrega 2 - Desenvolvimento
 
@@ -166,20 +170,22 @@
 *   **Critérios:**
     *   Utilizar bases científicas e bibliotecas virtuais na busca de livros e artigos que auxiliem na solução de determinado problema.
     *   Utilizar ferramentas de gerenciamento de arquivos e de referências.
-*   **Avaliação:**
-    *   **0% a 45%:** O grupo não acessa bases científicas, ferramentas de gerenciamento de arquivos e referências.
-    *   **46% a 70%:** O grupo acessa poucas bases científicas, ferramentas de gerenciamento de arquivos e de referências.
-    *   **71% a 100%:** O grupo acessa as principais bases científicas e bibliotecas virtuais na busca de livros e artigos que auxiliem na solução de determinado problema. Utiliza ferramentas de gerenciamento de arquivos e de referências.
+
+#### 12.2.2. Investigativa
+
+*   **Descrição:** Habilidades para utilizar os saberes acadêmicos já construídos e relacioná-los com o problema em estudo.
+*   **Critérios:**
+    *   Apresentar os principais autores sobre o tema escolhido, relacionando-os.
 
 ### 12.3. Banca de Avaliação
 
 #### 12.3.1. Estrutura do TCC
 
 *   **Descrição:** Descreve claramente e de maneira completa todos os tópicos solicitados.
-*   **Avaliação:**
-    *   **0% a 45%:** Descreve menos da metade dos tópicos solicitados. Nota-se baixo empenho em buscar informações solicitadas.
-    *   **46% a 70%:** Descreve claramente os tópicos solicitados, mas deixa de tratar alguns aspectos solicitados.
-    *   **71% a 100%:** Descreve claramente e de maneira completa todos os tópicos solicitados.
+
+#### 12.3.2. Apresentação oral
+
+*   **Descrição:** Apresentar oralmente o trabalho, respeitando o intervalo entre 15 a 20 minutos e de uma forma clara, com domínio.
 
 ---
 
