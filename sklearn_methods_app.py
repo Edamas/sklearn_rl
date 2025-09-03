@@ -1,7 +1,6 @@
 # sklearn_methods_app.py
 import streamlit as st
 import pandas as pd
-from sklearn.utils import all_estimators
 
 METHODS_TSV = "sklearn_methods.tsv"
 CATEGORIES_TSV = "categorias_sklearn.tsv"
