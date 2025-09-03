@@ -1,0 +1,25 @@
+Categoria	Descricao_Sintetica	Descricao_Completa	Exemplo
+Modelos	Métodos de classificação e regressão baseados em estimadores.	DecisionTree, RandomForest, GradientBoosting, etc.	Prever resultados como se um e-mail é spam ou não.
+Ensemble	Combinação de múltiplos modelos para melhorar desempenho.	Bagging, Boosting, Stacking.	Mistura de vários modelos para reduzir erro e evitar overfitting.
+Regressao	Métodos que estimam valores contínuos.	LinearRegression, Ridge, Lasso, etc.	Prever preço de casas baseado em características.
+Linear	Modelos lineares para classificação e regressão.	LogisticRegression, LinearSVC.	Classificar se um paciente tem doença ou não.
+Redes Neurais	Redes de camadas múltiplas para aprendizado complexo.	MLPClassifier, MLPRegressor.	Reconhecimento de dígitos manuscritos.
+SVM	Modelos de margem máxima para classificação/regressão.	SVC, SVR, NuSVC, NuSVR.	Separar imagens de gatos e cachorros.
+Clustering	Agrupamento de dados sem rótulos.	KMeans, DBSCAN, SpectralClustering, Birch.	Dividir clientes em segmentos de marketing.
+Selecao_Features	Selecionar features mais relevantes.	SelectKBest, RFE, RFECV, SequentialFeatureSelector.	Escolher atributos importantes para prever churn.
+Reducao_Dimensionalidade	Reduzir dimensionalidade mantendo variância.	PCA, TruncatedSVD, KernelPCA, IncrementalPCA.	Visualizar dados de alta dimensão em 2D.
+Pre_Processamento	Transformações nos dados antes do treino.	StandardScaler, MinMaxScaler, OneHotEncoder, SimpleImputer.	Normalizar notas dos alunos para treino de modelo.
+Selecao	Filtrar dados ou features por critério.	GenericUnivariateSelect, VarianceThreshold, SelectFromModel.	Remover atributos pouco informativos.
+Textos	Pré-processamento de texto.	TfidfVectorizer, CountVectorizer.	Transformar reviews em vetores TF-IDF.
+Vizinhos	Modelos baseados em distância.	KNeighborsClassifier, KNeighborsRegressor, RadiusNeighborsClassifier.	Recomendar produtos similares aos clientes.
+Semi_Supervisionado	Aprendizado com poucos rótulos.	SelfTrainingClassifier, LabelPropagation, LabelSpreading.	Rotular automaticamente dados não rotulados.
+Probabilistico	Modelos que usam probabilidade.	NaiveBayes, GaussianNB, CategoricalNB, BernoulliNB.	Classificar emails como spam ou não com base em probabilidade.
+Covariancia	Estimativas robustas de covariância.	ShrunkCovariance, LedoitWolf, MinCovDet, EllipticEnvelope.	Detectar outliers em séries financeiras.
+Estatistica	Estatísticas para dados e modelos.	TheilSenRegressor, TweedieRegressor, HuberRegressor.	Estimativa robusta de tendência em dados com ruído.
+Kernel	Modelos com kernel para mapear dados.	SVC com RBF, KernelRidge, KernelPCA.	Separar dados não linearmente separáveis.
+Otimizacao	Busca de melhores parâmetros.	GridSearchCV, RandomizedSearchCV, HalvingGridSearchCV.	Encontrar melhor modelo para prever churn.
+Deteccao_Outliers	Detectar valores fora do padrão.	EllipticEnvelope, LocalOutlierFactor, IsolationForest.	Detectar transações fraudulentas.
+Topicos	Extração de tópicos em texto.	LatentDirichletAllocation, NMF.	Descobrir temas em artigos de notícias.
+Multi_output	Modelos com múltiplas saídas.	MultiOutputRegressor, RegressorChain.	Prever simultaneamente várias saídas, como temperatura e umidade.
+Naive_Bayes	Modelos probabilísticos simples.	GaussianNB, BernoulliNB, CategoricalNB, ComplementNB.	Classificação rápida de textos.
+Transformacao	Transformações de dados.	PowerTransformer, QuantileTransformer, PolynomialFeatures.	Transformar distribuições para aproximar normalidade.

@@ -1,17 +1,14 @@
+# app.py
 import streamlit as st
-from docs import show_anotacoes_md, show_cronograma_md, show_cronograma_tsv, show_proposta_tsv, show_rubricas_md, show_tcc_formatado_md, show_readme_md
 
 # -----------------------------
-# Configurações principais
+# Configuração da página (sempre primeiro)
 # -----------------------------
 APP_TITLE = "Análise de Desempenho de Agente de IA Autônomo (AutoML + RL)"
-APP_ICON = "🤖"  # pode ser emoji ou caminho para ícone local
-PAGE_LAYOUT = "wide"  # opções: "centered", "wide"
-PAGE_INITIAL_STATE = "expanded"  # opções: "collapsed", "expanded", "auto"
+APP_ICON = "🤖"
+PAGE_LAYOUT = "wide"
+PAGE_INITIAL_STATE = "expanded"
 
-# -----------------------------
-# Configuração da página
-# -----------------------------
 st.set_page_config(
     page_title=APP_TITLE,
     page_icon=APP_ICON,
@@ -20,12 +17,28 @@ st.set_page_config(
 )
 
 # -----------------------------
-# Título centralizado
+# Importar funções após set_page_config
+# -----------------------------
+from docs import (
+    show_anotacoes_md, show_cronograma_md, show_cronograma_tsv,
+    show_proposta_tsv, show_rubricas_md, show_tcc_formatado_md,
+    show_readme_md
+)
+from sklearn_methods_app import show_sklearn_methods, show_sklearn_categories  # <- adicionado
+
+# -----------------------------
+# Título
 # -----------------------------
 st.header(APP_TITLE, divider='rainbow')
 
-# Define the pages dictionary
+# -----------------------------
+# Páginas do app usando st.navigation
+# -----------------------------
 pages = {
+    "Scikit-Learn": [
+        st.Page(show_sklearn_categories, title="Categorias de Métodos"),  # <- adicionado
+        st.Page(show_sklearn_methods, title="Métodos Scikit-learn")
+    ],
     "Documentação": [
         st.Page(show_readme_md, title="README"),
         st.Page(show_anotacoes_md, title="Anotações"),
@@ -37,8 +50,8 @@ pages = {
     ]
 }
 
-# Create the navigation
+# -----------------------------
+# Navegação
+# -----------------------------
 pg = st.navigation(pages, position="top")
-
-# Run the navigation
 pg.run()
