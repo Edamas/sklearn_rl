@@ -2,7 +2,7 @@
 import streamlit as st
 
 # -----------------------------
-# Configuração da página (sempre primeiro)
+# Configuração da página
 # -----------------------------
 APP_TITLE = "Análise de Desempenho de Agente de IA Autônomo (AutoML + RL)"
 APP_ICON = "🤖"
@@ -17,14 +17,15 @@ st.set_page_config(
 )
 
 # -----------------------------
-# Importar funções após set_page_config
+# Importações das funções
 # -----------------------------
 from docs import (
     show_anotacoes_md, show_cronograma_md, show_cronograma_tsv,
     show_proposta_tsv, show_rubricas_md, show_tcc_formatado_md,
     show_readme_md
 )
-from sklearn_methods_app import show_sklearn_methods, show_sklearn_categories  # <- adicionado
+from sklearn_methods_app import (show_sklearn_methods, show_sklearn_categories)
+from datasets_app import datasets_scikit_learn  # <--- nova importação
 
 # -----------------------------
 # Título
@@ -36,8 +37,11 @@ st.header(APP_TITLE, divider='rainbow')
 # -----------------------------
 pages = {
     "Scikit-Learn": [
-        st.Page(show_sklearn_categories, title="Categorias de Métodos"),  # <- adicionado
-        st.Page(show_sklearn_methods, title="Métodos Scikit-learn")
+        st.Page(show_sklearn_methods, title="Métodos Scikit-learn"),
+        st.Page(show_sklearn_categories, title="Categorias de Métodos")  # <--- novo menu
+    ],
+    "Datasets": [
+        st.Page(datasets_scikit_learn, title="Datasets Scikit-Learn"),
     ],
     "Documentação": [
         st.Page(show_readme_md, title="README"),
