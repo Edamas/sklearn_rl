@@ -1,6 +1,7 @@
 # app.py
 import streamlit as st
 
+
 # -----------------------------
 # Configuração da página
 # -----------------------------
@@ -25,8 +26,7 @@ from docs import (
     show_readme_md, show_agent_md
 )
 from sklearn_methods_app import (show_sklearn_methods, show_sklearn_categories)
-from datasets_app import datasets_scikit_learn
-
+from datasets_app import datasets
 
 # -----------------------------
 # Título
@@ -38,7 +38,7 @@ st.header(APP_TITLE, divider='rainbow')
 # -----------------------------
 pages = {
     "Datasets": [
-        st.Page(datasets_scikit_learn, title="Datasets e Construtor de Pipeline"),
+        st.Page(datasets, title="Datasets e Construtor de Pipeline"),
     ],
     "Scikit-Learn": [
         st.Page(show_sklearn_methods, title="Métodos Scikit-learn"),
