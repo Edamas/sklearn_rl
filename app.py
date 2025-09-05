@@ -26,7 +26,7 @@ from docs import (
 )
 from sklearn_methods_app import (show_sklearn_methods, show_sklearn_categories)
 from datasets_app import datasets_scikit_learn
-from graph import plot_sklearn_graph  # <--- importação do gráfico
+
 
 # -----------------------------
 # Título
