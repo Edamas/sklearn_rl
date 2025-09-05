@@ -1,0 +1,9 @@
+Coluna	Descrição
+dimensão_mínima	Número mínimo de dimensões que a conexão pode ter.
+dimensão_máxima	Número máximo de dimensões que a conexão pode ter.
+tipo_de_dado	Natureza máxima do valor que pode passar pelo canal: binário, inteiro, float, string, etc.
+aceita_nulos	Indica se a conexão pode transmitir valores nulos (sim ou não).
+aceita_negativos	Indica se a conexão aceita valores negativos (sim ou não).
+aceita_zeros	Indica se a conexão aceita zeros (sim ou não).
+aceita_valores_0_1	Indica se a conexão aceita valores restritos entre 0 e 1 (sim ou não).
+aceita_infinito	Indica se a conexão aceita infinitos ou valores muito grandes (sim ou não).

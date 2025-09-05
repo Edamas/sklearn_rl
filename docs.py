@@ -78,3 +78,6 @@ def show_rubricas_md():
 
 def show_tcc_formatado_md():
     show_docs("docs/TCC_FORMATADO.md")
+
+def show_agent_md():
+    show_docs("docs/agent.md")

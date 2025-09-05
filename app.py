@@ -22,10 +22,11 @@ st.set_page_config(
 from docs import (
     show_anotacoes_md, show_cronograma_md, show_cronograma_tsv,
     show_proposta_tsv, show_rubricas_md, show_tcc_formatado_md,
-    show_readme_md
+    show_readme_md, show_agent_md
 )
 from sklearn_methods_app import (show_sklearn_methods, show_sklearn_categories)
-from datasets_app import datasets_scikit_learn  # <--- nova importação
+from datasets_app import datasets_scikit_learn
+from graph import plot_sklearn_graph  # <--- importação do gráfico
 
 # -----------------------------
 # Título
@@ -36,12 +37,12 @@ st.header(APP_TITLE, divider='rainbow')
 # Páginas do app usando st.navigation
 # -----------------------------
 pages = {
+    "Datasets": [
+        st.Page(datasets_scikit_learn, title="Datasets e Construtor de Pipeline"),
+    ],
     "Scikit-Learn": [
         st.Page(show_sklearn_methods, title="Métodos Scikit-learn"),
-        st.Page(show_sklearn_categories, title="Categorias de Métodos")  # <--- novo menu
-    ],
-    "Datasets": [
-        st.Page(datasets_scikit_learn, title="Datasets Scikit-Learn"),
+        st.Page(show_sklearn_categories, title="Categorias de Métodos")
     ],
     "Documentação": [
         st.Page(show_readme_md, title="README"),
@@ -51,6 +52,7 @@ pages = {
         st.Page(show_proposta_tsv, title="Proposta"),
         st.Page(show_rubricas_md, title="Rubricas"),
         st.Page(show_tcc_formatado_md, title="TCC Formatado"),
+        st.Page(show_agent_md, title="Agente"),
     ]
 }
 
