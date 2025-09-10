@@ -1,0 +1,54 @@
+param_name	param_dtype	param_standard	param_min	param_max	param_list	param_required	descrição do parâmetro	apt_for_training	observações	from_sklearn_docs
+C	float	1.0	0.01	100.0	[]	False	Regularization parameter. The strength of the regularization is inversely proportional to C.	True	Must be strictly positive.	True
+algorithm	cat	auto			['auto', 'ball_tree', 'kd_tree', 'brute', 'lloyd', 'elkan']	False	Algorithm used to compute the nearest neighbors or k-means.	True		True
+alpha	float	1.0	0.0001	1.0	[]	False	Constant that multiplies the L1 or L2 term, controlling regularization strength.	True	Must be non-negative.	True
+analyzer	cat	word			['word', 'char', 'char_wb']	False	Whether the feature should be made of word n-gram or character n-grams.	True		True
+assume_centered	bool	False			[True, False]	False	If True, data are not centered before computation.	False		True
+bootstrap	bool	True			[True, False]	False	Whether bootstrap samples are used when building trees.	True		True
+break_ties	bool	False			[True, False]	False	Whether to break ties in prediction.	True		True
+cache_size	float	200	100	1000	[]	False	Specify the size of the kernel cache (in MB).	True		True
+class_weight	cat	None			['balanced', None]	False	Weights associated with classes.	True	Can also be a dict.	True
+coef0	float	0.0	0.0	1.0	[]	False	Independent term in kernel function. It is only significant in ‘poly’ and ‘sigmoid’.	True		True
+contamination	float	0.1	0.0	0.5	['auto']	False	The amount of contamination of the data set.	True	Can also be 'auto'.	True
+copy_X	bool	True			[True, False]	False	If True, X will be copied; else, it may be overwritten.	True		True
+criterion	cat	gini			['gini', 'entropy', 'log_loss', 'squared_error', 'friedman_mse', 'absolute_error', 'poisson']	False	The function to measure the quality of a split.	True		True
+cv	int	5	3	10	[]	False	Determines the cross-validation splitting strategy.	True		True
+decision_function_shape	cat	ovr			['ovo', 'ovr']	False	Whether to return a one-vs-rest (‘ovr’) or one-vs-one (‘ovo’) decision function.	True		True
+degree	int	3	2	5	[]	False	Degree of the polynomial kernel function (‘poly’).	True		True
+dual	bool	False			[True, False]	False	Dual or primal formulation.	False	Only for l2 penalty with liblinear solver.	True
+eps	float	0.001	1e-05	0.1	[]	False	Epsilon in the epsilon-SVR model.	True		True
+fit_intercept	bool	True			[True, False]	False	Whether to calculate the intercept for this model.	True		True
+gamma	cat	scale			['scale', 'auto']	False	Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’.	True	Can also be a float.	True
+init	cat	k-means++			['k-means++', 'random']	False	Method for initialization.	True		True
+intercept_scaling	float	1.0	0.5	1.5	[]	False	Useful only when the solver liblinear is used and self.fit_intercept is set to True.	False		True
+kernel	cat	rbf			['linear', 'poly', 'rbf', 'sigmoid']	False	Specifies the kernel type to be used in the algorithm.	True		True
+l1_ratio	float	0.5	0.0	1.0	[]	False	The Elastic-Net mixing parameter, with 0 <= l1_ratio <= 1.	True		True
+leaf_size	int	30	10	100	[]	False	Leaf size passed to BallTree or KDTree.	True		True
+max_depth	int	None	5	50	[]	False	The maximum depth of the tree.	True	None means nodes are expanded until pure.	True
+max_features	cat	auto			['auto', 'sqrt', 'log2', None]	False	The number of features to consider when looking for the best split.	True	Can also be int or float.	True
+max_iter	int	1000	100	5000	[]	False	Maximum number of iterations taken for the solvers to converge.	True		True
+max_leaf_nodes	int	None	10	1000	[]	False	Grow a tree with max_leaf_nodes in best-first fashion.	True	None means unlimited number of leaf nodes.	True
+min_impurity_decrease	float	0.0	0.0	0.5	[]	False	A node will be split if this split induces a decrease of the impurity greater than or equal to this value.	True		True
+min_samples_leaf	int	1	1	20	[]	False	The minimum number of samples required to be at a leaf node.	True	Can be float.	True
+min_samples_split	int	2	2	40	[]	False	The minimum number of samples required to split an internal node.	True	Can be float.	True
+min_weight_fraction_leaf	float	0.0	0.0	0.5	[]	False	The minimum weighted fraction of the sum total of weights required to be at a leaf node.	True		True
+multi_class	cat	auto			['auto', 'ovr', 'multinomial']	False	Specifies the multi-class strategy.	True		True
+n_clusters	int	8	2	50	[]	False	The number of clusters to form as well as the number of centroids to generate.	True		True
+n_components	int	None	1	50	[]	False	Number of components to keep.	True	If None, all components are kept.	True
+n_estimators	int	100	50	500	[]	False	The number of trees in the forest.	True		True
+n_init	cat	auto			['auto', 10]	False	Number of times the k-means algorithm will be run with different centroid seeds.	True	Can be int.	True
+n_jobs	int	-1	-1	-1	[]	False	The number of jobs to run in parallel.	True	-1 means using all processors.	True
+oob_score	bool	False			[True, False]	False	Whether to use out-of-bag samples to estimate the generalization score.	True		True
+penalty	cat	l2			['l1', 'l2', 'elasticnet', None]	False	Specify the norm of the penalty.	True		True
+positive	bool	False			[True, False]	False	When set to True, forces the coefficients to be positive.	True		True
+probability	bool	False			[True, False]	False	Whether to enable probability estimates.	True		True
+random_state	int	42	0	100	[]	False	Controls the randomness of the estimator.	True		True
+selection	cat	cyclic			['cyclic', 'random']	False	If set to ‘random’, a random coefficient is updated every iteration.	True		True
+shrinking	bool	True			[True, False]	False	Whether to use the shrinking heuristic.	True		True
+solver	cat	auto			['auto', 'svd', 'cholesky', 'lsqr', 'sparse_cg', 'sag', 'saga', 'lbfgs']	False	Solver to use in the computational routines.	True		True
+splitter	cat	best			['best', 'random']	False	The strategy used to choose the split at each node.	True		True
+tol	float	0.0001	1e-05	0.01	[]	False	Tolerance for stopping criteria.	True		True
+verbose	int	0	0	1	[]	False	Controls the verbosity when fitting and predicting.	True		True
+warm_start	bool	False			[True, False]	False	When set to True, reuse the solution of the previous call to fit.	True		True
+whiten	bool	False			[True, False]	False	When True the components_ vectors are multiplied by the square root of n_samples.	True		True
+epsilon	float	0.1	0.0	1.0	[]	False	Epsilon in the epsilon-SVR model.	True		True

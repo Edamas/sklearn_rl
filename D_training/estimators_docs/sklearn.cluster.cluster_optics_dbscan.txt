@@ -1,0 +1,62 @@
+API Reference
+sklearn.cluster
+cluster_optics_dbscan
+cluster_optics_dbscan
+sklearn.cluster.cluster_optics_dbscan(*, reachability, core_distances, ordering, eps)[source]
+Perform DBSCAN extraction for an arbitrary epsilon.
+
+Extracting the clusters runs in linear time. Note that this results in labels_ which are close to a DBSCAN with similar settings and eps, only if eps is close to max_eps.
+
+Parameters
+:
+reachability
+ndarray of shape (n_samples,)
+Reachability distances calculated by OPTICS (reachability_).
+
+core_distances
+ndarray of shape (n_samples,)
+Distances at which points become core (core_distances_).
+
+ordering
+ndarray of shape (n_samples,)
+OPTICS ordered point indices (ordering_).
+
+eps
+float
+DBSCAN eps parameter. Must be set to < max_eps. Results will be close to DBSCAN algorithm if eps and max_eps are close to one another.
+
+Returns
+:
+labels_
+array of shape (n_samples,)
+The estimated labels.
+
+Examples
+
+import numpy as np
+from sklearn.cluster import cluster_optics_dbscan, compute_optics_graph
+X = np.array([[1, 2], [2, 5], [3, 6],
+              [8, 7], [8, 8], [7, 3]])
+ordering, core_distances, reachability, predecessor = compute_optics_graph(
+    X,
+    min_samples=2,
+    max_eps=np.inf,
+    metric="minkowski",
+    p=2,
+    metric_params=None,
+    algorithm="auto",
+    leaf_size=30,
+    n_jobs=None,
+)
+eps = 4.5
+labels = cluster_optics_dbscan(
+    reachability=reachability,
+    core_distances=core_distances,
+    ordering=ordering,
+    eps=eps,
+)
+labels
+array([0, 0, 0, 1, 1, 1])
+Gallery examples
+
+Demo of OPTICS clustering algorithm

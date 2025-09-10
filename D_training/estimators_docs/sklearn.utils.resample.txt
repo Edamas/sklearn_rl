@@ -1,0 +1,78 @@
+API Reference
+sklearn.utils
+resample
+resample
+sklearn.utils.resample(*arrays, replace=True, n_samples=None, random_state=None, stratify=None, sample_weight=None)[source]
+Resample arrays or sparse matrices in a consistent way.
+
+The default strategy implements one step of the bootstrapping procedure.
+
+Parameters:
+*arrayssequence of array-like of shape (n_samples,) or (n_samples, n_outputs)
+Indexable data-structures can be arrays, lists, dataframes or scipy sparse matrices with consistent first dimension.
+
+replacebool, default=True
+Implements resampling with replacement. It must be set to True whenever sampling with non-uniform weights: a few data points with very large weights are expected to be sampled several times with probability to preserve the distribution induced by the weights. If False, this will implement (sliced) random permutations.
+
+n_samplesint, default=None
+Number of samples to generate. If left to None this is automatically set to the first dimension of the arrays. If replace is False it should not be larger than the length of arrays.
+
+random_stateint, RandomState instance or None, default=None
+Determines random number generation for shuffling the data. Pass an int for reproducible results across multiple function calls. See Glossary.
+
+stratify{array-like, sparse matrix} of shape (n_samples,) or (n_samples, n_outputs), default=None
+If not None, data is split in a stratified fashion, using this as the class labels.
+
+sample_weightarray-like of shape (n_samples,), default=None
+Contains weight values to be associated with each sample. Values are normalized to sum to one and interpreted as probability for sampling each data point.
+
+Added in version 1.7.
+
+Returns:
+resampled_arrays
+sequence of array-like of shape (n_samples,) or (n_samples, n_outputs)
+Sequence of resampled copies of the collections. The original arrays are not impacted.
+
+See also
+
+shuffle
+Shuffle arrays or sparse matrices in a consistent way.
+
+Examples
+
+It is possible to mix sparse and dense arrays in the same run:
+
+import numpy as np
+X = np.array([[1., 0.], [2., 1.], [0., 0.]])
+y = np.array([0, 1, 2])
+
+from scipy.sparse import coo_matrix
+X_sparse = coo_matrix(X)
+
+from sklearn.utils import resample
+X, X_sparse, y = resample(X, X_sparse, y, random_state=0)
+X
+array([[1., 0.],
+       [2., 1.],
+       [1., 0.]])
+
+X_sparse
+<Compressed Sparse Row sparse matrix of dtype 'float64'
+    with 4 stored elements and shape (3, 2)>
+
+X_sparse.toarray()
+array([[1., 0.],
+       [2., 1.],
+       [1., 0.]])
+
+y
+array([0, 1, 0])
+
+resample(y, n_samples=2, random_state=0)
+array([0, 1])
+Example using stratification:
+
+y = [0, 0, 1, 1, 1, 1, 1, 1, 1]
+resample(y, n_samples=5, replace=False, stratify=y,
+         random_state=0)
+[1, 1, 1, 0, 1]

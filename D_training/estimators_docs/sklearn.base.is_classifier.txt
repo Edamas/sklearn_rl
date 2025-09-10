@@ -1,0 +1,33 @@
+API Reference
+sklearn.base
+is_classifier
+is_classifier
+sklearn.base.is_classifier(estimator)[source]
+Return True if the given estimator is (probably) a classifier.
+
+Parameters
+:
+estimator
+object
+Estimator object to test.
+
+Returns
+:
+out
+bool
+True if estimator is a classifier and False otherwise.
+
+Examples
+
+from sklearn.base import is_classifier
+from sklearn.cluster import KMeans
+from sklearn.svm import SVC, SVR
+classifier = SVC()
+regressor = SVR()
+kmeans = KMeans()
+is_classifier(classifier)
+True
+is_classifier(regressor)
+False
+is_classifier(kmeans)
+False

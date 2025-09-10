@@ -1,0 +1,29 @@
+API Reference
+sklearn
+get_config
+get_config
+sklearn.get_config()[source]
+Retrieve the current scikit-learn configuration.
+
+This reflects the effective global configurations as established by default upon library import, or modified via set_config or config_context.
+
+Returns
+:
+config
+dict
+Keys are parameter names that can be passed to set_config.
+
+See also
+
+config_context
+Context manager for global scikit-learn configuration.
+
+set_config
+Set global scikit-learn configuration.
+
+Examples
+
+import sklearn
+config = sklearn.get_config()
+config.keys()
+dict_keys([...])

@@ -1,0 +1,12 @@
+API Reference
+sklearn.utils
+RegressorTags
+RegressorTags
+class sklearn.utils.RegressorTags(poor_score: bool = False)[source]
+Tags for the regressor.
+
+Parameters
+:
+poor_score
+bool, default=False
+Whether the estimator fails to provide a “reasonable” test-set score, which currently for regression is an R2 of 0.5 on make_regression(n_samples=200, n_features=10, n_informative=1, bias=5.0, noise=20, random_state=42). The dataset and values are based on current estimators in scikit-learn and might be replaced by something more systematic.

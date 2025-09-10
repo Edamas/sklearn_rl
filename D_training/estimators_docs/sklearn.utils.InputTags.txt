@@ -1,0 +1,39 @@
+API Reference
+sklearn.utils
+InputTags
+InputTags
+class sklearn.utils.InputTags(one_d_array: bool = False, two_d_array: bool = True, three_d_array: bool = False, sparse: bool = False, categorical: bool = False, string: bool = False, dict: bool = False, positive_only: bool = False, allow_nan: bool = False, pairwise: bool = False)[source]
+Tags for the input data.
+
+Parameters:
+one_d_arraybool, default=False
+Whether the input can be a 1D array.
+
+two_d_arraybool, default=True
+Whether the input can be a 2D array. Note that most common tests currently run only if this flag is set to True.
+
+three_d_arraybool, default=False
+Whether the input can be a 3D array.
+
+sparsebool, default=False
+Whether the input can be a sparse matrix.
+
+categoricalbool, default=False
+Whether the input can be categorical.
+
+stringbool, default=False
+Whether the input can be an array-like of strings.
+
+dictbool, default=False
+Whether the input can be a dictionary.
+
+positive_onlybool, default=False
+Whether the estimator requires positive X.
+
+allow_nanbool, default=False
+Whether the estimator supports data with missing values encoded as np.nan.
+
+pairwisebool, default=False
+This boolean attribute indicates whether the data (X), fit and similar methods consists of pairwise measures over samples rather than a feature representation for each sample. It is usually True where an estimator has a metric or affinity or kernel parameter with value ‘precomputed’. Its primary purpose is to support a meta-estimator or a cross validation procedure that extracts a sub-sample of data intended for a pairwise estimator, where the data needs to be indexed on both axes. Specifically, this tag is used by sklearn.utils.metaestimators._safe_split to slice rows and columns.
+
+Note that if setting this tag to True means the estimator can take only positive values, the positive_only tag must reflect it and also be set to True.

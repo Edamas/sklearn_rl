@@ -1,0 +1,38 @@
+API Reference
+sklearn.utils
+column_or_1d
+column_or_1d
+sklearn.utils.validation.column_or_1d(y, *, dtype=None, warn=False, device=None)[source]
+Ravel column or 1d numpy array, else raises an error.
+
+Parameters:
+yarray-like
+Input data.
+
+dtypedata-type, default=None
+Data type for y.
+
+Added in version 1.2.
+
+warnbool, default=False
+To control display of warnings.
+
+devicedevice, default=None
+device object. See the Array API User Guide for more details.
+
+Added in version 1.6.
+
+Returns:
+y
+ndarray
+Output data.
+
+Raises:
+ValueError
+If y is not a 1D array or a 2D array with a single row or column.
+
+Examples
+
+from sklearn.utils.validation import column_or_1d
+column_or_1d([1, 1])
+array([1, 1])

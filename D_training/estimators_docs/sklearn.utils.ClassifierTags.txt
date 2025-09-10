@@ -1,0 +1,20 @@
+API Reference
+sklearn.utils
+ClassifierTags
+ClassifierTags
+class sklearn.utils.ClassifierTags(poor_score: bool = False, multi_class: bool = True, multi_label: bool = False)[source]
+Tags for the classifier.
+
+Parameters:
+poor_scorebool, default=False
+Whether the estimator fails to provide a “reasonable” test-set score, which currently for classification is an accuracy of 0.83 on make_blobs(n_samples=300, random_state=0). The datasets and values are based on current estimators in scikit-learn and might be replaced by something more systematic.
+
+multi_classbool, default=True
+Whether the classifier can handle multi-class classification. Note that all classifiers support binary classification. Therefore this flag indicates whether the classifier is a binary-classifier-only or not.
+
+See multi-class in the glossary.
+
+multi_labelbool, default=False
+Whether the classifier supports multi-label output: a data point can be predicted to belong to a variable number of classes.
+
+See multi-label in the glossary.

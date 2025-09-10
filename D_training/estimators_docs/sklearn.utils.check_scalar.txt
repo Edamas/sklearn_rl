@@ -1,0 +1,60 @@
+API Reference
+sklearn.utils
+check_scalar
+check_scalar
+sklearn.utils.check_scalar(x, name, target_type, *, min_val=None, max_val=None, include_boundaries='both')[source]
+Validate scalar parameters type and value.
+
+Parameters
+:
+x
+object
+The scalar parameter to validate.
+
+name
+str
+The name of the parameter to be printed in error messages.
+
+target_type
+type or tuple
+Acceptable data types for the parameter.
+
+min_val
+float or int, default=None
+The minimum valid value the parameter can take. If None (default) it is implied that the parameter does not have a lower bound.
+
+max_val
+float or int, default=None
+The maximum valid value the parameter can take. If None (default) it is implied that the parameter does not have an upper bound.
+
+include_boundaries
+{“left”, “right”, “both”, “neither”}, default=”both”
+Whether the interval defined by min_val and max_val should include the boundaries. Possible choices are:
+
+"left": only min_val is included in the valid interval. It is equivalent to the interval [ min_val, max_val ).
+
+"right": only max_val is included in the valid interval. It is equivalent to the interval ( min_val, max_val ].
+
+"both": min_val and max_val are included in the valid interval. It is equivalent to the interval [ min_val, max_val ].
+
+"neither": neither min_val nor max_val are included in the valid interval. It is equivalent to the interval ( min_val, max_val ).
+
+Returns
+:
+x
+numbers.Number
+The validated number.
+
+Raises
+:
+TypeError
+If the parameter’s type does not match the desired type.
+
+ValueError
+If the parameter’s value violates the given bounds. If min_val, max_val and include_boundaries are inconsistent.
+
+Examples
+
+from sklearn.utils.validation import check_scalar
+check_scalar(10, "x", int, min_val=1, max_val=20)
+10

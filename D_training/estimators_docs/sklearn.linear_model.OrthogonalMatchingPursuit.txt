@@ -1,0 +1,235 @@
+API Reference
+sklearn.linear_model
+OrthogonalMatchingPursuit
+OrthogonalMatchingPursuit
+class sklearn.linear_model.OrthogonalMatchingPursuit(*, n_nonzero_coefs=None, tol=None, fit_intercept=True, precompute='auto')[source]
+Orthogonal Matching Pursuit model (OMP).
+
+Read more in the User Guide.
+
+Parameters:
+n_nonzero_coefs
+int, default=None
+Desired number of non-zero entries in the solution. Ignored if tol is set. When None and tol is also None, this value is either set to 10% of n_features or 1, whichever is greater.
+
+tol
+float, default=None
+Maximum squared norm of the residual. If not None, overrides n_nonzero_coefs.
+
+fit_intercept
+bool, default=True
+Whether to calculate the intercept for this model. If set to false, no intercept will be used in calculations (i.e. data is expected to be centered).
+
+precompute
+‘auto’ or bool, default=’auto’
+Whether to use a precomputed Gram and Xy matrix to speed up calculations. Improves performance when n_targets or n_samples is very large. Note that if you already have such matrices, you can pass them directly to the fit method.
+
+Attributes:
+coef_ndarray of shape (n_features,) or (n_targets, n_features)
+Parameter vector (w in the formula).
+
+intercept_float or ndarray of shape (n_targets,)
+Independent term in decision function.
+
+n_iter_int or array-like
+Number of active features across every target.
+
+n_nonzero_coefs_int or None
+The number of non-zero coefficients in the solution or None when tol is set. If n_nonzero_coefs is None and tol is None this value is either set to 10% of n_features or 1, whichever is greater.
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+orthogonal_mp
+Solves n_targets Orthogonal Matching Pursuit problems.
+
+orthogonal_mp_gram
+Solves n_targets Orthogonal Matching Pursuit problems using only the Gram matrix X.T * X and the product X.T * y.
+
+lars_path
+Compute Least Angle Regression or Lasso path using LARS algorithm.
+
+Lars
+Least Angle Regression model a.k.a. LAR.
+
+LassoLars
+Lasso model fit with Least Angle Regression a.k.a. Lars.
+
+sklearn.decomposition.sparse_encode
+Generic sparse coding. Each column of the result is the solution to a Lasso problem.
+
+OrthogonalMatchingPursuitCV
+Cross-validated Orthogonal Matching Pursuit model (OMP).
+
+Notes
+
+Orthogonal matching pursuit was introduced in G. Mallat, Z. Zhang, Matching pursuits with time-frequency dictionaries, IEEE Transactions on Signal Processing, Vol. 41, No. 12. (December 1993), pp. 3397-3415. (https://www.di.ens.fr/~mallat/papiers/MallatPursuit93.pdf)
+
+This implementation is based on Rubinstein, R., Zibulevsky, M. and Elad, M., Efficient Implementation of the K-SVD Algorithm using Batch Orthogonal Matching Pursuit Technical Report - CS Technion, April 2008. https://www.cs.technion.ac.il/~ronrubin/Publications/KSVD-OMP-v2.pdf
+
+Examples
+
+from sklearn.linear_model import OrthogonalMatchingPursuit
+from sklearn.datasets import make_regression
+X, y = make_regression(noise=4, random_state=0)
+reg = OrthogonalMatchingPursuit().fit(X, y)
+reg.score(X, y)
+0.9991
+reg.predict(X[:1,])
+array([-78.3854])
+fit(X, y)[source]
+Fit the model using X, y as training data.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Training data.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_targets)
+Target values. Will be cast to X’s dtype if necessary.
+
+Returns
+:
+self
+object
+Returns an instance of self.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+predict(X)[source]
+Predict using the linear model.
+
+Parameters
+:
+X
+array-like or sparse matrix, shape (n_samples, n_features)
+Samples.
+
+Returns
+:
+C
+array, shape (n_samples,)
+Returns predicted values.
+
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → OrthogonalMatchingPursuit[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
+
+Gallery examples
+
+Orthogonal Matching Pursuit

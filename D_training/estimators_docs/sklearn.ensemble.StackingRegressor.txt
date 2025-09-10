@@ -1,0 +1,351 @@
+API Reference
+sklearn.ensemble
+StackingRegressor
+StackingRegressor
+class sklearn.ensemble.StackingRegressor(estimators, final_estimator=None, *, cv=None, n_jobs=None, passthrough=False, verbose=0)[source]
+Stack of estimators with a final regressor.
+
+Stacked generalization consists in stacking the output of individual estimator and use a regressor to compute the final prediction. Stacking allows to use the strength of each individual estimator by using their output as input of a final estimator.
+
+Note that estimators_ are fitted on the full X while final_estimator_ is trained using cross-validated predictions of the base estimators using cross_val_predict.
+
+Read more in the User Guide.
+
+Added in version 0.22.
+
+Parameters:
+estimatorslist of (str, estimator)
+Base estimators which will be stacked together. Each element of the list is defined as a tuple of string (i.e. name) and an estimator instance. An estimator can be set to ‘drop’ using set_params.
+
+final_estimatorestimator, default=None
+A regressor which will be used to combine the base estimators. The default regressor is a RidgeCV.
+
+cvint, cross-validation generator, iterable, or “prefit”, default=None
+Determines the cross-validation splitting strategy used in cross_val_predict to train final_estimator. Possible inputs for cv are:
+
+None, to use the default 5-fold cross validation,
+
+integer, to specify the number of folds in a (Stratified) KFold,
+
+An object to be used as a cross-validation generator,
+
+An iterable yielding train, test splits,
+
+"prefit", to assume the estimators are prefit. In this case, the estimators will not be refitted.
+
+For integer/None inputs, if the estimator is a classifier and y is either binary or multiclass, StratifiedKFold is used. In all other cases, KFold is used. These splitters are instantiated with shuffle=False so the splits will be the same across calls.
+
+Refer User Guide for the various cross-validation strategies that can be used here.
+
+If “prefit” is passed, it is assumed that all estimators have been fitted already. The final_estimator_ is trained on the estimators predictions on the full training set and are not cross validated predictions. Please note that if the models have been trained on the same data to train the stacking model, there is a very high risk of overfitting.
+
+Added in version 1.1: The ‘prefit’ option was added in 1.1
+
+Note
+
+A larger number of split will provide no benefits if the number of training samples is large enough. Indeed, the training time will increase. cv is not used for model evaluation but for prediction.
+
+n_jobsint, default=None
+The number of jobs to run in parallel for fit of all estimators. None means 1 unless in a joblib.parallel_backend context. -1 means using all processors. See Glossary for more details.
+
+passthroughbool, default=False
+When False, only the predictions of estimators will be used as training data for final_estimator. When True, the final_estimator is trained on the predictions as well as the original training data.
+
+verboseint, default=0
+Verbosity level.
+
+Attributes:
+estimators_list of estimators
+The elements of the estimators parameter, having been fitted on the training data. If an estimator has been set to 'drop', it will not appear in estimators_. When cv="prefit", estimators_ is set to estimators and is not fitted again.
+
+named_estimators_Bunch
+Attribute to access any fitted sub-estimators by name.
+
+n_features_in_int
+Number of features seen during fit.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Only defined if the underlying estimators expose such an attribute when fit.
+
+Added in version 1.0.
+
+final_estimator_estimator
+The regressor fit on the output of estimators_ and responsible for final predictions.
+
+stack_method_list of str
+The method used by each base estimator.
+
+See also
+
+StackingClassifier
+Stack of estimators with a final classifier.
+
+References
+
+[1]
+Wolpert, David H. “Stacked generalization.” Neural networks 5.2 (1992): 241-259.
+
+Examples
+
+from sklearn.datasets import load_diabetes
+from sklearn.linear_model import RidgeCV
+from sklearn.svm import LinearSVR
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import StackingRegressor
+X, y = load_diabetes(return_X_y=True)
+estimators = [
+    ('lr', RidgeCV()),
+    ('svr', LinearSVR(random_state=42))
+]
+reg = StackingRegressor(
+    estimators=estimators,
+    final_estimator=RandomForestRegressor(n_estimators=10,
+                                          random_state=42)
+)
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, random_state=42
+)
+reg.fit(X_train, y_train).score(X_test, y_test)
+0.3...
+fit(X, y, **fit_params)[source]
+Fit the estimators.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+yarray-like of shape (n_samples,)
+Target values.
+
+**fit_paramsdict
+Parameters to pass to the underlying estimators.
+
+Added in version 1.6: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+self
+object
+Returns a fitted instance.
+
+fit_transform(X, y, **fit_params)[source]
+Fit the estimators and return the predictions for X for each estimator.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+yarray-like of shape (n_samples,)
+Target values.
+
+**fit_paramsdict
+Parameters to pass to the underlying estimators.
+
+Added in version 1.6: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+y_preds
+ndarray of shape (n_samples, n_estimators)
+Prediction outputs for each estimator.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+Parameters:
+input_featuresarray-like of str or None, default=None
+Input features. The input feature names are only used when passthrough is True.
+
+If input_features is None, then feature_names_in_ is used as feature names in. If feature_names_in_ is not defined, then names are generated: [x0, x1, ..., x(n_features_in_ - 1)].
+
+If input_features is an array-like, then input_features must match feature_names_in_ if feature_names_in_ is defined.
+
+If passthrough is False, then only the names of estimators are used to generate the output feature names.
+
+Returns:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Added in version 1.6.
+
+Returns
+:
+routing
+MetadataRouter
+A MetadataRouter encapsulating routing information.
+
+get_params(deep=True)[source]
+Get the parameters of an estimator from the ensemble.
+
+Returns the parameters given in the constructor as well as the estimators contained within the estimators parameter.
+
+Parameters
+:
+deep
+bool, default=True
+Setting it to True gets the various estimators and the parameters of the estimators as well.
+
+Returns
+:
+params
+dict
+Parameter and estimator names mapped to their values or parameter names mapped to their values.
+
+property named_estimators
+Dictionary to access any fitted sub-estimators by name.
+
+Returns
+:
+Bunch
+predict(X, **predict_params)[source]
+Predict target for X.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+**predict_paramsdict of str -> obj
+Parameters to the predict called by the final_estimator. Note that this may be used to return uncertainties from some estimators with return_std or return_cov. Be aware that it will only account for uncertainty in the final estimator.
+
+If enable_metadata_routing=False (default): Parameters directly passed to the predict method of the final_estimator.
+
+If enable_metadata_routing=True: Parameters safely routed to the predict method of the final_estimator. See Metadata Routing User Guide for more details.
+
+Changed in version 1.6: **predict_params can be routed via metadata routing API.
+
+Returns:
+y_pred
+ndarray of shape (n_samples,) or (n_samples, n_output)
+Predicted targets.
+
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of an estimator from the ensemble.
+
+Valid parameter keys can be listed with get_params(). Note that you can directly set the parameters of the estimators contained in estimators.
+
+Parameters
+:
+**params
+keyword arguments
+Specific parameters using e.g. set_params(parameter_name=new_value). In addition, to setting the parameters of the estimator, the individual estimator of the estimators can also be set, or can be removed by setting them to ‘drop’.
+
+Returns
+:
+self
+object
+Estimator instance.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → StackingRegressor[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
+
+transform(X)[source]
+Return the predictions for X for each estimator.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+Returns
+:
+y_preds
+ndarray of shape (n_samples, n_estimators)
+Prediction outputs for each estimator.
+
+Gallery examples
+
+Combine predictors using stacking

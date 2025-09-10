@@ -1,0 +1,248 @@
+API Reference
+sklearn.preprocessing
+KernelCenterer
+KernelCenterer
+class sklearn.preprocessing.KernelCenterer[source]
+Center an arbitrary kernel matrix 
+.
+
+Let define a kernel 
+ such that:
+
+ is a function mapping of rows of 
+ to a Hilbert space and 
+ is of shape (n_samples, n_samples).
+
+This class allows to compute 
+ such that:
+
+ is the centered mapped data in the Hilbert space.
+
+KernelCenterer centers the features without explicitly computing the mapping 
+. Working with centered kernels is sometime expected when dealing with algebra computation such as eigendecomposition for KernelPCA for instance.
+
+Read more in the User Guide.
+
+Attributes:
+K_fit_rows_ndarray of shape (n_samples,)
+Average of each column of kernel matrix.
+
+K_fit_all_float
+Average of kernel matrix.
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+sklearn.kernel_approximation.Nystroem
+Approximate a kernel map using a subset of the training data.
+
+References
+
+[1]
+Schölkopf, Bernhard, Alexander Smola, and Klaus-Robert Müller. “Nonlinear component analysis as a kernel eigenvalue problem.” Neural computation 10.5 (1998): 1299-1319.
+
+Examples
+
+from sklearn.preprocessing import KernelCenterer
+from sklearn.metrics.pairwise import pairwise_kernels
+X = [[ 1., -2.,  2.],
+     [ -2.,  1.,  3.],
+     [ 4.,  1., -2.]]
+K = pairwise_kernels(X, metric='linear')
+K
+array([[  9.,   2.,  -2.],
+       [  2.,  14., -13.],
+       [ -2., -13.,  21.]])
+transformer = KernelCenterer().fit(K)
+transformer
+KernelCenterer()
+transformer.transform(K)
+array([[  5.,   0.,  -5.],
+       [  0.,  14., -14.],
+       [ -5., -14.,  19.]])
+fit(K, y=None)[source]
+Fit KernelCenterer.
+
+Parameters
+:
+K
+ndarray of shape (n_samples, n_samples)
+Kernel matrix.
+
+y
+None
+Ignored.
+
+Returns
+:
+self
+object
+Returns the instance itself.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+The feature names out will prefixed by the lowercased class name. For example, if the transformer outputs 3 features, then the feature names out are: ["class_name0", "class_name1", "class_name2"].
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_transform_request(*, copy: bool | None | str = '$UNCHANGED$') → KernelCenterer[source]
+Configure whether metadata should be requested to be passed to the transform method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to transform if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to transform.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+copy
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for copy parameter in transform.
+
+Returns
+:
+self
+object
+The updated object.
+
+transform(K, copy=True)[source]
+Center kernel matrix.
+
+Parameters
+:
+K
+ndarray of shape (n_samples1, n_samples2)
+Kernel matrix.
+
+copy
+bool, default=True
+Set to False to perform inplace computation.
+
+Returns
+:
+K_new
+ndarray of shape (n_samples1, n_samples2)
+Returns the instance itself.

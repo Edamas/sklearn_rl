@@ -1,0 +1,18 @@
+API Reference
+sklearn.base
+is_outlier_detector
+is_outlier_detector
+sklearn.base.is_outlier_detector(estimator)[source]
+Return True if the given estimator is (probably) an outlier detector.
+
+Parameters
+:
+estimator
+estimator instance
+Estimator object to test.
+
+Returns
+:
+out
+bool
+True if estimator is an outlier detector and False otherwise.

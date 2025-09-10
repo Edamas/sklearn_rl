@@ -1,0 +1,97 @@
+API Reference
+sklearn.cluster
+k_means
+k_means
+sklearn.cluster.k_means(X, n_clusters, *, sample_weight=None, init='k-means++', n_init='auto', max_iter=300, verbose=False, tol=0.0001, random_state=None, copy_x=True, algorithm='lloyd', return_n_iter=False)[source]
+Perform K-means clustering algorithm.
+
+Read more in the User Guide.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+The observations to cluster. It must be noted that the data will be converted to C ordering, which will cause a memory copy if the given data is not C-contiguous.
+
+n_clustersint
+The number of clusters to form as well as the number of centroids to generate.
+
+sample_weightarray-like of shape (n_samples,), default=None
+The weights for each observation in X. If None, all observations are assigned equal weight. sample_weight is not used during initialization if init is a callable or a user provided array.
+
+init{‘k-means++’, ‘random’}, callable or array-like of shape (n_clusters, n_features), default=’k-means++’
+Method for initialization:
+
+'k-means++' : selects initial cluster centers for k-mean clustering in a smart way to speed up convergence. See section Notes in k_init for more details.
+
+'random': choose n_clusters observations (rows) at random from data for the initial centroids.
+
+If an array is passed, it should be of shape (n_clusters, n_features) and gives the initial centers.
+
+If a callable is passed, it should take arguments X, n_clusters and a random state and return an initialization.
+
+n_init‘auto’ or int, default=”auto”
+Number of time the k-means algorithm will be run with different centroid seeds. The final results will be the best output of n_init consecutive runs in terms of inertia.
+
+When n_init='auto', the number of runs depends on the value of init: 10 if using init='random' or init is a callable; 1 if using init='k-means++' or init is an array-like.
+
+Added in version 1.2: Added ‘auto’ option for n_init.
+
+Changed in version 1.4: Default value for n_init changed to 'auto'.
+
+max_iterint, default=300
+Maximum number of iterations of the k-means algorithm to run.
+
+verbosebool, default=False
+Verbosity mode.
+
+tolfloat, default=1e-4
+Relative tolerance with regards to Frobenius norm of the difference in the cluster centers of two consecutive iterations to declare convergence.
+
+random_stateint, RandomState instance or None, default=None
+Determines random number generation for centroid initialization. Use an int to make the randomness deterministic. See Glossary.
+
+copy_xbool, default=True
+When pre-computing distances it is more numerically accurate to center the data first. If copy_x is True (default), then the original data is not modified. If False, the original data is modified, and put back before the function returns, but small numerical differences may be introduced by subtracting and then adding the data mean. Note that if the original data is not C-contiguous, a copy will be made even if copy_x is False. If the original data is sparse, but not in CSR format, a copy will be made even if copy_x is False.
+
+algorithm{“lloyd”, “elkan”}, default=”lloyd”
+K-means algorithm to use. The classical EM-style algorithm is "lloyd". The "elkan" variation can be more efficient on some datasets with well-defined clusters, by using the triangle inequality. However it’s more memory intensive due to the allocation of an extra array of shape (n_samples, n_clusters).
+
+Changed in version 0.18: Added Elkan algorithm
+
+Changed in version 1.1: Renamed “full” to “lloyd”, and deprecated “auto” and “full”. Changed “auto” to use “lloyd” instead of “elkan”.
+
+return_n_iterbool, default=False
+Whether or not to return the number of iterations.
+
+Returns:
+centroid
+ndarray of shape (n_clusters, n_features)
+Centroids found at the last iteration of k-means.
+
+label
+ndarray of shape (n_samples,)
+The label[i] is the code or index of the centroid the i’th observation is closest to.
+
+inertia
+float
+The final value of the inertia criterion (sum of squared distances to the closest centroid for all observations in the training set).
+
+best_n_iter
+int
+Number of iterations corresponding to the best results. Returned only if return_n_iter is set to True.
+
+Examples
+
+import numpy as np
+from sklearn.cluster import k_means
+X = np.array([[1, 2], [1, 4], [1, 0],
+              [10, 2], [10, 4], [10, 0]])
+centroid, label, inertia = k_means(
+    X, n_clusters=2, n_init="auto", random_state=0
+)
+centroid
+array([[10.,  2.],
+       [ 1.,  2.]])
+label
+array([1, 1, 1, 0, 0, 0], dtype=int32)
+inertia
+16.0

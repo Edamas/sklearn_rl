@@ -1,0 +1,265 @@
+API Reference
+sklearn.preprocessing
+FunctionTransformer
+FunctionTransformer
+class sklearn.preprocessing.FunctionTransformer(func=None, inverse_func=None, *, validate=False, accept_sparse=False, check_inverse=True, feature_names_out=None, kw_args=None, inv_kw_args=None)[source]
+Constructs a transformer from an arbitrary callable.
+
+A FunctionTransformer forwards its X (and optionally y) arguments to a user-defined function or function object and returns the result of this function. This is useful for stateless transformations such as taking the log of frequencies, doing custom scaling, etc.
+
+Note: If a lambda is used as the function, then the resulting transformer will not be pickleable.
+
+Added in version 0.17.
+
+Read more in the User Guide.
+
+Parameters:
+funccallable, default=None
+The callable to use for the transformation. This will be passed the same arguments as transform, with args and kwargs forwarded. If func is None, then func will be the identity function.
+
+inverse_funccallable, default=None
+The callable to use for the inverse transformation. This will be passed the same arguments as inverse transform, with args and kwargs forwarded. If inverse_func is None, then inverse_func will be the identity function.
+
+validatebool, default=False
+Indicate that the input X array should be checked before calling func. The possibilities are:
+
+If False, there is no input validation.
+
+If True, then X will be converted to a 2-dimensional NumPy array or sparse matrix. If the conversion is not possible an exception is raised.
+
+Changed in version 0.22: The default of validate changed from True to False.
+
+accept_sparsebool, default=False
+Indicate that func accepts a sparse matrix as input. If validate is False, this has no effect. Otherwise, if accept_sparse is false, sparse matrix inputs will cause an exception to be raised.
+
+check_inversebool, default=True
+Whether to check that or func followed by inverse_func leads to the original inputs. It can be used for a sanity check, raising a warning when the condition is not fulfilled.
+
+Added in version 0.20.
+
+feature_names_outcallable, ‘one-to-one’ or None, default=None
+Determines the list of feature names that will be returned by the get_feature_names_out method. If it is ‘one-to-one’, then the output feature names will be equal to the input feature names. If it is a callable, then it must take two positional arguments: this FunctionTransformer (self) and an array-like of input feature names (input_features). It must return an array-like of output feature names. The get_feature_names_out method is only defined if feature_names_out is not None.
+
+See get_feature_names_out for more details.
+
+Added in version 1.1.
+
+kw_argsdict, default=None
+Dictionary of additional keyword arguments to pass to func.
+
+Added in version 0.18.
+
+inv_kw_argsdict, default=None
+Dictionary of additional keyword arguments to pass to inverse_func.
+
+Added in version 0.18.
+
+Attributes:
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+MaxAbsScaler
+Scale each feature by its maximum absolute value.
+
+StandardScaler
+Standardize features by removing the mean and scaling to unit variance.
+
+LabelBinarizer
+Binarize labels in a one-vs-all fashion.
+
+MultiLabelBinarizer
+Transform between iterable of iterables and a multilabel format.
+
+Notes
+
+If func returns an output with a columns attribute, then the columns is enforced to be consistent with the output of get_feature_names_out.
+
+Examples
+
+import numpy as np
+from sklearn.preprocessing import FunctionTransformer
+transformer = FunctionTransformer(np.log1p)
+X = np.array([[0, 1], [2, 3]])
+transformer.transform(X)
+array([[0.       , 0.6931],
+       [1.0986, 1.3862]])
+fit(X, y=None)[source]
+Fit transformer by checking X.
+
+If validate is True, X will be checked.
+
+Parameters:
+X{array-like, sparse-matrix} of shape (n_samples, n_features) if validate=True else any object that func can handle
+Input array.
+
+yIgnored
+Not used, present here for API consistency by convention.
+
+Returns:
+self
+object
+FunctionTransformer class instance.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+This method is only defined if feature_names_out is not None.
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Input feature names.
+
+If input_features is None, then feature_names_in_ is used as the input feature names. If feature_names_in_ is not defined, then names are generated: [x0, x1, ..., x(n_features_in_ - 1)].
+
+If input_features is array-like, then input_features must match feature_names_in_ if feature_names_in_ is defined.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+If feature_names_out is ‘one-to-one’, the input feature names are returned (see input_features above). This requires feature_names_in_ and/or n_features_in_ to be defined, which is done automatically if validate=True. Alternatively, you can set them in func.
+
+If feature_names_out is a callable, then it is called with two arguments, self and input_features, and its return value is returned by this method.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+inverse_transform(X)[source]
+Transform X using the inverse function.
+
+Parameters:
+X{array-like, sparse-matrix} of shape (n_samples, n_features) if validate=True else any object that inverse_func can handle
+Input array.
+
+Returns:
+X_original
+array-like, shape (n_samples, n_features)
+Transformed input.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Transform X using the forward function.
+
+Parameters:
+X{array-like, sparse-matrix} of shape (n_samples, n_features) if validate=True else any object that func can handle
+Input array.
+
+Returns:
+X_out
+array-like, shape (n_samples, n_features)
+Transformed input.
+
+Gallery examples
+
+Time-related feature engineering
+
+Column Transformer with Heterogeneous Data Sources
+
+Feature transformations with ensembles of trees
+
+Poisson regression and non-normal loss
+
+Tweedie regression on insurance claims
+
+Semi-supervised Classification on a Text Dataset

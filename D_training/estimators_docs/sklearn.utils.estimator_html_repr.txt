@@ -1,0 +1,26 @@
+API Reference
+sklearn.utils
+estimator_html_repr
+estimator_html_repr
+sklearn.utils.estimator_html_repr(estimator)[source]
+Build a HTML representation of an estimator.
+
+Read more in the User Guide.
+
+Parameters
+:
+estimator
+estimator object
+The estimator to visualize.
+
+Returns
+:
+html: str
+HTML representation of estimator.
+
+Examples
+
+from sklearn.utils._repr_html.estimator import estimator_html_repr
+from sklearn.linear_model import LogisticRegression
+estimator_html_repr(LogisticRegression())
+'<style>#sk-container-id...'

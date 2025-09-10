@@ -1,0 +1,230 @@
+API Reference
+sklearn.random_projection
+GaussianRandomProjection
+GaussianRandomProjection
+class sklearn.random_projection.GaussianRandomProjection(n_components='auto', *, eps=0.1, compute_inverse_components=False, random_state=None)[source]
+Reduce dimensionality through Gaussian random projection.
+
+The components of the random matrix are drawn from N(0, 1 / n_components).
+
+Read more in the User Guide.
+
+Added in version 0.13.
+
+Parameters:
+n_componentsint or ‘auto’, default=’auto’
+Dimensionality of the target projection space.
+
+n_components can be automatically adjusted according to the number of samples in the dataset and the bound given by the Johnson-Lindenstrauss lemma. In that case the quality of the embedding is controlled by the eps parameter.
+
+It should be noted that Johnson-Lindenstrauss lemma can yield very conservative estimated of the required number of components as it makes no assumption on the structure of the dataset.
+
+epsfloat, default=0.1
+Parameter to control the quality of the embedding according to the Johnson-Lindenstrauss lemma when n_components is set to ‘auto’. The value should be strictly positive.
+
+Smaller values lead to better embedding and higher number of dimensions (n_components) in the target projection space.
+
+compute_inverse_componentsbool, default=False
+Learn the inverse transform by computing the pseudo-inverse of the components during fit. Note that computing the pseudo-inverse does not scale well to large matrices.
+
+random_stateint, RandomState instance or None, default=None
+Controls the pseudo random number generator used to generate the projection matrix at fit time. Pass an int for reproducible output across multiple function calls. See Glossary.
+
+Attributes:
+n_components_int
+Concrete number of components computed when n_components=”auto”.
+
+components_ndarray of shape (n_components, n_features)
+Random matrix used for the projection.
+
+inverse_components_ndarray of shape (n_features, n_components)
+Pseudo-inverse of the components, only computed if compute_inverse_components is True.
+
+Added in version 1.1.
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+SparseRandomProjection
+Reduce dimensionality through sparse random projection.
+
+Examples
+
+import numpy as np
+from sklearn.random_projection import GaussianRandomProjection
+rng = np.random.RandomState(42)
+X = rng.rand(25, 3000)
+transformer = GaussianRandomProjection(random_state=rng)
+X_new = transformer.fit_transform(X)
+X_new.shape
+(25, 2759)
+fit(X, y=None)[source]
+Generate a sparse random projection matrix.
+
+Parameters
+:
+X
+{ndarray, sparse matrix} of shape (n_samples, n_features)
+Training set: only the shape is used to find optimal random matrix dimensions based on the theory referenced in the afore mentioned papers.
+
+y
+Ignored
+Not used, present here for API consistency by convention.
+
+Returns
+:
+self
+object
+BaseRandomProjection class instance.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+The feature names out will prefixed by the lowercased class name. For example, if the transformer outputs 3 features, then the feature names out are: ["class_name0", "class_name1", "class_name2"].
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+inverse_transform(X)[source]
+Project data back to its original space.
+
+Returns an array X_original whose transform would be X. Note that even if X is sparse, X_original is dense: this may use a lot of RAM.
+
+If compute_inverse_components is False, the inverse of the components is computed during each call to inverse_transform which can be costly.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_components)
+Data to be transformed back.
+
+Returns
+:
+X_original
+ndarray of shape (n_samples, n_features)
+Reconstructed data.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Project the data by using matrix product with the random matrix.
+
+Parameters
+:
+X
+{ndarray, sparse matrix} of shape (n_samples, n_features)
+The input data to project into a smaller dimensional space.
+
+Returns
+:
+X_new
+ndarray of shape (n_samples, n_components)
+Projected array.

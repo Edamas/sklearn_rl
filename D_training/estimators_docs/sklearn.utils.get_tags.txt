@@ -1,0 +1,21 @@
+API Reference
+sklearn.utils
+get_tags
+get_tags
+sklearn.utils.get_tags(estimator) → Tags[source]
+Get estimator tags.
+
+BaseEstimator provides the estimator tags machinery. However, if an estimator does not inherit from this base class, we should fall-back to the default tags.
+
+For scikit-learn built-in estimators, we should still rely on self.__sklearn_tags__(). get_tags(est) should be used when we are not sure where est comes from: typically get_tags(self.estimator) where self is a meta-estimator, or in the common checks.
+
+Added in version 1.6.
+
+Parameters:
+estimator
+estimator object
+The estimator from which to get the tag.
+
+Returns:
+tagsTags
+The estimator tags.

@@ -1,0 +1,27 @@
+API Reference
+sklearn.utils
+TargetTags
+TargetTags
+class sklearn.utils.TargetTags(required: bool, one_d_labels: bool = False, two_d_labels: bool = False, positive_only: bool = False, multi_output: bool = False, single_output: bool = True)[source]
+Tags for the target data.
+
+Parameters:
+requiredbool
+Whether the estimator requires y to be passed to fit, fit_predict or fit_transform methods. The tag is True for estimators inheriting from ~sklearn.base.RegressorMixin and ~sklearn.base.ClassifierMixin.
+
+one_d_labelsbool, default=False
+Whether the input is a 1D labels (y).
+
+two_d_labelsbool, default=False
+Whether the input is a 2D labels (y).
+
+positive_onlybool, default=False
+Whether the estimator requires a positive y (only applicable for regression).
+
+multi_outputbool, default=False
+Whether a regressor supports multi-target outputs or a classifier supports multi-class multi-output.
+
+See multi-output in the glossary.
+
+single_outputbool, default=True
+Whether the target can be single-output. This can be False if the estimator supports only multi-output cases.

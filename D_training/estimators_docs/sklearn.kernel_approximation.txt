@@ -1,0 +1,211 @@
+API Reference
+sklearn.kernel_approximation
+AdditiveChi2Sampler
+AdditiveChi2Sampler
+class sklearn.kernel_approximation.AdditiveChi2Sampler(*, sample_steps=2, sample_interval=None)[source]
+Approximate feature map for additive chi2 kernel.
+
+Uses sampling the fourier transform of the kernel characteristic at regular intervals.
+
+Since the kernel that is to be approximated is additive, the components of the input vectors can be treated separately. Each entry in the original space is transformed into 2*sample_steps-1 features, where sample_steps is a parameter of the method. Typical values of sample_steps include 1, 2 and 3.
+
+Optimal choices for the sampling interval for certain data ranges can be computed (see the reference). The default values should be reasonable.
+
+Read more in the User Guide.
+
+Parameters:
+sample_steps
+int, default=2
+Gives the number of (complex) sampling points.
+
+sample_interval
+float, default=None
+Sampling interval. Must be specified when sample_steps not in {1,2,3}.
+
+Attributes:
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+SkewedChi2Sampler
+A Fourier-approximation to a non-additive variant of the chi squared kernel.
+
+sklearn.metrics.pairwise.chi2_kernel
+The exact chi squared kernel.
+
+sklearn.metrics.pairwise.additive_chi2_kernel
+The exact additive chi squared kernel.
+
+Notes
+
+This estimator approximates a slightly different version of the additive chi squared kernel then metric.additive_chi2 computes.
+
+This estimator is stateless and does not need to be fitted. However, we recommend to call fit_transform instead of transform, as parameter validation is only performed in fit.
+
+References
+
+See “Efficient additive kernels via explicit feature maps” A. Vedaldi and A. Zisserman, Pattern Analysis and Machine Intelligence, 2011
+
+Examples
+
+from sklearn.datasets import load_digits
+from sklearn.linear_model import SGDClassifier
+from sklearn.kernel_approximation import AdditiveChi2Sampler
+X, y = load_digits(return_X_y=True)
+chi2sampler = AdditiveChi2Sampler(sample_steps=2)
+X_transformed = chi2sampler.fit_transform(X, y)
+clf = SGDClassifier(max_iter=5, random_state=0, tol=1e-3)
+clf.fit(X_transformed, y)
+SGDClassifier(max_iter=5, random_state=0)
+clf.score(X_transformed, y)
+0.9499...
+fit(X, y=None)[source]
+Only validates estimator’s parameters.
+
+This method allows to: (i) validate the estimator’s parameters and (ii) be consistent with the scikit-learn transformer API.
+
+Parameters
+:
+X
+array-like, shape (n_samples, n_features)
+Training data, where n_samples is the number of samples and n_features is the number of features.
+
+y
+array-like, shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+Returns
+:
+self
+object
+Returns the transformer.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Apply approximate feature map to X.
+
+Parameters
+:
+X
+{array-like, sparse matrix}, shape (n_samples, n_features)
+Training data, where n_samples is the number of samples and n_features is the number of features.
+
+Returns
+:
+X_new
+{ndarray, sparse matrix}, shape = (n_samples, n_features * (2*sample_steps - 1))
+Whether the return value is an array or sparse matrix depends on the type of the input X.

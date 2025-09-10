@@ -1,0 +1,42 @@
+API Reference
+sklearn.utils
+compute_class_weight
+compute_class_weight
+sklearn.utils.class_weight.compute_class_weight(class_weight, *, classes, y, sample_weight=None)[source]
+Estimate class weights for unbalanced datasets.
+
+Parameters
+:
+class_weight
+dict, “balanced” or None
+If “balanced”, class weights will be given by n_samples / (n_classes * np.bincount(y)) or their weighted equivalent if sample_weight is provided. If a dictionary is given, keys are classes and values are corresponding class weights. If None is given, the class weights will be uniform.
+
+classes
+ndarray
+Array of the classes occurring in the data, as given by np.unique(y_org) with y_org the original class labels.
+
+y
+array-like of shape (n_samples,)
+Array of original class labels per sample.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Array of weights that are assigned to individual samples. Only used when class_weight='balanced'.
+
+Returns
+:
+class_weight_vect
+ndarray of shape (n_classes,)
+Array with class_weight_vect[i] the weight for i-th class.
+
+References
+
+The “balanced” heuristic is inspired by Logistic Regression in Rare Events Data, King, Zen, 2001.
+
+Examples
+
+import numpy as np
+from sklearn.utils.class_weight import compute_class_weight
+y = [1, 1, 1, 1, 0, 0]
+compute_class_weight(class_weight="balanced", classes=np.unique(y), y=y)
+array([1.5 , 0.75])

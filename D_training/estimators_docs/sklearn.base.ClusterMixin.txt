@@ -1,0 +1,41 @@
+API Reference
+sklearn.base
+ClusterMixin
+ClusterMixin
+class sklearn.base.ClusterMixin[source]
+Mixin class for all cluster estimators in scikit-learn.
+
+set estimator type to "clusterer" through the estimator_type tag;
+
+fit_predict method returning the cluster labels associated to each sample.
+
+Examples
+
+import numpy as np
+from sklearn.base import BaseEstimator, ClusterMixin
+class MyClusterer(ClusterMixin, BaseEstimator):
+    def fit(self, X, y=None):
+        self.labels_ = np.ones(shape=(len(X),), dtype=np.int64)
+        return self
+X = [[1, 2], [2, 3], [3, 4]]
+MyClusterer().fit_predict(X)
+array([1, 1, 1])
+fit_predict(X, y=None, **kwargs)[source]
+Perform clustering on X and returns cluster labels.
+
+Parameters:
+Xarray-like of shape (n_samples, n_features)
+Input data.
+
+yIgnored
+Not used, present for API consistency by convention.
+
+**kwargsdict
+Arguments to be passed to fit.
+
+Added in version 1.4.
+
+Returns:
+labels
+ndarray of shape (n_samples,), dtype=np.int64
+Cluster labels.

@@ -1,0 +1,366 @@
+API Reference
+sklearn.naive_bayes
+MultinomialNB
+MultinomialNB
+class sklearn.naive_bayes.MultinomialNB(*, alpha=1.0, force_alpha=True, fit_prior=True, class_prior=None)[source]
+Naive Bayes classifier for multinomial models.
+
+The multinomial Naive Bayes classifier is suitable for classification with discrete features (e.g., word counts for text classification). The multinomial distribution normally requires integer feature counts. However, in practice, fractional counts such as tf-idf may also work.
+
+Read more in the User Guide.
+
+Parameters:
+alphafloat or array-like of shape (n_features,), default=1.0
+Additive (Laplace/Lidstone) smoothing parameter (set alpha=0 and force_alpha=True, for no smoothing).
+
+force_alphabool, default=True
+If False and alpha is less than 1e-10, it will set alpha to 1e-10. If True, alpha will remain unchanged. This may cause numerical errors if alpha is too close to 0.
+
+Added in version 1.2.
+
+Changed in version 1.4: The default value of force_alpha changed to True.
+
+fit_priorbool, default=True
+Whether to learn class prior probabilities or not. If false, a uniform prior will be used.
+
+class_priorarray-like of shape (n_classes,), default=None
+Prior probabilities of the classes. If specified, the priors are not adjusted according to the data.
+
+Attributes:
+class_count_ndarray of shape (n_classes,)
+Number of samples encountered for each class during fitting. This value is weighted by the sample weight when provided.
+
+class_log_prior_ndarray of shape (n_classes,)
+Smoothed empirical log probability for each class.
+
+classes_ndarray of shape (n_classes,)
+Class labels known to the classifier
+
+feature_count_ndarray of shape (n_classes, n_features)
+Number of samples encountered for each (class, feature) during fitting. This value is weighted by the sample weight when provided.
+
+feature_log_prob_ndarray of shape (n_classes, n_features)
+Empirical log probability of features given a class, P(x_i|y).
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+BernoulliNB
+Naive Bayes classifier for multivariate Bernoulli models.
+
+CategoricalNB
+Naive Bayes classifier for categorical features.
+
+ComplementNB
+Complement Naive Bayes classifier.
+
+GaussianNB
+Gaussian Naive Bayes.
+
+References
+
+C.D. Manning, P. Raghavan and H. Schuetze (2008). Introduction to Information Retrieval. Cambridge University Press, pp. 234-265. https://nlp.stanford.edu/IR-book/html/htmledition/naive-bayes-text-classification-1.html
+
+Examples
+
+import numpy as np
+rng = np.random.RandomState(1)
+X = rng.randint(5, size=(6, 100))
+y = np.array([1, 2, 3, 4, 5, 6])
+from sklearn.naive_bayes import MultinomialNB
+clf = MultinomialNB()
+clf.fit(X, y)
+MultinomialNB()
+print(clf.predict(X[2:3]))
+[3]
+fit(X, y, sample_weight=None)[source]
+Fit Naive Bayes classifier according to X, y.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+y
+array-like of shape (n_samples,)
+Target values.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Weights applied to individual samples (1. for unweighted).
+
+Returns
+:
+self
+object
+Returns the instance itself.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+partial_fit(X, y, classes=None, sample_weight=None)[source]
+Incremental fit on a batch of samples.
+
+This method is expected to be called several times consecutively on different chunks of a dataset so as to implement out-of-core or online learning.
+
+This is especially useful when the whole dataset is too big to fit in memory at once.
+
+This method has some performance overhead hence it is better to call partial_fit on chunks of data that are as large as possible (as long as fitting in the memory budget) to hide the overhead.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vectors, where n_samples is the number of samples and n_features is the number of features.
+
+yarray-like of shape (n_samples,)
+Target values.
+
+classesarray-like of shape (n_classes,), default=None
+List of all the classes that can possibly appear in the y vector.
+
+Must be provided at the first call to partial_fit, can be omitted in subsequent calls.
+
+sample_weightarray-like of shape (n_samples,), default=None
+Weights applied to individual samples (1. for unweighted).
+
+Returns:
+self
+object
+Returns the instance itself.
+
+predict(X)[source]
+Perform classification on an array of test vectors X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+The input samples.
+
+Returns
+:
+C
+ndarray of shape (n_samples,)
+Predicted target values for X.
+
+predict_joint_log_proba(X)[source]
+Return joint log probability estimates for the test vector X.
+
+For each row x of X and class y, the joint log probability is given by log P(x, y) = log P(y) + log P(x|y), where log P(y) is the class prior probability and log P(x|y) is the class-conditional probability.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+The input samples.
+
+Returns
+:
+C
+ndarray of shape (n_samples, n_classes)
+Returns the joint log-probability of the samples for each class in the model. The columns correspond to the classes in sorted order, as they appear in the attribute classes_.
+
+predict_log_proba(X)[source]
+Return log-probability estimates for the test vector X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+The input samples.
+
+Returns
+:
+C
+array-like of shape (n_samples, n_classes)
+Returns the log-probability of the samples for each class in the model. The columns correspond to the classes in sorted order, as they appear in the attribute classes_.
+
+predict_proba(X)[source]
+Return probability estimates for the test vector X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+The input samples.
+
+Returns
+:
+C
+array-like of shape (n_samples, n_classes)
+Returns the probability of the samples for each class in the model. The columns correspond to the classes in sorted order, as they appear in the attribute classes_.
+
+score(X, y, sample_weight=None)[source]
+Return accuracy on provided data and labels.
+
+In multi-label classification, this is the subset accuracy which is a harsh metric since you require for each sample that each label set be correctly predicted.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True labels for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+Mean accuracy of self.predict(X) w.r.t. y.
+
+set_fit_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → MultinomialNB[source]
+Configure whether metadata should be requested to be passed to the fit method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to fit if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to fit.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in fit.
+
+Returns
+:
+self
+object
+The updated object.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_partial_fit_request(*, classes: bool | None | str = '$UNCHANGED$', sample_weight: bool | None | str = '$UNCHANGED$') → MultinomialNB[source]
+Configure whether metadata should be requested to be passed to the partial_fit method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to partial_fit if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to partial_fit.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+classes
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for classes parameter in partial_fit.
+
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in partial_fit.
+
+Returns
+:
+self
+object
+The updated object.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → MultinomialNB[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
+
+Gallery examples
+
+Out-of-core classification of text documents

@@ -1,0 +1,205 @@
+API Reference
+sklearn.cross_decomposition
+PLSSVD
+PLSSVD
+class sklearn.cross_decomposition.PLSSVD(n_components=2, *, scale=True, copy=True)[source]
+Partial Least Square SVD.
+
+This transformer simply performs a SVD on the cross-covariance matrix X'y. It is able to project both the training data X and the targets y. The training data X is projected on the left singular vectors, while the targets are projected on the right singular vectors.
+
+Read more in the User Guide.
+
+Added in version 0.8.
+
+Parameters:
+n_components
+int, default=2
+The number of components to keep. Should be in [1, min(n_samples, n_features, n_targets)].
+
+scale
+bool, default=True
+Whether to scale X and y.
+
+copy
+bool, default=True
+Whether to copy X and y in fit before applying centering, and potentially scaling. If False, these operations will be done inplace, modifying both arrays.
+
+Attributes:
+x_weights_ndarray of shape (n_features, n_components)
+The left singular vectors of the SVD of the cross-covariance matrix. Used to project X in transform.
+
+y_weights_ndarray of (n_targets, n_components)
+The right singular vectors of the SVD of the cross-covariance matrix. Used to project X in transform.
+
+n_features_in_int
+Number of features seen during fit.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+PLSCanonical
+Partial Least Squares transformer and regressor.
+
+CCA
+Canonical Correlation Analysis.
+
+Examples
+
+import numpy as np
+from sklearn.cross_decomposition import PLSSVD
+X = np.array([[0., 0., 1.],
+              [1., 0., 0.],
+              [2., 2., 2.],
+              [2., 5., 4.]])
+y = np.array([[0.1, -0.2],
+              [0.9, 1.1],
+              [6.2, 5.9],
+              [11.9, 12.3]])
+pls = PLSSVD(n_components=2).fit(X, y)
+X_c, y_c = pls.transform(X, y)
+X_c.shape, y_c.shape
+((4, 2), (4, 2))
+fit(X, y)[source]
+Fit model to data.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Training samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_targets)
+Targets.
+
+Returns
+:
+self
+object
+Fitted estimator.
+
+fit_transform(X, y=None)[source]
+Learn and apply the dimensionality reduction.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Training samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_targets), default=None
+Targets.
+
+Returns
+:
+out
+array-like or tuple of array-like
+The transformed data X_transformed if y is not None, (X_transformed, y_transformed) otherwise.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+The feature names out will prefixed by the lowercased class name. For example, if the transformer outputs 3 features, then the feature names out are: ["class_name0", "class_name1", "class_name2"].
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X, y=None)[source]
+Apply the dimensionality reduction.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Samples to be transformed.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_targets), default=None
+Targets.
+
+Returns
+:
+x_scores
+array-like or tuple of array-like
+The transformed data X_transformed if y is not None, (X_transformed, y_transformed) otherwise.

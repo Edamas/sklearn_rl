@@ -1,0 +1,290 @@
+API Reference
+sklearn.decomposition
+MiniBatchSparsePCA
+MiniBatchSparsePCA
+class sklearn.decomposition.MiniBatchSparsePCA(n_components=None, *, alpha=1, ridge_alpha=0.01, max_iter=1000, callback=None, batch_size=3, verbose=False, shuffle=True, n_jobs=None, method='lars', random_state=None, tol=0.001, max_no_improvement=10)[source]
+Mini-batch Sparse Principal Components Analysis.
+
+Finds the set of sparse components that can optimally reconstruct the data. The amount of sparseness is controllable by the coefficient of the L1 penalty, given by the parameter alpha.
+
+For an example comparing sparse PCA to PCA, see Faces dataset decompositions
+
+Read more in the User Guide.
+
+Parameters:
+n_componentsint, default=None
+Number of sparse atoms to extract. If None, then n_components is set to n_features.
+
+alphaint, default=1
+Sparsity controlling parameter. Higher values lead to sparser components.
+
+ridge_alphafloat, default=0.01
+Amount of ridge shrinkage to apply in order to improve conditioning when calling the transform method.
+
+max_iterint, default=1_000
+Maximum number of iterations over the complete dataset before stopping independently of any early stopping criterion heuristics.
+
+Added in version 1.2.
+
+callbackcallable, default=None
+Callable that gets invoked every five iterations.
+
+batch_sizeint, default=3
+The number of features to take in each mini batch.
+
+verboseint or bool, default=False
+Controls the verbosity; the higher, the more messages. Defaults to 0.
+
+shufflebool, default=True
+Whether to shuffle the data before splitting it in batches.
+
+n_jobsint, default=None
+Number of parallel jobs to run. None means 1 unless in a joblib.parallel_backend context. -1 means using all processors. See Glossary for more details.
+
+method{‘lars’, ‘cd’}, default=’lars’
+Method to be used for optimization. lars: uses the least angle regression method to solve the lasso problem (linear_model.lars_path) cd: uses the coordinate descent method to compute the Lasso solution (linear_model.Lasso). Lars will be faster if the estimated components are sparse.
+
+random_stateint, RandomState instance or None, default=None
+Used for random shuffling when shuffle is set to True, during online dictionary learning. Pass an int for reproducible results across multiple function calls. See Glossary.
+
+tolfloat, default=1e-3
+Control early stopping based on the norm of the differences in the dictionary between 2 steps.
+
+To disable early stopping based on changes in the dictionary, set tol to 0.0.
+
+Added in version 1.1.
+
+max_no_improvementint or None, default=10
+Control early stopping based on the consecutive number of mini batches that does not yield an improvement on the smoothed cost function.
+
+To disable convergence detection based on cost function, set max_no_improvement to None.
+
+Added in version 1.1.
+
+Attributes:
+components_ndarray of shape (n_components, n_features)
+Sparse components extracted from the data.
+
+n_components_int
+Estimated number of components.
+
+Added in version 0.23.
+
+n_iter_int
+Number of iterations run.
+
+mean_ndarray of shape (n_features,)
+Per-feature empirical mean, estimated from the training set. Equal to X.mean(axis=0).
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+DictionaryLearning
+Find a dictionary that sparsely encodes data.
+
+IncrementalPCA
+Incremental principal components analysis.
+
+PCA
+Principal component analysis.
+
+SparsePCA
+Sparse Principal Components Analysis.
+
+TruncatedSVD
+Dimensionality reduction using truncated SVD.
+
+Examples
+
+import numpy as np
+from sklearn.datasets import make_friedman1
+from sklearn.decomposition import MiniBatchSparsePCA
+X, _ = make_friedman1(n_samples=200, n_features=30, random_state=0)
+transformer = MiniBatchSparsePCA(n_components=5, batch_size=50,
+                                 max_iter=10, random_state=0)
+transformer.fit(X)
+MiniBatchSparsePCA(...)
+X_transformed = transformer.transform(X)
+X_transformed.shape
+(200, 5)
+# most values in the components_ are zero (sparsity)
+np.mean(transformer.components_ == 0)
+np.float64(0.9)
+fit(X, y=None)[source]
+Fit the model from data in X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Training vector, where n_samples is the number of samples and n_features is the number of features.
+
+y
+Ignored
+Not used, present here for API consistency by convention.
+
+Returns
+:
+self
+object
+Returns the instance itself.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+The feature names out will prefixed by the lowercased class name. For example, if the transformer outputs 3 features, then the feature names out are: ["class_name0", "class_name1", "class_name2"].
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+inverse_transform(X)[source]
+Transform data from the latent space to the original space.
+
+This inversion is an approximation due to the loss of information induced by the forward decomposition.
+
+Added in version 1.2.
+
+Parameters
+:
+X
+ndarray of shape (n_samples, n_components)
+Data in the latent space.
+
+Returns
+:
+X_original
+ndarray of shape (n_samples, n_features)
+Reconstructed data in the original space.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Least Squares projection of the data onto the sparse components.
+
+To avoid instability issues in case the system is under-determined, regularization can be applied (Ridge regression) via the ridge_alpha parameter.
+
+Note that Sparse PCA components orthogonality is not enforced as in PCA hence one cannot use a simple linear projection.
+
+Parameters
+:
+X
+ndarray of shape (n_samples, n_features)
+Test data to be transformed, must have the same number of features as the data used to train the model.
+
+Returns
+:
+X_new
+ndarray of shape (n_samples, n_components)
+Transformed data.
+
+Gallery examples
+
+Faces dataset decompositions

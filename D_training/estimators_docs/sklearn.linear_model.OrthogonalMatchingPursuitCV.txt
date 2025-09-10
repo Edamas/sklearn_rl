@@ -1,0 +1,263 @@
+API Reference
+sklearn.linear_model
+OrthogonalMatchingPursuitCV
+OrthogonalMatchingPursuitCV
+class sklearn.linear_model.OrthogonalMatchingPursuitCV(*, copy=True, fit_intercept=True, max_iter=None, cv=None, n_jobs=None, verbose=False)[source]
+Cross-validated Orthogonal Matching Pursuit model (OMP).
+
+See glossary entry for cross-validation estimator.
+
+Read more in the User Guide.
+
+Parameters:
+copybool, default=True
+Whether the design matrix X must be copied by the algorithm. A false value is only helpful if X is already Fortran-ordered, otherwise a copy is made anyway.
+
+fit_interceptbool, default=True
+Whether to calculate the intercept for this model. If set to false, no intercept will be used in calculations (i.e. data is expected to be centered).
+
+max_iterint, default=None
+Maximum numbers of iterations to perform, therefore maximum features to include. 10% of n_features but at least 5 if available.
+
+cvint, cross-validation generator or iterable, default=None
+Determines the cross-validation splitting strategy. Possible inputs for cv are:
+
+None, to use the default 5-fold cross-validation,
+
+integer, to specify the number of folds.
+
+CV splitter,
+
+An iterable yielding (train, test) splits as arrays of indices.
+
+For integer/None inputs, KFold is used.
+
+Refer User Guide for the various cross-validation strategies that can be used here.
+
+Changed in version 0.22: cv default value if None changed from 3-fold to 5-fold.
+
+n_jobsint, default=None
+Number of CPUs to use during the cross validation. None means 1 unless in a joblib.parallel_backend context. -1 means using all processors. See Glossary for more details.
+
+verbosebool or int, default=False
+Sets the verbosity amount.
+
+Attributes:
+intercept_float or ndarray of shape (n_targets,)
+Independent term in decision function.
+
+coef_ndarray of shape (n_features,) or (n_targets, n_features)
+Parameter vector (w in the problem formulation).
+
+n_nonzero_coefs_int
+Estimated number of non-zero coefficients giving the best mean squared error over the cross-validation folds.
+
+n_iter_int or array-like
+Number of active features across every target for the model refit with the best hyperparameters got by cross-validating across all folds.
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+orthogonal_mp
+Solves n_targets Orthogonal Matching Pursuit problems.
+
+orthogonal_mp_gram
+Solves n_targets Orthogonal Matching Pursuit problems using only the Gram matrix X.T * X and the product X.T * y.
+
+lars_path
+Compute Least Angle Regression or Lasso path using LARS algorithm.
+
+Lars
+Least Angle Regression model a.k.a. LAR.
+
+LassoLars
+Lasso model fit with Least Angle Regression a.k.a. Lars.
+
+OrthogonalMatchingPursuit
+Orthogonal Matching Pursuit model (OMP).
+
+LarsCV
+Cross-validated Least Angle Regression model.
+
+LassoLarsCV
+Cross-validated Lasso model fit with Least Angle Regression.
+
+sklearn.decomposition.sparse_encode
+Generic sparse coding. Each column of the result is the solution to a Lasso problem.
+
+Notes
+
+In fit, once the optimal number of non-zero coefficients is found through cross-validation, the model is fit again using the entire training set.
+
+Examples
+
+from sklearn.linear_model import OrthogonalMatchingPursuitCV
+from sklearn.datasets import make_regression
+X, y = make_regression(n_features=100, n_informative=10,
+                       noise=4, random_state=0)
+reg = OrthogonalMatchingPursuitCV(cv=5).fit(X, y)
+reg.score(X, y)
+0.9991
+reg.n_nonzero_coefs_
+np.int64(10)
+reg.predict(X[:1,])
+array([-78.3854])
+fit(X, y, **fit_params)[source]
+Fit the model using X, y as training data.
+
+Parameters:
+Xarray-like of shape (n_samples, n_features)
+Training data.
+
+yarray-like of shape (n_samples,)
+Target values. Will be cast to X’s dtype if necessary.
+
+**fit_paramsdict
+Parameters to pass to the underlying splitter.
+
+Added in version 1.4: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+self
+object
+Returns an instance of self.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Added in version 1.4.
+
+Returns
+:
+routing
+MetadataRouter
+A MetadataRouter encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+predict(X)[source]
+Predict using the linear model.
+
+Parameters
+:
+X
+array-like or sparse matrix, shape (n_samples, n_features)
+Samples.
+
+Returns
+:
+C
+array, shape (n_samples,)
+Returns predicted values.
+
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → OrthogonalMatchingPursuitCV[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
+
+Gallery examples
+
+Orthogonal Matching Pursuit

@@ -1,0 +1,20 @@
+Dataset,Registros,Colunas,Células Totais,Alvo,Tipo,Comando
+blobs,200,3,600,target,local,blobs.csv
+blobs2x100,200,3,600,target,local,blobs2x100.csv
+blobs3x500,500,4,2000,target,local,blobs3x500.csv
+blobs5x1000,1000,5,5000,target,local,blobs5x1000.csv
+breast_cancer,569,31,17639,target,local,breast_cancer.csv
+BRL_USD Historical Data_Date_Price,6238,1,6238,,local,BRL_USD Historical Data_Date_Price.csv
+california_housing,20640,9,185760,,local,california_housing.csv
+circles,200,3,600,target,local,circles.csv
+diabetes,442,11,4862,target,local,diabetes.csv
+digits,1797,65,116805,target,local,digits.csv
+iris,150,5,750,target,local,iris.csv
+leads_agosto_imoveis,72,22,1584,,local,leads_agosto_imoveis.csv
+leads_imoveis_2024_2025,1221,116,141636,,local,leads_imoveis_2024_2025.csv
+mega_sena,2793,20,55860,,local,mega_sena.csv
+moons,200,3,600,target,local,moons.csv
+outliers,200,3,600,,local,outliers.csv
+SampleData_AP_Refunds_Financial_EventLog ,1004,9,9036,,local,SampleData_AP_Refunds_Financial_EventLog .csv
+Temperaturas calotas polares 9700AC a 2000DC,620,1,620,,local,Temperaturas calotas polares 9700AC a 2000DC.csv
+wine,178,14,2492,target,local,wine.csv

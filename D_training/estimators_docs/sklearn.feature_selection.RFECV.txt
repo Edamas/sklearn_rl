@@ -1,0 +1,427 @@
+API Reference
+sklearn.feature_selection
+RFECV
+RFECV
+class sklearn.feature_selection.RFECV(estimator, *, step=1, min_features_to_select=1, cv=None, scoring=None, verbose=0, n_jobs=None, importance_getter='auto')[source]
+Recursive feature elimination with cross-validation to select features.
+
+The number of features selected is tuned automatically by fitting an RFE selector on the different cross-validation splits (provided by the cv parameter). The performance of each RFE selector is evaluated using scoring for different numbers of selected features and aggregated together. Finally, the scores are averaged across folds and the number of features selected is set to the number of features that maximize the cross-validation score.
+
+See glossary entry for cross-validation estimator.
+
+Read more in the User Guide.
+
+Parameters:
+estimatorEstimator instance
+A supervised learning estimator with a fit method that provides information about feature importance either through a coef_ attribute or through a feature_importances_ attribute.
+
+stepint or float, default=1
+If greater than or equal to 1, then step corresponds to the (integer) number of features to remove at each iteration. If within (0.0, 1.0), then step corresponds to the percentage (rounded down) of features to remove at each iteration. Note that the last iteration may remove fewer than step features in order to reach min_features_to_select.
+
+min_features_to_selectint, default=1
+The minimum number of features to be selected. This number of features will always be scored, even if the difference between the original feature count and min_features_to_select isn’t divisible by step.
+
+Added in version 0.20.
+
+cvint, cross-validation generator or an iterable, default=None
+Determines the cross-validation splitting strategy. Possible inputs for cv are:
+
+None, to use the default 5-fold cross-validation,
+
+integer, to specify the number of folds.
+
+CV splitter,
+
+An iterable yielding (train, test) splits as arrays of indices.
+
+For integer/None inputs, if y is binary or multiclass, StratifiedKFold is used. If the estimator is not a classifier or if y is neither binary nor multiclass, KFold is used.
+
+Refer User Guide for the various cross-validation strategies that can be used here.
+
+Changed in version 0.22: cv default value of None changed from 3-fold to 5-fold.
+
+scoringstr or callable, default=None
+Scoring method to evaluate the RFE selectors’ performance. Options:
+
+str: see String name scorers for options.
+
+callable: a scorer callable object (e.g., function) with signature scorer(estimator, X, y). See Callable scorers for details.
+
+None: the estimator’s default evaluation criterion is used.
+
+verboseint, default=0
+Controls verbosity of output.
+
+n_jobsint or None, default=None
+Number of cores to run in parallel while fitting across folds. None means 1 unless in a joblib.parallel_backend context. -1 means using all processors. See Glossary for more details.
+
+Added in version 0.18.
+
+importance_getterstr or callable, default=’auto’
+If ‘auto’, uses the feature importance either through a coef_ or feature_importances_ attributes of estimator.
+
+Also accepts a string that specifies an attribute name/path for extracting feature importance. For example, give regressor_.coef_ in case of TransformedTargetRegressor or named_steps.clf.feature_importances_ in case of Pipeline with its last step named clf.
+
+If callable, overrides the default feature importance getter. The callable is passed with the fitted estimator and it should return importance for each feature.
+
+Added in version 0.24.
+
+Attributes:
+classes_ndarray of shape (n_classes,)
+Classes labels available when estimator is a classifier.
+
+estimator_Estimator instance
+The fitted estimator used to select features.
+
+cv_results_dict of ndarrays
+All arrays (values of the dictionary) are sorted in ascending order by the number of features used (i.e., the first element of the array represents the models that used the least number of features, while the last element represents the models that used all available features).
+
+Added in version 1.0.
+
+This dictionary contains the following keys:
+
+split(k)_test_scorendarray of shape (n_subsets_of_features,)
+The cross-validation scores across (k)th fold.
+
+mean_test_scorendarray of shape (n_subsets_of_features,)
+Mean of scores over the folds.
+
+std_test_scorendarray of shape (n_subsets_of_features,)
+Standard deviation of scores over the folds.
+
+n_featuresndarray of shape (n_subsets_of_features,)
+Number of features used at each step.
+
+Added in version 1.5.
+
+split(k)_rankingndarray of shape (n_subsets_of_features,)
+The cross-validation rankings across (k)th fold. Selected (i.e., estimated best) features are assigned rank 1. Illustration in Recursive feature elimination with cross-validation
+
+Added in version 1.7.
+
+split(k)_supportndarray of shape (n_subsets_of_features,)
+The cross-validation supports across (k)th fold. The support is the mask of selected features.
+
+Added in version 1.7.
+
+n_features_int
+The number of selected features with cross-validation.
+
+n_features_in_int
+Number of features seen during fit. Only defined if the underlying estimator exposes such an attribute when fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+ranking_narray of shape (n_features,)
+The feature ranking, such that ranking_[i] corresponds to the ranking position of the i-th feature. Selected (i.e., estimated best) features are assigned rank 1.
+
+support_ndarray of shape (n_features,)
+The mask of selected features.
+
+See also
+
+RFE
+Recursive feature elimination.
+
+Notes
+
+The size of all values in cv_results_ is equal to ceil((n_features - min_features_to_select) / step) + 1, where step is the number of features removed at each iteration.
+
+Allows NaN/Inf in the input if the underlying estimator does as well.
+
+References
+
+[1]
+Guyon, I., Weston, J., Barnhill, S., & Vapnik, V., “Gene selection for cancer classification using support vector machines”, Mach. Learn., 46(1-3), 389–422, 2002.
+
+Examples
+
+The following example shows how to retrieve the a-priori not known 5 informative features in the Friedman #1 dataset.
+
+from sklearn.datasets import make_friedman1
+from sklearn.feature_selection import RFECV
+from sklearn.svm import SVR
+X, y = make_friedman1(n_samples=50, n_features=10, random_state=0)
+estimator = SVR(kernel="linear")
+selector = RFECV(estimator, step=1, cv=5)
+selector = selector.fit(X, y)
+selector.support_
+array([ True,  True,  True,  True,  True, False, False, False, False,
+       False])
+selector.ranking_
+array([1, 1, 1, 1, 1, 6, 4, 3, 2, 5])
+For a detailed example of using RFECV to select features when training a LogisticRegression, see Recursive feature elimination with cross-validation.
+
+decision_function(X)[source]
+Compute the decision function of X.
+
+Parameters
+:
+X
+{array-like or sparse matrix} of shape (n_samples, n_features)
+The input samples. Internally, it will be converted to dtype=np.float32 and if a sparse matrix is provided to a sparse csr_matrix.
+
+Returns
+:
+score
+array, shape = [n_samples, n_classes] or [n_samples]
+The decision function of the input samples. The order of the classes corresponds to that in the attribute classes_. Regression and binary classification produce an array of shape [n_samples].
+
+fit(X, y, *, groups=None, **params)[source]
+Fit the RFE model and automatically tune the number of selected features.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+Training vector, where n_samples is the number of samples and n_features is the total number of features.
+
+yarray-like of shape (n_samples,)
+Target values (integers for classification, real numbers for regression).
+
+groupsarray-like of shape (n_samples,) or None, default=None
+Group labels for the samples used while splitting the dataset into train/test set. Only used in conjunction with a “Group” cv instance (e.g., GroupKFold).
+
+Added in version 0.20.
+
+**paramsdict of str -> object
+Parameters passed to the fit method of the estimator, the scorer, and the CV splitter.
+
+Added in version 1.6: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+self
+object
+Fitted estimator.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Mask feature names according to selected features.
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Input features.
+
+If input_features is None, then feature_names_in_ is used as feature names in. If feature_names_in_ is not defined, then the following input feature names are generated: ["x0", "x1", ..., "x(n_features_in_ - 1)"].
+
+If input_features is an array-like, then input_features must match feature_names_in_ if feature_names_in_ is defined.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Added in version 1.6.
+
+Returns
+:
+routing
+MetadataRouter
+A MetadataRouter encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+get_support(indices=False)[source]
+Get a mask, or integer index, of the features selected.
+
+Parameters
+:
+indices
+bool, default=False
+If True, the return value will be an array of integers, rather than a boolean mask.
+
+Returns
+:
+support
+array
+An index that selects the retained features from a feature vector. If indices is False, this is a boolean array of shape [# input features], in which an element is True iff its corresponding feature is selected for retention. If indices is True, this is an integer array of shape [# output features] whose values are indices into the input feature vector.
+
+inverse_transform(X)[source]
+Reverse the transformation operation.
+
+Parameters
+:
+X
+array of shape [n_samples, n_selected_features]
+The input samples.
+
+Returns
+:
+X_original
+array of shape [n_samples, n_original_features]
+X with columns of zeros inserted where features would have been removed by transform.
+
+predict(X, **predict_params)[source]
+Reduce X to the selected features and predict using the estimator.
+
+Parameters:
+Xarray of shape [n_samples, n_features]
+The input samples.
+
+**predict_paramsdict
+Parameters to route to the predict method of the underlying estimator.
+
+Added in version 1.6: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+y
+array of shape [n_samples]
+The predicted target values.
+
+predict_log_proba(X)[source]
+Predict class log-probabilities for X.
+
+Parameters
+:
+X
+array of shape [n_samples, n_features]
+The input samples.
+
+Returns
+:
+p
+array of shape (n_samples, n_classes)
+The class log-probabilities of the input samples. The order of the classes corresponds to that in the attribute classes_.
+
+predict_proba(X)[source]
+Predict class probabilities for X.
+
+Parameters
+:
+X
+{array-like or sparse matrix} of shape (n_samples, n_features)
+The input samples. Internally, it will be converted to dtype=np.float32 and if a sparse matrix is provided to a sparse csr_matrix.
+
+Returns
+:
+p
+array of shape (n_samples, n_classes)
+The class probabilities of the input samples. The order of the classes corresponds to that in the attribute classes_.
+
+score(X, y, **score_params)[source]
+Score using the scoring option on the given test data and labels.
+
+Parameters:
+Xarray-like of shape (n_samples, n_features)
+Test samples.
+
+yarray-like of shape (n_samples,)
+True labels for X.
+
+**score_paramsdict
+Parameters to pass to the score method of the underlying scorer.
+
+Added in version 1.6: Only available if enable_metadata_routing=True, which can be set by using sklearn.set_config(enable_metadata_routing=True). See Metadata Routing User Guide for more details.
+
+Returns:
+score
+float
+Score of self.predict(X) w.r.t. y defined by scoring.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Reduce X to the selected features.
+
+Parameters
+:
+X
+array of shape [n_samples, n_features]
+The input samples.
+
+Returns
+:
+X_r
+array of shape [n_samples, n_selected_features]
+The input samples with only the selected features.
+
+Gallery examples
+
+Recursive feature elimination with cross-validation

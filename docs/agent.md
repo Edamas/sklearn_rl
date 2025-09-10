@@ -1,6 +1,6 @@
 # Documento de Concepção do Agente Autônomo
 
-Este documento detalha a concepção, estratégia e plano de implementação para o agente de Inteligência Artificial Autônomo focado na utilização da suíte Scikit-learn.
+Este documento detalha a concepção, estratégia e plano de implementação para o agente de Inteligência Artificial Autônomo focado na utilização da suíte Scikit-learn. Ele evoluiu para ser uma ferramenta robusta de AutoML, capaz de construir e otimizar pipelines de Machine Learning de forma inteligente.
 
 ## 1. Visão Geral e Propósito do Agente
 
@@ -8,442 +8,163 @@ O agente é um sistema de Aprendizado por Reforço (RL) projetado para atuar de 
 
 O objetivo é que o agente, por meio de tentativa e erro, descubra sequências de operações (ações) que maximizem uma métrica de desempenho (recompensa) para um determinado conjunto de dados (estado).
 
-## 2. Requisitos e Objetivos
+## 2. Modelo de Dados (Arquivos TSV)
 
-### 2.1. Objetivo Principal
+A inteligência do agente é alimentada por três arquivos TSV principais, que servem como sua base de conhecimento e histórico.
 
-O objetivo central do agente é **maximizar a performance de um modelo de Machine Learning em um dado dataset**, automatizando a construção do pipeline de ponta a ponta. A performance será medida por métricas como acurácia, F1-score, precisão ou recall.
+### 2.1. `estimators.tsv`
 
-### 2.2. Requisitos Funcionais
+Este arquivo contém o catálogo de todos os estimadores (modelos e transformadores) do Scikit-learn que o agente pode utilizar. Ele é a fonte primária de metadados sobre cada "caixa" do pipeline.
 
-- **Navegação no Espaço de Ações:** O agente deve ser capaz de selecionar qualquer estimador ou transformador disponível no Scikit-learn.
-- **Construção de Pipeline Sequencial:** As ações do agente devem compor um `Pipeline` válido do Scikit-learn.
-- **Avaliação de Desempenho:** O agente deve ser capaz de treinar e avaliar o pipeline construído em um conjunto de dados de validação.
-- **Otimização da Recompensa:** O agente deve aprender uma política que o leve a escolher ações que resultem em uma maior recompensa acumulada ao longo do tempo.
-
-## 3. Ambiente (Environment)
-
-O ambiente representa o universo onde o agente opera. Neste projeto, o ambiente é uma abstração sobre a biblioteca Scikit-learn.
-
-### 3.1. Espaço de Observação (Observation Space)
-
-O estado (ou observação) representa a informação que o agente recebe do ambiente para tomar sua próxima decisão. O espaço de observação será composto por:
-
-- **Metadados do Dataset:** Características do conjunto de dados (ex: número de features, número de amostras, tipo das features).
-- **Estado do Pipeline Atual:** A sequência de passos de pré-processamento e modelagem já construídos.
-- **Resultados Anteriores:** Informações sobre o desempenho de ações ou pipelines anteriores.
-
-### 3.2. Espaço de Ação (Action Space)
-
-O espaço de ação define todas as operações que o agente pode realizar. As ações consistem em:
-
-- **Selecionar um método do Scikit-learn:** Escolher um algoritmo da lista de métodos disponíveis (ex: `StandardScaler`, `PCA`, `LogisticRegression`).
-- **Configurar Hiperparâmetros:** Definir os parâmetros para o método escolhido (em uma versão futura).
-- **Finalizar o Pipeline:** Indicar que a construção do pipeline está completa para que a avaliação possa começar.
-
-## 4. Estratégia do Agente
-
-### 4.1. Algoritmo de Aprendizagem
-
-O agente utilizará um algoritmo de Aprendizado por Reforço. Com base na estrutura de arquivos do projeto (que sugere o uso de PPO - *Proximal Policy Optimization*), a estratégia será baseada em política (*policy-based*), onde o agente aprende diretamente a mapear estados para ações.
-
-### 4.2. Sistema de Recompensa e Penalidades
-
-O sistema de recompensa é crucial para guiar o aprendizado do agente na direção correta.
-
-#### Recompensas
-
-- **Recompensa Principal:** Proporcional à métrica de desempenho (ex: F1-score) do pipeline final no conjunto de validação. Um F1-score de 0.85 pode corresponder a uma recompensa de +85.
-- **Recompensas Intermediárias:** Pequenos bônus por aplicar com sucesso um passo de pré-processamento que melhore a qualidade dos dados de alguma forma mensurável.
-
-#### Penalidades
-
-- **Ação Inválida:** Penalidade negativa significativa se o agente tentar uma ação que resulte em um pipeline inválido (ex: aplicar um classificador no meio de etapas de pré-processamento).
-- **Custo Computacional:** Penalidade pequena e proporcional ao tempo de treinamento do pipeline, para incentivar a eficiência.
-- **Desempenho Ruim:** Uma penalidade caso o desempenho final seja abaixo de um limiar mínimo aceitável.
-
-## 5. Plano Operacional e Táticas
-
-A implementação e o treinamento do agente seguirão as seguintes etapas:
-
-1.  **Seleção dos Datasets:** Utilizar conjuntos de dados clássicos e bem conhecidos da comunidade (ex: Iris, Breast Cancer, Wine) para garantir a comparabilidade dos resultados.
-2.  **Implementação do Ambiente (`scikitlearn_env.py`):**
-    -   Desenvolver a classe de ambiente que herda de uma interface padrão (como a do `gymnasium`).
-    -   Implementar a lógica de `step()`: receber uma ação, aplicá-la ao pipeline, calcular a recompensa e o próximo estado.
-    -   Implementar a lógica de `reset()`: reiniciar o ambiente para o início de um novo episódio.
-3.  **Implementação do Agente (`ppo_agent.py`):**
-    -   Implementar o algoritmo PPO para interagir com o ambiente.
-    -   Definir a arquitetura da rede neural que representará a política do agente.
-4.  **Ciclo de Treinamento (`run_experiments.py`):**
-    -   Orquestrar a interação entre o agente e o ambiente por um número definido de episódios.
-    -   Salvar os resultados, as políticas aprendidas e as métricas de desempenho.
-5.  **Análise e Avaliação (`plot_results.py`):**
-    -   Visualizar a curva de aprendizado do agente (recompensa média por episódio).
-    -   Analisar os pipelines gerados pelo agente treinado e compará-los com baselines manuais.
-
-## 6. Estratégias e Exemplos Visuais
-
-Para clarificar o funcionamento do agente, esta seção detalha algumas estratégias de alto nível que ele pode adotar e ilustra o ciclo de interação com o ambiente em cada caso.
-
-### 6.1. Tabela de Estratégias Alternativas
-
-O agente pode focar em diferentes aspectos da construção do pipeline. A tabela a seguir descreve algumas abordagens estratégicas.
-
-| Estratégia Alternativa | Descrição |
-| :--- | :--- |
-| **Foco em Pré-processamento** | O agente prioriza a aplicação de uma sequência de transformadores para limpar, normalizar e preparar os dados antes de aplicar um modelo simples como baseline. |
-| **Foco em Seleção de Modelo** | Dado um conjunto de dados já pré-processado, o agente se concentra em testar diferentes algoritmos de modelagem (classificação ou regressão) para encontrar o mais adequado. |
-| **Construção de Pipeline Completo** | Estratégia mais complexa onde o agente constrói o pipeline de ponta a ponta, selecionando tanto os passos de pré-processamento quanto o modelo final. |
-
-### 6.2. Exemplos de Ciclo (Entrada-Processamento-Saída)
-
-#### Exemplo 1: Estratégia com Foco em Pré-processamento
-
-| Processo | Entrada (Estado) | Processamento (Decisão do Agente) | Saída (Novo Estado + Recompensa) |
+| Coluna | Tipo | Descrição | Exemplo |
 | :--- | :--- | :--- | :--- |
-| **Passo 1: Imputação** | Dataset com 10% de valores faltantes; Pipeline vazio. | A política da rede neural analisa o estado e escolhe a ação: `SimpleImputer(strategy='mean')`. | Dataset sem valores faltantes; Pipeline: `[SimpleImputer]`; **Recompensa:** +5 (bônus por passo válido). |
-| **Passo 2: Normalização** | Dataset sem valores faltantes; Pipeline: `[SimpleImputer]`. | A política escolhe a ação: `StandardScaler()`. | Dataset normalizado; Pipeline: `[SimpleImputer, StandardScaler]`; **Recompensa:** +5. |
-| **Passo 3: Finalização** | Dataset normalizado; Pipeline: `[SimpleImputer, StandardScaler]`. | O agente aplica um modelo baseline (ex: `LogisticRegression`) e finaliza. | Pipeline avaliado; **Recompensa Final:** +78 (baseado no F1-score de 0.78 do pipeline completo). |
+| `estimator_name` | String | Nome do estimador (ex: `RandomForestClassifier`). | `PCA` |
+| `estimator_type` | String | Tipo geral do estimador (`Classifier`, `Regressor`, `Transformer`, `Cluster`). | `Transformer` |
+| `category` | String | Categoria de alto nível do estimador (ex: `ensemble`, `preprocessing`). | `decomposition` |
+| `description` | String | Breve descrição do estimador, extraída da documentação. | `Principal component analysis (PCA).` |
+| `class_path` | String | Caminho completo da classe Python do estimador. | `sklearn.decomposition.PCA` |
+| `params_list` | Lista de Strings | Nomes dos parâmetros que o agente pode otimizar para este estimador. | `[n_components, whiten]` |
+| `submethods_list` | Lista de Strings | Métodos públicos importantes do estimador (ex: `fit`, `transform`, `predict`). | `[fit, transform, inverse_transform]` |
+| `X_min` | Inteiro | Número mínimo de features de entrada (`X`) que o estimador aceita. | `1` |
+| `X_max` | Inteiro | Número máximo de features de entrada (`X`) que o estimador aceita. | `9999` |
+| `y_min` | Inteiro | Número mínimo de features de saída (`y`) que o estimador aceita (para alvos). | `0` (para transformers) |
+| `y_max` | Inteiro | Número máximo de features de saída (`y`) que o estimador aceita (para alvos). | `1` (para classificadores) |
+| `apt_for_training` | Booleano | Indica se o estimador está pronto para ser usado no treinamento (`True`) ou se precisa de revisão (`False`). | `True` |
+| `observações` | String | Notas e observações sobre o estimador (ex: inconsistências na documentação). | `Descrição fornecida incorreta.` |
+| `from_sklearn_docs` | Booleano | Indica se o registro foi preenchido automaticamente a partir da documentação do Scikit-learn. | `True` |
+| `input_X_structure` | String | Estrutura (shape) esperada para a entrada `X`. | `(n_samples, n_features)` |
+| `input_X_types` | String | Tipos de dados aceitos para `X` (ex: `float,int`). | `float,int` |
+| `input_y_structure` | String | Estrutura (shape) esperada para a entrada `y`. | `(n_samples,)` |
+| `input_y_types` | String | Tipos de dados aceitos para `y` (ex: `float,int`). | `float,int` |
+| `output_X_structure` | String | Estrutura (shape) da saída `X` após `transform`. | `(n_samples, n_components)` |
+| `output_X_types` | String | Tipos de dados da saída `X` após `transform`. | `float` |
+| `output_y_structure` | String | Estrutura (shape) da saída `y` após `predict`. | `(n_samples,)` |
+| `output_y_types` | String | Tipos de dados da saída `y` após `predict`. | `float,int` |
 
-#### Exemplo 2: Estratégia com Foco em Seleção de Modelo
+### 2.2. `parameters.tsv`
 
-| Processo | Entrada (Estado) | Processamento (Decisão do Agente) | Saída (Novo Estado + Recompensa) |
+Este arquivo detalha as regras de otimização para cada hiperparâmetro, permitindo que o agente gere valores válidos e explore o espaço de parâmetros de forma inteligente.
+
+| Coluna | Tipo | Descrição | Exemplo |
 | :--- | :--- | :--- | :--- |
-| **Passo 1: Escolha do Modelo** | Dataset já pré-processado; Pipeline vazio. | A política avalia o estado e escolhe a ação: `KNeighborsClassifier(n_neighbors=5)`. | Pipeline finalizado com `KNeighborsClassifier`; **Recompensa:** +82 (baseado no F1-score). |
-| **Episódio 2, Passo 1** | (Reset) Dataset pré-processado; Pipeline vazio. | Em um novo episódio, a política explora e escolhe: `RandomForestClassifier(n_estimators=100)`. | Pipeline finalizado com `RandomForestClassifier`; **Recompensa:** +91 (baseado no F1-score). |
+| `param_name` | String | Nome do parâmetro (ex: `n_estimators`). | `n_components` |
+| `param_dtype` | String | Tipo de dado do parâmetro (`int`, `float`, `cat` (categórico), `bool`). | `int` |
+| `param_standard` | String | Valor padrão do parâmetro. | `None` |
+| `param_min` | Float/Int | Valor mínimo para parâmetros numéricos. | `0.0` |
+| `param_max` | Float/Int | Valor máximo para parâmetros numéricos. | `1.0` |
+| `param_list` | Lista de Strings | Valores possíveis para parâmetros categóricos (ex: `['auto', 'full']`). | `['auto', 'full', 'arpack']` |
+| `param_required` | Booleano | Indica se o parâmetro é obrigatório (`True`) ou opcional (`False`). | `False` |
+| `descrição do parâmetro` | String | Breve descrição do parâmetro, extraída da documentação. | `Number of components to keep.` |
+| `apt_for_training` | Booleano | Indica se o parâmetro está pronto para ser otimizado (`True`) ou se precisa de revisão (`False`). | `True` |
+| `observações` | String | Notas e observações sobre o parâmetro. | `Pode ser int, float ou 'mle'.` |
+| `from_sklearn_docs` | Booleano | Indica se o registro foi preenchido automaticamente a partir da documentação do Scikit-learn. | `True` |
 
-## 7. Proposta de Visualização do Ambiente e Agente
+### 2.3. `history.tsv`
 
-Para fornecer uma visão intuitiva e em tempo real do processo de aprendizado do agente, propõe-se a criação de uma visualização simbólica utilizando Plotly. Este "mapa" não representa um espaço físico, mas sim o espaço abstrato de decisões do Scikit-learn.
+Este arquivo registra os resultados de cada experimento (tentativa de pipeline e otimização de parâmetros) realizado pelo agente, servindo como base para o aprendizado e análise de desempenho.
 
-### 7.1. O Mapa de Ações (O Ambiente)
-
-O ambiente será visualizado como um gráfico 2D onde o agente se move da esquerda para a direita à medida que constrói o pipeline.
-
-| Eixo | Representação |
-| :--- | :--- |
-| **Eixo X** | Etapas sequenciais do pipeline (Passo 1, Passo 2, ...). |
-| **Eixo Y** | Categorias de ações do Scikit-learn (ex: Imputação, Normalização, Redução de Dimensionalidade, Classificação). |
-
-Cada categoria no Eixo Y pode ter uma "região" colorida, e a trajetória do agente será uma linha que conecta os pontos de ação escolhidos em cada etapa.
-
-### 7.2. O Agente e Seus Estados
-
-O agente será um marcador no mapa, cujos atributos visuais mudam para refletir seu estado e o resultado de suas ações.
-
-| Atributo Visual | Significado |
-| :--- | :--- |
-| **Posição (x, y)** | Representa a ação da **categoria Y** que foi tomada na **etapa X** do pipeline. |
-| **Cor do Marcador** | Indica a fase atual do agente: <br> • **Azul:** Fase de Pré-processamento. <br> • **Verde:** Fase de Modelagem. <br> • **Dourado:** Episódio concluído com sucesso (alta recompensa). <br> • **Vermelho:** Episódio falhou (ação inválida). |
-| **Forma do Marcador** | Descreve o resultado da última ação: <br> • **Círculo:** Ação válida, passo bem-sucedido. <br> • **'X' (xis):** Ação inválida que resultou em penalidade. |
-| **Tamanho do Marcador** | Proporcional à magnitude da recompensa recebida no passo. Um marcador grande indica uma recompensa alta. |
-
-### 7.3. Painel de Estatísticas
-
-Um quadro de texto (anotação do Plotly) será posicionado próximo ao agente, exibindo estatísticas vitais em tempo real:
-
-'''
---------------------
-Episódio: 12
-Passo: 4
-Última Ação: RandomForestClassifier
-Recompensa do Passo: +89.5
-Recompensa Acumulada: 105.5
-Melhor Score (Global): 0.92
---------------------
-'''
-
-### 7.4. Exemplo de Jornada Visual
-
-1.  **Início:** O agente aparece na origem (0,0).
-2.  **Passo 1:** O agente escolhe `SimpleImputer`. Ele se move para a posição `(1, 'Imputação')`. O marcador é um **círculo azul** de tamanho pequeno (recompensa intermediária).
-3.  **Passo 2:** O agente escolhe `PCA`. Ele se move para `(2, 'Redução de Dim.')`. O marcador continua sendo um **círculo azul**.
-4.  **Passo 3:** O agente escolhe uma ação inválida (ex: um segundo normalizador). Ele se move para `(3, 'Normalização')`, mas o marcador vira um **'X' vermelho** e pequeno (penalidade). O episódio termina.
-5.  **Novo Episódio, Rota de Sucesso:** Em um novo episódio, após alguns passos de pré-processamento, o agente escolhe `RandomForestClassifier`. Ele se move para `(3, 'Classificação')`. O marcador vira um **círculo verde**.
-6.  **Fim:** A avaliação é executada. O resultado é excelente. O marcador na posição final se torna um **círculo dourado** e grande, indicando o sucesso e a alta recompensa final.
-
-## 8. Métricas de Avaliação e Recompensas por Etapa
-
-Para guiar o aprendizado do agente de forma eficaz, o sistema de recompensas é estruturado com base em métricas avaliadas em diferentes estágios do pipeline. As tabelas a seguir detalham essa estrutura.
-
-### 8.1. Etapa de Pré-processamento e Seleção de Features (A cada passo)
-
-Nesta fase, o objetivo é incentivar a construção de uma sequência de transformações válida e útil.
-
-| Métrica | O que Mede (Resultado Óbvio) | Recompensa (+) | Neutro (=) | Penalidade (-) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Validade da Ação** | Se a operação é aplicável ao estado atual dos dados. | Ação aplicada com sucesso (pequeno bônus). | - | Erro de execução (`ValueError`, `TypeError`). |
-| **Redução de Nulos** | Diminuição da porcentagem de valores faltantes. | A % de valores nulos diminuiu. | A % de nulos permaneceu a mesma. | - |
-| **Redundância** | Se uma transformação idêntica ou funcionalmente similar já existe no pipeline. | - | Ação é nova e não redundante. | Aplicar a mesma classe de operação (ex: `StandardScaler` duas vezes). |
-| **Dimensionalidade** | Mudança no número de features. | Redução de features com `PCA` ou `SelectKBest`. | - | Aumento inesperado ou remoção de todas as features. |
-
-### 8.2. Etapa de Modelagem (No passo de seleção do modelo)
-
-O foco aqui é garantir que o modelo escolhido seja apropriado para a tarefa.
-
-| Métrica | O que Mede (Resultado Óbvio) | Recompensa (+) | Neutro (=) | Penalidade (-) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Compatibilidade** | Se o modelo é adequado para o tipo de problema (Classificação vs. Regressão). | Modelo compatível com o target do dataset. | - | Modelo incompatível (resultando em erro). |
-| **Finalização** | Se a escolha do modelo finaliza um pipeline válido. | Pipeline pronto para avaliação. | - | - |
-
-### 8.3. Etapa de Avaliação Final (No fim de cada episódio)
-
-Esta é a etapa mais importante, onde a qualidade geral do pipeline é julgada e a maior parte da recompensa é atribuída.
-
-| Métrica | O que Mede (Resultado Óbvio) | Recompensa (+) | Neutro (=) | Penalidade (-) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Score de Desempenho** | Métrica principal (ex: F1-Score, Acurácia) no conjunto de validação. | Score alto (ex: > 0.85). A recompensa é proporcional ao score. | Score mediano (ex: ~0.70). | Score baixo ou inaceitável (ex: < 0.5). |
-| **Tempo de Execução** | Tempo total para treinar e avaliar o pipeline completo. | Tempo abaixo de um limiar de eficiência. | - | Tempo excessivamente longo, indicando um pipeline ineficiente. |
-| **Complexidade** | Número de passos no pipeline final. | Pipeline enxuto e com bom desempenho. | - | Pipeline muito longo sem ganho de performance significativo. |
-
-## 9. Catálogo de Tarefas do Agente
-
-A interação do usuário com o agente é centrada no **propósito**. O usuário escolhe uma das tarefas de alto nível listadas abaixo, fornece os dados e seleciona uma métrica de otimização. O agente então assume a responsabilidade de explorar as diversas alternativas (modelos e pré-processadores) para encontrar a melhor solução para aquele propósito.
-
-A tabela a seguir representa o "menu de serviços" do agente.
-
-| Propósito do Usuário (O que você quer fazer?) | Alternativas (Métodos que o Agente irá Testar) | Métricas de Otimização Aplicáveis |
+| Coluna | Tipo | Descrição |
 | :--- | :--- | :--- |
-| **Classificar Dados**<br><small>Preciso classificar meus dados em duas ou mais categorias.</small> | `LogisticRegression`<br>`SVC`<br>`RandomForestClassifier`<br>`KNeighborsClassifier`<br>`GaussianNB`<br>`DecisionTreeClassifier`<br>`GradientBoostingClassifier` | `accuracy`<br>`f1_weighted`<br>`roc_auc`<br>`precision_weighted`<br>`recall_weighted` |
-| **Prever um Valor Numérico (Regressão)**<br><small>Preciso prever um valor contínuo.</small> | `LinearRegression`<br>`SVR`<br>`RandomForestRegressor`<br>`KNeighborsRegressor`<br>`Lasso`<br>`Ridge`<br>`ElasticNet`<br>`GradientBoostingRegressor` | `r2`<br>`neg_mean_squared_error`<br>`neg_mean_absolute_error` |
-| **Agrupar Dados (Clusterização)**<br><small>Preciso agrupar meus dados em grupos similares, sem uma variável alvo.</small> | `KMeans`<br>`DBSCAN`<br>`AgglomerativeClustering`<br>`Birch`<br>`MeanShift` | `silhouette_score`<br>`davies_bouldin_score`<br>`calinski_harabasz_score` |
-| **Reduzir a Dimensionalidade**<br><small>Preciso reduzir o número de colunas (features) dos meus dados.</small> | `PCA`<br>`TSNE`<br>`FactorAnalysis`<br>`FastICA`<br>`SelectKBest` | *A recompensa é indireta:*<br>• Maximização da variância explicada.<br>• Minimização do erro de reconstrução.<br>• Melhora no score de um modelo downstream. |
+| `timestamp` | String | Data e hora da execução do experimento. |
+| `duration_seconds` | Float | Tempo de execução do experimento em segundos. |
+| `dataset_name` | String | Nome do dataset utilizado. |
+| `dataset_summary` | String | Resumo do dataset (ex: número de features, amostras). |
+| `estimator_name` | String | Nome do estimador principal utilizado. |
+| `accuracy` | Float | Acurácia do modelo (para tarefas de classificação). |
+| `r2_score` | Float | Coeficiente R² do modelo (para tarefas de regressão). |
+| `error` | String | Mensagem de erro, se houver. |
+| `[param_name]` | Vários | Uma coluna para cada parâmetro otimizado, com o valor utilizado. |
 
-**Nota sobre o Processo:** Ao escolher um propósito como "Classificar Dados", o agente não irá apenas testar os diferentes modelos de classificação. Ele também irá, de forma autônoma, explorar o espaço de ações de **pré-processamento** e **seleção de features** para construir o pipeline mais performático possível para cada modelo que ele testa. O usuário define o "o quê", e o agente otimiza o "como".
+## 3. Fluxo de Trabalho do Agente
 
-## 10. Resumo do Projeto: Análise e Visualização de Conexões
+O agente opera em um ciclo contínuo de exploração e otimização, guiado pelos dados dos arquivos TSV.
 
-### Objetivo Geral:
-O projeto tem como objetivo criar uma interface interativa em Streamlit para analisar, visualizar e testar pipelines de modelos de aprendizado de máquina da suíte Scikit-learn, usando datasets carregados pelo usuário. Ele integra filtragem automática de modelos compatíveis com base no tipo e nas características do dataset, permitindo que o usuário explore combinações de modelos de forma visual e controlada.
+### 3.1. Carregamento e Preparação de Dados
 
-### Estrutura Geral
+Ao iniciar, o agente carrega os arquivos `estimators.tsv` e `parameters.tsv` para sua memória, criando DataFrames Pandas que servem como sua base de conhecimento.
 
-#### Dataset Automático
+### 3.2. Filtragem de Estimadores Compatíveis
 
-- O usuário seleciona um dataset no menu principal (st.session_state.selected_dataset).
-- O dataset é carregado automaticamente de data/{nome_dataset}.csv.
-- Informações sobre o dataset são exibidas de forma descritiva na primeira coluna:
-  - Linhas e colunas
-  - Tipos gerais de dados (int, float, object)
-  - Presença de valores nulos
-  - Valores mínimos e máximos de colunas numéricas
+Antes de iniciar a otimização, o agente filtra os estimadores disponíveis com base na compatibilidade com o dataset atual e nas flags de `apt_for_training`.
 
-#### Interface de Conexão de Modelos
+| Critério de Filtragem | Descrição |
+| :--- | :--- |
+| `X_min`, `X_max`, `y_min`, `y_max` | Garante que o número de features e alvos do dataset esteja dentro do intervalo aceito pelo estimador. |
+| `apt_for_training` | Apenas estimadores marcados como `True` são considerados para otimização. |
+| `input_X_structure`, `input_X_types` | Verifica se a estrutura e os tipos de dados da entrada `X` do dataset são compatíveis com o que o estimador espera. |
+| `input_y_structure`, `input_y_types` | Verifica se a estrutura e os tipos de dados da entrada `y` do dataset são compatíveis com o que o estimador espera. |
 
-- A visualização é organizada em 7 colunas no Streamlit:
-  - Input Dataset (dados do dataset)
-  - Conexão Input → N1 (tipos compatíveis)
-  - N1 - Modelos compatíveis
-  - Conexão N1 → N2
-  - N2 - Modelos compatíveis
-  - Conexão N2 → Output
-  - Output (determinado pelos modelos N2)
-- Cada coluna de conexão mostra apenas os tipos de dados compatíveis com o dataset de entrada.
-- As colunas de N1 e N2 exibem apenas os modelos compatíveis com os tipos de dados do dataset, permitindo seleção via multiselect.
+### 3.3. Geração de Hiperparâmetros
 
-#### Filtragem Automática
+Para cada estimador compatível, o agente gera combinações aleatórias de hiperparâmetros. Esta geração é guiada pelas regras definidas no `parameters.tsv`.
 
-- O graph.py garante que os modelos disponíveis em N1 e N2 sejam compatíveis com o dataset carregado.
-- Cada multiselect possui uma key única baseada no dataset para evitar conflitos no Streamlit.
-- A filtragem é feita inicialmente pelo tipo de dados (int, float) das colunas do dataset.
-- Futuramente, a filtragem pode incluir intervalos de valores mínimos e máximos para compatibilidade mais rigorosa.
+| Regra de Geração | Descrição |
+| :--- | :--- |
+| `param_dtype` | Define se o valor gerado deve ser `int`, `float`, `cat` ou `bool`. |
+| `param_min`, `param_max` | Para tipos numéricos, define o intervalo de valores. |
+| `param_list` | Para tipos categóricos, define a lista de valores possíveis. |
+| `param_standard` | Usado como valor padrão ou centro para a geração aleatória. |
+| `apt_for_training` | Apenas parâmetros marcados como `True` são considerados para otimização. |
 
-#### Arquivos de Configuração
+### 3.4. Treinamento e Avaliação do Modelo
 
-- **sklearn_methods.tsv:** contém todos os modelos disponíveis, com informações sobre tipos de input e output, usados para filtrar automaticamente os modelos compatíveis.
-- **graph.py:** contém toda a lógica de carregamento do dataset, resumo do input, filtragem de modelos e exibição no Streamlit.
+O agente constrói um pipeline (com `StandardScaler` e o estimador selecionado), treina-o com os dados de treinamento e avalia seu desempenho usando validação cruzada (`cross_val_score`). O tempo de execução de cada experimento é registrado.
 
-### Comportamento Dinâmico
+### 3.5. Registro de Histórico
 
-Assim que o usuário seleciona um dataset, a interface:
+Os resultados de cada experimento (incluindo os parâmetros utilizados, métricas de desempenho e tempo de execução) são registrados no `history.tsv`. Este histórico é fundamental para a análise de desempenho e para futuras otimizações.
 
-- Exibe automaticamente o resumo do dataset
-- Atualiza as conexões para N1 e N2
-- Filtra os modelos compatíveis
+### 3.6. Visualização de Resultados
 
-Mensagens de aviso aparecem caso:
+A interface do Streamlit apresenta os resultados de forma clara, incluindo:
 
-- Nenhum dataset tenha sido selecionado
-- Nenhum modelo compatível esteja disponível
-- Nenhum modelo N1 tenha sido selecionado antes de N2
+*   Tabelas dos resultados de todas as tentativas.
+*   Gráficos de dispersão mostrando a performance de cada tentativa por modelo.
+*   Um gráfico de dispersão comparando o score do modelo com o tempo de execução, permitindo uma análise de custo-benefício.
 
-### Próximos Passos e Funcionalidades Possíveis
+## 4. Estratégia de Compatibilidade de Pipeline
 
-- Filtragem avançada com base em valores mínimos e máximos reais das colunas.
-- Conexão dinâmica entre N1 e N2, onde N2 exibe apenas os modelos compatíveis com os N1 selecionados.
-- Visualização de pipelines completos de ML e seus outputs esperados.
+A capacidade do agente de construir pipelines complexos depende de um entendimento preciso da compatibilidade entre os estimadores. A analogia de "portas" é central aqui: a "porta de saída" de um estimador deve ser compatível com a "porta de entrada" do próximo.
 
-### Resumo do graph.py:
+### 4.1. Detalhamento dos Campos de Compatibilidade
 
-#### Funções principais:
+As novas colunas em `estimators.tsv` fornecem essa informação detalhada:
 
-- **load_dataset():** carrega o dataset selecionado pelo usuário.
-- **get_input_summary(df):** extrai informações gerais sobre o dataset.
-- **load_methods():** carrega os métodos do sklearn_methods.tsv.
-- **filter_models_by_type(df, allowed_types):** filtra os modelos de acordo com os tipos de input do dataset.
-- **plot_sklearn_graph():** função principal que organiza a interface, mostra o input, conexões, modelos N1/N2 e output.
+| Campo | Descrição | Exemplo de Valor |
+| :--- | :--- | :--- |
+| `input_X_structure` | Descreve a dimensionalidade/shape esperada para a entrada `X` (ex: `(n_samples, n_features)`). | `(n_samples, n_features)` |
+| `input_X_types` | Tipos de dados aceitos para `X` (ex: `float,int`). | `float,int` |
+| `input_y_structure` | Estrutura (shape) esperada para a entrada `y`. | `(n_samples,)` |
+| `input_y_types` | Tipos de dados aceitos para `y` (ex: `float,int`). | `float,int` |
+| `output_X_structure` | Estrutura (shape) da saída `X` após `transform` (para transformers). | `(n_samples, n_components)` |
+| `output_X_types` | Tipos de dados da saída `X` após `transform`. | `float` |
+| `output_y_structure` | Estrutura (shape) da saída `y` após `predict`. | `(n_samples,)` |
+| `output_y_types` | Tipos de dados da saída `y` após `predict`. | `float,int` |
 
-#### Lógica de visualização:
+### 4.2. Inferência a partir da Documentação
 
-- Se o dataset não existir ou não estiver selecionado, exibe mensagem de alerta.
-- O resumo do input é exibido na primeira coluna.
-- Conexões entre modelos mostram tipos compatíveis.
-- Multiselects permitem selecionar os modelos compatíveis, filtrados automaticamente pelo dataset.
-- Output é definido a partir da seleção de N2.
+Esses campos são preenchidos por meio de uma análise cuidadosa da documentação do Scikit-learn. Minha lógica de processamento de arquivos de documentação (`docs/estimators_docs/*.txt`) é responsável por extrair essas informações das seções de `Parameters` e `Returns` dos métodos `fit`, `transform` e `predict`.
 
+### 4.3. Regras de Conexão (Lógica do Agente)
 
-# Estratégia de Agente para Otimização de Estimadores Scikit-learn
+A compatibilidade entre estimadores será determinada pela lógica do agente, que comparará as características de saída de um estimador com as características de entrada do próximo. Por exemplo:
 
-## 1. Tabela de Referência por Estimator
+*   Um estimador que produz `output_X_structure=(n_samples, n_features_new)` e `output_X_types=float` pode ser conectado a um estimador que aceita `input_X_structure=(n_samples, n_features)` e `input_X_types=float,int`.
+*   Regras de conversão implícita (ex: `float` aceita `int`) serão incorporadas na lógica de compatibilidade do agente.
 
-Cada estimator terá uma tabela de referência de parâmetros com os seguintes campos:
+## 5. Representação de Contextos de Tamanho Variável para o Agente
 
-| Parâmetro | Tipo | Valor Padrão | Obrigatório | Intervalo / Valores Possíveis | Condicionalidade |
-|-----------|------|--------------|-------------|-------------------------------|-----------------|
-| param_name | int / float / bool / categorical | default | True / False | [min, max] ou lista de categorias | Ex.: só usado se outro_param=True |
+Para que o agente possa tomar decisões eficazes, ele precisa processar informações de contextos que variam em tamanho, como datasets, o pipeline atual em construção e o histórico de experimentos. Abaixo, detalhamos as estratégias para converter esses inputs de tamanho variável em representações de tamanho fixo que o agente pode utilizar.
 
-**Exemplo:**  
-| param_name       | type   | default   | required | range / values        | conditional          |
-|-----------------|--------|----------|---------|----------------------|--------------------|
-| n_estimators     | int    | 100      | False   | [10, 1000]           | -                  |
-| learning_rate    | float  | 0.1      | False   | [0.01, 1.0]          | -                  |
-| criterion        | str    | "gini"   | False   | ["gini", "entropy"]  | -                  |
-| max_depth        | int    | None     | False   | [1, 50]              | -                  |
+| Estratégia | Dataset | Pipeline Atual | Histórico de Experimentos |
+| :--- | :--- | :--- | :--- |
+| **Preenchimento/Truncamento** | Não ideal para datasets, pois a variação em `n_features` e `n_samples` é muito grande e heterogênea para um padding/truncamento simples sem perda de informação crítica. | **Representação:** Cada passo do pipeline (estimador + seus parâmetros) é codificado em um vetor de tamanho fixo. <br> **Aplicação:** Definir um `tamanho_max_pipeline` (ex: 10 passos). Se o pipeline atual tiver menos passos, preencher com vetores "vazios" (ex: zeros). Se tiver mais, truncar os passos mais antigos. <br> **Exemplo:** Para `tamanho_max_pipeline=5`, um pipeline `[vetor_Scaler, vetor_PCA, vetor_LogReg]` seria `[vetor_Scaler, vetor_PCA, vetor_LogReg, PAD_vec, PAD_vec]`. | **Representação:** Cada registro histórico (estado, ação, recompensa) é codificado em um vetor de tamanho fixo. <br> **Aplicação:** Definir um `tamanho_max_historico` (ex: 50 registros). Preencher/truncar a sequência de vetores históricos. <br> **Exemplo:** `[vetor_exp1, vetor_exp2, ..., vetor_expN, PAD_vec, ..., PAD_vec]` (onde N <= 50). |
+| **Agregação/Sumarização** | **Representação:** Extrair um vetor fixo de estatísticas descritivas e metadados do dataset. <br> **Aplicação:** <br> • **Numéricas:** `n_features`, `n_samples`, média/std/min/max das features, estatísticas de correlação, proporção de nulos. <br> • **Categóricas:** Contagem de features categóricas, cardinalidade média, proporção de valores únicos. <br> • **Alvo:** Tipo (classificação/regressão), balanceamento de classes. <br> **Exemplo:** `[n_features, n_samples, avg_mean_X, avg_std_X, target_type_is_binary, target_type_is_regression, ...]` | Não é a estratégia ideal, pois perde a sequência e a ordem dos passos, que são cruciais para um pipeline. | **Representação:** Extrair um vetor fixo de estatísticas agregadas do histórico de experimentos. <br> **Aplicação:** Melhor score já atingido, score médio, desvio padrão dos scores, estimador mais frequente, duração média dos experimentos, número total de experimentos. <br> **Exemplo:** `[best_score_global, avg_score_last_100, std_score_all, most_freq_successful_estimator_ID, avg_duration_all, ...]` |
+| **Redes Neurais Recorrentes (RNNs) / Transformers** | Não é o uso principal para o dataset como um todo. RNNs/Transformers são mais adequados para processar sequências *dentro* de um dataset, como séries temporais ou texto, não o dataset como uma única entidade. | **Representação:** A sequência de vetores de passos do pipeline é alimentada a uma RNN (ex: LSTM) ou a um Transformer **(tipicamente de frameworks de Deep Learning)**. <br> **Aplicação:** A rede processa a sequência passo a passo, mantendo um estado interno (memória) que resume o pipeline. O estado final (ou uma agregação das saídas) da rede é a representação de tamanho fixo do pipeline. <br> **Exemplo:** `RNN( [vetor_Scaler, vetor_PCA, vetor_LogReg] ) -> vetor_representacao_pipeline` | **Representação:** A sequência de vetores de registros históricos é alimentada a uma RNN ou a um Transformer **(tipicamente de frameworks de Deep Learning)**. <br> **Aplicação:** A rede aprende padrões temporais no histórico, como a evolução do desempenho ou a eficácia de certas estratégias. O estado final da rede é a representação de tamanho fixo do histórico. <br> **Exemplo:** `RNN( [vetor_exp1, vetor_exp2, ..., vetor_expN] ) -> vetor_representacao_historico` |
+| **Redes Neurais Gráficas (GNNs)** | Não é o uso principal, a menos que o dataset tenha uma estrutura de grafo inerente, como redes sociais. | **Representação:** O pipeline é modelado como um grafo (nós = estimadores, arestas = fluxo de dados/conexões) **para ser processado por uma GNN (tipicamente de frameworks de Deep Learning)**. <br> **Aplicação:** Uma GNN processa a estrutura do grafo, aprendendo a agregar informações dos nós e arestas em uma representação de tamanho fixo. <br> **Exemplo:** `GNN( grafo_pipeline ) -> vetor_representacao_pipeline` | Não é o uso principal, a menos que o histórico seja uma sequência de grafos ou um grafo de interações. |
 
-Essa tabela servirá como **referência para o agente**, permitindo saber os tipos, defaults, ranges e se os parâmetros são obrigatórios ou condicionais.
+**Recomendação para Implementação Inicial:**
 
----
+Para começar, sugiro focar na **Agregação/Sumarização** para a representação de **datasets** e **registros históricos**. Para a representação do **pipeline em construção**, podemos iniciar com **Preenchimento/Truncamento** se usarmos MLPs simples para o agente.
 
-## 2. Inicialização do Agente
-
-Para cada parâmetro do estimator selecionado:
-
-1. Gerar valores aleatórios dentro do **range especificado** ou centrados no **valor default**.  
-2. Utilizar um **desvio inicial grande** (`std`) para explorar amplamente o espaço de parâmetros.  
-3. Registrar cada combinação gerada junto com o estimator utilizado.
-
-Exemplo de inicialização aleatória:  
-
-param_value = np.random.normal(loc=default_value, scale=initial_std)
-
-## 3. Treinamento Iterativo
-
-O agente executa ciclos de treinamento seguindo estas etapas:
-
-1. **Seleção de Estimator e Geração de Parâmetros**
-   - Escolhe um estimator.
-   - Gera valores de parâmetros aleatórios com base na tabela de referência (types, defaults, ranges, required, conditional).
-
-2. **Construção do Modelo**
-   - Constrói o modelo usando: `estimator(**params)`.
-
-3. **Treinamento**
-   - Treina o modelo em `X_train`, `y_train`.
-
-4. **Avaliação de Performance**
-   - Avalia o desempenho em `X_test`, `y_test`.
-   - Métricas possíveis: `score`, `loss`, `accuracy`, entre outras.
-
-5. **Registro de Resultados**
-   - Armazena cada experimento em uma tabela de histórico:
-   - estimator param_combination resultado timestamp
-
-6. **Atualização de Distribuições de Parâmetros**
-   - Ajusta a média de cada parâmetro com base nos valores que geraram bons resultados.
-   - Reduz progressivamente o desvio (`std`), refinando a exploração do espaço de parâmetros.
-
-## 4. Geração do “Tabelão” de Parâmetros
-
-Ao longo do treinamento, o agente constrói um tabelão com todas as combinações testadas, contendo:
-
-- Estimator utilizado
-- Valores de cada parâmetro
-- Métricas de performance (score, loss, etc.)
-- Número de iteração / timestamp
-
-**Exemplo:**
-
-| estimator                   | n_estimators | learning_rate | max_depth | score |
-|------------------------------|--------------|---------------|-----------|-------|
-| GradientBoostingClassifier    | 100          | 0.1           | 3         | 0.87  |
-| GradientBoostingClassifier    | 150          | 0.05          | 5         | 0.89  |
-| RandomForestClassifier        | 100          | -             | None      | 0.85  |
-| RandomForestClassifier        | 200          | -             | 10        | 0.88  |
-| HistGradientBoostingRegressor | 100          | 0.1           | 31        | 0.82  |
-| HistGradientBoostingRegressor | 150          | 0.05          | 20        | 0.84  |
-| StackingClassifier            | -            | -             | -         | 0.86  |
-| GradientBoostingClassifier    | 120          | 0.08          | 4         | 0.90  |
-| RandomForestRegressor         | 100          | -             | None      | 0.80  |
-| HistGradientBoostingClassifier| 100          | 0.1           | 31        | 0.88  |
-
-Este tabelão permite ao agente visualizar o impacto de cada parâmetro e ajustar futuras combinações de forma inteligente.
-
-## 5. Aprendizado Multivariado
-
-### 5.2. Geração de Novas Combinações
-
-Com o modelo previsor ajustado, o agente pode:
-- Predizer a performance de novas combinações de parâmetros antes de testá-las.
-- Selecionar as combinações mais promissoras para reduzir exploração aleatória.
-- Atualizar gradualmente a distribuição dos parâmetros:
-
-``` python
-# Exemplo simplificado
-from sklearn.ensemble import RandomForestRegressor
-import numpy as np
-
-# X: matriz de parâmetros já testados
-# y: scores correspondentes
-model = RandomForestRegressor()
-model.fit(X, y)
-
-# Gerar novas combinações aleatórias
-new_params = np.random.uniform(low=param_min, high=param_max, size=(100, n_params))
-
-# Predizer a performance
-predicted_scores = model.predict(new_params)
-
-# Selecionar top-k combinações
-top_indices = np.argsort(predicted_scores)[-10:]
-top_params = new_params[top_indices]
-```
-### 5.3. Reforço e Exploração Guiada
-
-O agente aplica uma estratégia de exploração-exploração:
-
-- Exploração ampla no início: usar desvio grande para testar muitos parâmetros diferentes.
-- Exploração guiada: priorizar regiões com combinações que historicamente deram melhores resultados.
-- Ajuste adaptativo: atualizar média e desvio (std) de cada parâmetro com base no desempenho observado.
-
-Visualmente:
-``` nginx
-Score
-^
-|          ████
-|     ████ ████
-|  ████ ████ ████
-|████ ████ ████ ████
-+--------------------> Espaço de parâmetros
-```
-As barras indicam regiões do espaço de parâmetros onde a performance foi mais alta.
-
-### 5.4. Benefícios dessa Estratégia
-
-- Reduz o número de testes inúteis.
-- Aprimora rapidamente a escolha de parâmetros.
-- Captura relações não-lineares e interações complexas.
-- Permite adaptação dinâmica conforme mais resultados são coletados.
-
-## 6. Resumo da Estratégia
-
-Consultar a tabela de referência para cada estimator e seus parâmetros.
-
-Inicializar parâmetros aleatoriamente com base nos defaults e ranges.
-
-Treinar iterativamente, avaliar performance e armazenar histórico.
-
-Atualizar distribuição dos parâmetros (média e std) conforme aprende.
-
-Criar um tabelão completo de experimentos para análise e refinamento.
-
-Usar abordagem multivariada adaptativa para reduzir exploração e aumentar exploração guiada.
+À medida que o agente evolui, podemos então explorar RNNs/Transformers para um tratamento mais sofisticado de dados sequenciais, e GNNs para estruturas de pipeline ainda mais complexas.

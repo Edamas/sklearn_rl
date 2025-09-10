@@ -1,0 +1,291 @@
+API Reference
+sklearn.neural_network
+BernoulliRBM
+BernoulliRBM
+class sklearn.neural_network.BernoulliRBM(n_components=256, *, learning_rate=0.1, batch_size=10, n_iter=10, verbose=0, random_state=None)[source]
+Bernoulli Restricted Boltzmann Machine (RBM).
+
+A Restricted Boltzmann Machine with binary visible units and binary hidden units. Parameters are estimated using Stochastic Maximum Likelihood (SML), also known as Persistent Contrastive Divergence (PCD) [2].
+
+The time complexity of this implementation is O(d ** 2) assuming d ~ n_features ~ n_components.
+
+Read more in the User Guide.
+
+Parameters:
+n_componentsint, default=256
+Number of binary hidden units.
+
+learning_ratefloat, default=0.1
+The learning rate for weight updates. It is highly recommended to tune this hyper-parameter. Reasonable values are in the 10**[0., -3.] range.
+
+batch_sizeint, default=10
+Number of examples per minibatch.
+
+n_iterint, default=10
+Number of iterations/sweeps over the training dataset to perform during training.
+
+verboseint, default=0
+The verbosity level. The default, zero, means silent mode. Range of values is [0, inf].
+
+random_stateint, RandomState instance or None, default=None
+Determines random number generation for:
+
+Gibbs sampling from visible and hidden layers.
+
+Initializing components, sampling from layers during fit.
+
+Corrupting the data when scoring samples.
+
+Pass an int for reproducible results across multiple function calls. See Glossary.
+
+Attributes:
+intercept_hidden_array-like of shape (n_components,)
+Biases of the hidden units.
+
+intercept_visible_array-like of shape (n_features,)
+Biases of the visible units.
+
+components_array-like of shape (n_components, n_features)
+Weight matrix, where n_features is the number of visible units and n_components is the number of hidden units.
+
+h_samples_array-like of shape (batch_size, n_components)
+Hidden Activation sampled from the model distribution, where batch_size is the number of examples per minibatch and n_components is the number of hidden units.
+
+n_features_in_int
+Number of features seen during fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+sklearn.neural_network.MLPRegressor
+Multi-layer Perceptron regressor.
+
+sklearn.neural_network.MLPClassifier
+Multi-layer Perceptron classifier.
+
+sklearn.decomposition.PCA
+An unsupervised linear dimensionality reduction model.
+
+References
+
+[1] Hinton, G. E., Osindero, S. and Teh, Y. A fast learning algorithm for
+deep belief nets. Neural Computation 18, pp 1527-1554. https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf
+
+[2] Tieleman, T. Training Restricted Boltzmann Machines using
+Approximations to the Likelihood Gradient. International Conference on Machine Learning (ICML) 2008
+
+Examples
+
+import numpy as np
+from sklearn.neural_network import BernoulliRBM
+X = np.array([[0, 0, 0], [0, 1, 1], [1, 0, 1], [1, 1, 1]])
+model = BernoulliRBM(n_components=2)
+model.fit(X)
+BernoulliRBM(n_components=2)
+For a more detailed example usage, see Restricted Boltzmann Machine features for digit classification.
+
+fit(X, y=None)[source]
+Fit the model to the data X.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+Training data.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+Returns
+:
+self
+BernoulliRBM
+The fitted model.
+
+fit_transform(X, y=None, **fit_params)[source]
+Fit to data, then transform it.
+
+Fits transformer to X and y with optional parameters fit_params and returns a transformed version of X.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Input samples.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+**fit_params
+dict
+Additional fit parameters.
+
+Returns
+:
+X_new
+ndarray array of shape (n_samples, n_features_new)
+Transformed array.
+
+get_feature_names_out(input_features=None)[source]
+Get output feature names for transformation.
+
+The feature names out will prefixed by the lowercased class name. For example, if the transformer outputs 3 features, then the feature names out are: ["class_name0", "class_name1", "class_name2"].
+
+Parameters
+:
+input_features
+array-like of str or None, default=None
+Only used to validate feature names with the names seen in fit.
+
+Returns
+:
+feature_names_out
+ndarray of str objects
+Transformed feature names.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Returns
+:
+routing
+MetadataRequest
+A MetadataRequest encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+gibbs(v)[source]
+Perform one Gibbs sampling step.
+
+Parameters
+:
+v
+ndarray of shape (n_samples, n_features)
+Values of the visible layer to start from.
+
+Returns
+:
+v_new
+ndarray of shape (n_samples, n_features)
+Values of the visible layer after one Gibbs step.
+
+partial_fit(X, y=None)[source]
+Fit the model to the partial segment of the data X.
+
+Parameters
+:
+X
+ndarray of shape (n_samples, n_features)
+Training data.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs), default=None
+Target values (None for unsupervised transformations).
+
+Returns
+:
+self
+BernoulliRBM
+The fitted model.
+
+score_samples(X)[source]
+Compute the pseudo-likelihood of X.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+Values of the visible layer. Must be all-boolean (not checked).
+
+Returns
+:
+pseudo_likelihood
+ndarray of shape (n_samples,)
+Value of the pseudo-likelihood (proxy for likelihood).
+
+Notes
+
+This method is not deterministic: it computes a quantity called the free energy on X, then on a randomly corrupted version of X, and returns the log of the logistic function of the difference.
+
+set_output(*, transform=None)[source]
+Set output container.
+
+See Introducing the set_output API for an example on how to use the API.
+
+Parameters:
+transform{“default”, “pandas”, “polars”}, default=None
+Configure output of transform and fit_transform.
+
+"default": Default output format of a transformer
+
+"pandas": DataFrame output
+
+"polars": Polars output
+
+None: Transform configuration is unchanged
+
+Added in version 1.4: "polars" option was added.
+
+Returns:
+self
+estimator instance
+Estimator instance.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+transform(X)[source]
+Compute the hidden layer activation probabilities, P(h=1|v=X).
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+The data to be transformed.
+
+Returns
+:
+h
+ndarray of shape (n_samples, n_components)
+Latent representations of the data.
+
+Gallery examples
+
+Restricted Boltzmann Machine features for digit classification

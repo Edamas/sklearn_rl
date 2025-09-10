@@ -1,0 +1,296 @@
+API Reference
+sklearn.multioutput
+MultiOutputRegressor
+MultiOutputRegressor
+class sklearn.multioutput.MultiOutputRegressor(estimator, *, n_jobs=None)[source]
+Multi target regression.
+
+This strategy consists of fitting one regressor per target. This is a simple strategy for extending regressors that do not natively support multi-target regression.
+
+Added in version 0.18.
+
+Parameters:
+estimatorestimator object
+An estimator object implementing fit and predict.
+
+n_jobsint or None, optional (default=None)
+The number of jobs to run in parallel. fit, predict and partial_fit (if supported by the passed estimator) will be parallelized for each target.
+
+When individual estimators are fast to train or predict, using n_jobs > 1 can result in slower performance due to the parallelism overhead.
+
+None means 1 unless in a joblib.parallel_backend context. -1 means using all available processes / threads. See Glossary for more details.
+
+Changed in version 0.20: n_jobs default changed from 1 to None.
+
+Attributes:
+estimators_list of n_output estimators
+Estimators used for predictions.
+
+n_features_in_int
+Number of features seen during fit. Only defined if the underlying estimator exposes such an attribute when fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Only defined if the underlying estimators expose such an attribute when fit.
+
+Added in version 1.0.
+
+See also
+
+RegressorChain
+A multi-label model that arranges regressions into a chain.
+
+MultiOutputClassifier
+Classifies each output independently rather than chaining.
+
+Examples
+
+import numpy as np
+from sklearn.datasets import load_linnerud
+from sklearn.multioutput import MultiOutputRegressor
+from sklearn.linear_model import Ridge
+X, y = load_linnerud(return_X_y=True)
+regr = MultiOutputRegressor(Ridge(random_state=123)).fit(X, y)
+regr.predict(X[[0]])
+array([[176, 35.1, 57.1]])
+fit(X, y, sample_weight=None, **fit_params)[source]
+Fit the model to data, separately for each output variable.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+The input data.
+
+y{array-like, sparse matrix} of shape (n_samples, n_outputs)
+Multi-output targets. An indicator matrix turns on multilabel estimation.
+
+sample_weightarray-like of shape (n_samples,), default=None
+Sample weights. If None, then samples are equally weighted. Only supported if the underlying regressor supports sample weights.
+
+**fit_paramsdict of string -> object
+Parameters passed to the estimator.fit method of each step.
+
+Added in version 0.23.
+
+Returns:
+self
+object
+Returns a fitted instance.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Added in version 1.3.
+
+Returns
+:
+routing
+MetadataRouter
+A MetadataRouter encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+partial_fit(X, y, sample_weight=None, **partial_fit_params)[source]
+Incrementally fit the model to data, for each output variable.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+The input data.
+
+y{array-like, sparse matrix} of shape (n_samples, n_outputs)
+Multi-output targets.
+
+sample_weightarray-like of shape (n_samples,), default=None
+Sample weights. If None, then samples are equally weighted. Only supported if the underlying regressor supports sample weights.
+
+**partial_fit_paramsdict of str -> object
+Parameters passed to the estimator.partial_fit method of each sub-estimator.
+
+Only available if enable_metadata_routing=True. See the User Guide.
+
+Added in version 1.3.
+
+Returns:
+self
+object
+Returns a fitted instance.
+
+predict(X)[source]
+Predict multi-output variable using model for each target variable.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+The input data.
+
+Returns
+:
+y
+{array-like, sparse matrix} of shape (n_samples, n_outputs)
+Multi-output targets predicted across multiple predictors. Note: Separate models are generated for each predictor.
+
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+set_fit_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → MultiOutputRegressor[source]
+Configure whether metadata should be requested to be passed to the fit method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to fit if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to fit.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in fit.
+
+Returns
+:
+self
+object
+The updated object.
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_partial_fit_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → MultiOutputRegressor[source]
+Configure whether metadata should be requested to be passed to the partial_fit method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to partial_fit if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to partial_fit.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in partial_fit.
+
+Returns
+:
+self
+object
+The updated object.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → MultiOutputRegressor[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
+
+Gallery examples
+
+Comparing random forests and the multi-output meta estimator

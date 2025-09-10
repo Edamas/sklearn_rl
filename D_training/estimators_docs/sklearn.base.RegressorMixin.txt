@@ -1,0 +1,76 @@
+API Reference
+sklearn.base
+RegressorMixin
+RegressorMixin
+class sklearn.base.RegressorMixin[source]
+Mixin class for all regression estimators in scikit-learn.
+
+This mixin defines the following functionality:
+
+set estimator type to "regressor" through the estimator_type tag;
+
+score method that default to r2_score.
+
+enforce that fit requires y to be passed through the requires_y tag, which is done by setting the regressor type tag.
+
+Read more in the User Guide.
+
+Examples
+
+import numpy as np
+from sklearn.base import BaseEstimator, RegressorMixin
+# Mixin classes should always be on the left-hand side for a correct MRO
+class MyEstimator(RegressorMixin, BaseEstimator):
+    def __init__(self, *, param=1):
+        self.param = param
+    def fit(self, X, y=None):
+        self.is_fitted_ = True
+        return self
+    def predict(self, X):
+        return np.full(shape=X.shape[0], fill_value=self.param)
+estimator = MyEstimator(param=0)
+X = np.array([[1, 2], [2, 3], [3, 4]])
+y = np.array([-1, 0, 1])
+estimator.fit(X, y).predict(X)
+array([0, 0, 0])
+estimator.score(X, y)
+0.0
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+Gallery examples
+
+Metadata Routing

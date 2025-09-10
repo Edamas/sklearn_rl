@@ -1,0 +1,234 @@
+API Reference
+sklearn.multioutput
+RegressorChain
+RegressorChain
+class sklearn.multioutput.RegressorChain(estimator=None, *, order=None, cv=None, random_state=None, verbose=False, base_estimator='deprecated')[source]
+A multi-label model that arranges regressions into a chain.
+
+Each model makes a prediction in the order specified by the chain using all of the available features provided to the model plus the predictions of models that are earlier in the chain.
+
+Read more in the User Guide.
+
+Added in version 0.20.
+
+Parameters:
+estimatorestimator
+The base estimator from which the regressor chain is built.
+
+orderarray-like of shape (n_outputs,) or ‘random’, default=None
+If None, the order will be determined by the order of columns in the label matrix Y.:
+
+order = [0, 1, 2, ..., Y.shape[1] - 1]
+The order of the chain can be explicitly set by providing a list of integers. For example, for a chain of length 5.:
+
+order = [1, 3, 2, 4, 0]
+means that the first model in the chain will make predictions for column 1 in the Y matrix, the second model will make predictions for column 3, etc.
+
+If order is ‘random’ a random ordering will be used.
+
+cvint, cross-validation generator or an iterable, default=None
+Determines whether to use cross validated predictions or true labels for the results of previous estimators in the chain. Possible inputs for cv are:
+
+None, to use true labels when fitting,
+
+integer, to specify the number of folds in a (Stratified)KFold,
+
+CV splitter,
+
+An iterable yielding (train, test) splits as arrays of indices.
+
+random_stateint, RandomState instance or None, optional (default=None)
+If order='random', determines random number generation for the chain order. In addition, it controls the random seed given at each base_estimator at each chaining iteration. Thus, it is only used when base_estimator exposes a random_state. Pass an int for reproducible output across multiple function calls. See Glossary.
+
+verbosebool, default=False
+If True, chain progress is output as each model is completed.
+
+Added in version 1.2.
+
+base_estimatorestimator, default=”deprecated”
+Use estimator instead.
+
+Deprecated since version 1.7: base_estimator is deprecated and will be removed in 1.9. Use estimator instead.
+
+Attributes:
+estimators_list
+A list of clones of base_estimator.
+
+order_list
+The order of labels in the classifier chain.
+
+n_features_in_int
+Number of features seen during fit. Only defined if the underlying base_estimator exposes such an attribute when fit.
+
+Added in version 0.24.
+
+feature_names_in_ndarray of shape (n_features_in_,)
+Names of features seen during fit. Defined only when X has feature names that are all strings.
+
+Added in version 1.0.
+
+See also
+
+ClassifierChain
+Equivalent for classification.
+
+MultiOutputRegressor
+Learns each output independently rather than chaining.
+
+Examples
+
+from sklearn.multioutput import RegressorChain
+from sklearn.linear_model import LogisticRegression
+logreg = LogisticRegression(solver='lbfgs')
+X, Y = [[1, 0], [0, 1], [1, 1]], [[0, 2], [1, 1], [2, 0]]
+chain = RegressorChain(logreg, order=[0, 1]).fit(X, Y)
+chain.predict(X)
+array([[0., 2.],
+       [1., 1.],
+       [2., 0.]])
+fit(X, Y, **fit_params)[source]
+Fit the model to data matrix X and targets Y.
+
+Parameters:
+X{array-like, sparse matrix} of shape (n_samples, n_features)
+The input data.
+
+Yarray-like of shape (n_samples, n_classes)
+The target values.
+
+**fit_paramsdict of string -> object
+Parameters passed to the fit method at each step of the regressor chain.
+
+Added in version 0.23.
+
+Returns:
+self
+object
+Returns a fitted instance.
+
+get_metadata_routing()[source]
+Get metadata routing of this object.
+
+Please check User Guide on how the routing mechanism works.
+
+Added in version 1.3.
+
+Returns
+:
+routing
+MetadataRouter
+A MetadataRouter encapsulating routing information.
+
+get_params(deep=True)[source]
+Get parameters for this estimator.
+
+Parameters
+:
+deep
+bool, default=True
+If True, will return the parameters for this estimator and contained subobjects that are estimators.
+
+Returns
+:
+params
+dict
+Parameter names mapped to their values.
+
+predict(X)[source]
+Predict on the data matrix X using the ClassifierChain model.
+
+Parameters
+:
+X
+{array-like, sparse matrix} of shape (n_samples, n_features)
+The input data.
+
+Returns
+:
+Y_pred
+array-like of shape (n_samples, n_classes)
+The predicted values.
+
+score(X, y, sample_weight=None)[source]
+Return coefficient of determination on test data.
+
+The coefficient of determination, 
+, is defined as 
+ 
+, where 
+ is the residual sum of squares ((y_true - y_pred)** 2).sum() and 
+ is the total sum of squares ((y_true - y_true.mean()) ** 2).sum(). The best possible score is 1.0 and it can be negative (because the model can be arbitrarily worse). A constant model that always predicts the expected value of y, disregarding the input features, would get a 
+ score of 0.0.
+
+Parameters
+:
+X
+array-like of shape (n_samples, n_features)
+Test samples. For some estimators this may be a precomputed kernel matrix or a list of generic objects instead with shape (n_samples, n_samples_fitted), where n_samples_fitted is the number of samples used in the fitting for the estimator.
+
+y
+array-like of shape (n_samples,) or (n_samples, n_outputs)
+True values for X.
+
+sample_weight
+array-like of shape (n_samples,), default=None
+Sample weights.
+
+Returns
+:
+score
+float
+ of self.predict(X) w.r.t. y.
+
+Notes
+
+The 
+ score used when calling score on a regressor uses multioutput='uniform_average' from version 0.23 to keep consistent with default value of r2_score. This influences the score method of all the multioutput regressors (except for MultiOutputRegressor).
+
+set_params(**params)[source]
+Set the parameters of this estimator.
+
+The method works on simple estimators as well as on nested objects (such as Pipeline). The latter have parameters of the form <component>__<parameter> so that it’s possible to update each component of a nested object.
+
+Parameters
+:
+**params
+dict
+Estimator parameters.
+
+Returns
+:
+self
+estimator instance
+Estimator instance.
+
+set_score_request(*, sample_weight: bool | None | str = '$UNCHANGED$') → RegressorChain[source]
+Configure whether metadata should be requested to be passed to the score method.
+
+Note that this method is only relevant when this estimator is used as a sub-estimator within a meta-estimator and metadata routing is enabled with enable_metadata_routing=True (see sklearn.set_config). Please check the User Guide on how the routing mechanism works.
+
+The options for each parameter are:
+
+True: metadata is requested, and passed to score if provided. The request is ignored if metadata is not provided.
+
+False: metadata is not requested and the meta-estimator will not pass it to score.
+
+None: metadata is not requested, and the meta-estimator will raise an error if the user provides it.
+
+str: metadata should be passed to the meta-estimator with this given alias instead of the original name.
+
+The default (sklearn.utils.metadata_routing.UNCHANGED) retains the existing request. This allows you to change the request for some parameters and not others.
+
+Added in version 1.3.
+
+Parameters
+:
+sample_weight
+str, True, False, or None, default=sklearn.utils.metadata_routing.UNCHANGED
+Metadata routing for sample_weight parameter in score.
+
+Returns
+:
+self
+object
+The updated object.
