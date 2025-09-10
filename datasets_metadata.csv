@@ -9,6 +9,7 @@ california_housing,20640,9,185760,,local,california_housing.csv
 circles,200,3,600,target,local,circles.csv
 diabetes,442,11,4862,target,local,diabetes.csv
 digits,1797,65,116805,target,local,digits.csv
+income_census,556,78,43368,,local,income_census.csv
 iris,150,5,750,target,local,iris.csv
 leads_agosto_imoveis,72,22,1584,,local,leads_agosto_imoveis.csv
 leads_imoveis_2024_2025,1221,116,141636,,local,leads_imoveis_2024_2025.csv
