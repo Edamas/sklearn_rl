@@ -6,6 +6,11 @@ from functions import log_message, df_select_rows
 ESTIMATORS_FILE = st.session_state.files.get('estimators')
 
 def agent_configuration():
+    # Guard against missing file path
+    if not ESTIMATORS_FILE:
+        st.error("O caminho para 'estimators.tsv' não foi encontrado na configuração. Verifique a chave 'estimators' em 'files.tsv'.")
+        st.stop()
+
     X_cols = st.session_state.get("X_cols")
 
     # Guard: Only show this section if features have been defined
