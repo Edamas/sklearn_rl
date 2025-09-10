@@ -7,10 +7,10 @@ from functions import log_message
 # Load files.tsv into st.session_state.files
 if 'files' not in st.session_state:
     try:
-        files_df = pd.read_csv('D:\\PROGRAMACAO\\sklearn_rl\\files.tsv', sep='\t')
+        # This assumes the app is always run from the project root directory
+        files_df = pd.read_csv('files.tsv', sep='	')
         st.session_state.files = dict(zip(files_df['file_name'], files_df['file_path']))
-        # Add 'files' itself to the session state for consistency
-        st.session_state.files['files'] = 'D:\\PROGRAMACAO\\sklearn_rl\\files.tsv'
+        st.session_state.files['files'] = 'files.tsv'
     except FileNotFoundError:
         st.session_state.files = {}
         st.error("Arquivo 'files.tsv' não encontrado. Funcionalidades podem ser limitadas.")
