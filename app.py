@@ -7,18 +7,34 @@ from functions import log_message
 # Load files.tsv into st.session_state.files
 if 'files' not in st.session_state:
     try:
-        # This assumes the app is always run from the project root directory
-        files_df = pd.read_csv('files.tsv', sep='	')
-        st.session_state.files = dict(zip(files_df['file_name'], files_df['file_path']))
-        st.session_state.files['files'] = 'files.tsv'
+        # Construct path relative to this script file for robustness
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        files_tsv_path = os.path.join(script_dir, 'files.tsv')
+        
+        files_df = pd.read_csv(files_tsv_path, sep='\t')
+        
+        # Create absolute paths for all files listed in files.tsv
+        st.session_state.files = {}
+        for index, row in files_df.iterrows():
+            file_name = row['file_name']
+            relative_path = row['file_path']
+            # Ensure forward slashes are used for cross-platform compatibility
+            absolute_path = os.path.join(script_dir, *relative_path.split('/'))
+            st.session_state.files[file_name] = absolute_path
+
+        # Add 'files' itself to the session state for consistency
+        st.session_state.files['files'] = files_tsv_path
+        
     except FileNotFoundError:
         st.session_state.files = {}
-        st.error("Arquivo 'files.tsv' não encontrado. Funcionalidades podem ser limitadas.")
+        st.error("Arquivo 'files.tsv' não encontrado. Verifique se o arquivo existe no diretório raiz do projeto.")
         log_message("ERROR", "Arquivo 'files.tsv' não encontrado.", display_streamlit=False)
+        st.stop()
     except Exception as e:
         st.session_state.files = {}
         st.error(f"Erro ao carregar 'files.tsv': {e}")
         log_message("EXCEPTION", f"Erro ao carregar 'files.tsv'.", exception=e, display_streamlit=False)
+        st.stop()
 
 # Get log file path from session state
 LOG_FILE_PATH = st.session_state.files.get('log')
