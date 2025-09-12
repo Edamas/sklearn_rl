@@ -11,10 +11,10 @@ LOG_FILE = "log.tsv"
 
 def log_message(level: str, message: str, exception: Optional[Exception] = None, display_streamlit: bool = True):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = f"{timestamp}\t{level}\t{message}"
+    log_entry = f"{timestamp}	{level}	{message}"
 
     if exception:
-        log_entry += f"\t{traceback.format_exc()}"
+        log_entry += f"	{traceback.format_exc()}"
     else:
         log_entry += "\t" # Add empty column for consistency
 
@@ -65,96 +65,6 @@ def df_select_rows(df, selection_mode: Optional[str] = 'multi-row', prompt: Opti
     
     return None if selection_mode == 'single-row' else []
 
-def analyze_and_group_columns(df: pd.DataFrame):
-    """
-    Analyzes a DataFrame, groups columns by data type, and calculates summary statistics for each group.
-
-    Returns:
-        A DataFrame summarizing the column groups.
-    """
-    # Attempt to convert object columns to datetime
-    df_temp = df.copy()
-    for col in df_temp.select_dtypes(include=['object']).columns:
-        try:
-            df_temp[col] = pd.to_datetime(df_temp[col], errors='coerce')
-        except (ValueError, TypeError):
-            continue # Ignore columns that can't be converted
-
-    groups = {
-        'Numeric': [],
-        'Binary': [],
-        'Categorical': [],
-        'Date': [],
-        'Text': [] # For high cardinality strings
-    }
-
-    for col in df_temp.columns:
-        dtype = df_temp[col].dtype
-        nunique = df_temp[col].nunique()
-
-        if pd.api.types.is_numeric_dtype(dtype):
-            if nunique == 2:
-                groups['Binary'].append(col)
-            else:
-                groups['Numeric'].append(col)
-        elif pd.api.types.is_datetime64_any_dtype(dtype):
-            groups['Date'].append(col)
-        elif pd.api.types.is_string_dtype(dtype) or pd.api.types.is_object_dtype(dtype):
-            # Heuristic for categorical vs. text
-            if nunique < 50 and nunique > 0:
-                groups['Categorical'].append(col)
-            else: 
-                groups['Text'].append(col)
-
-    summary_list = []
-    for group_name, cols in groups.items():
-        if not cols:
-            continue
-
-        n_cols = len(cols)
-        subset = df_temp[cols]
-        n_rows = len(subset)
-        nulls = subset.isnull().sum().sum()
-        pct_nulls = nulls / (n_rows * n_cols) if (n_rows * n_cols) > 0 else 0
-
-        stats = {
-            'group_type': group_name,
-            'column_count': n_cols,
-            'columns': cols,
-            'null_percentage': pct_nulls
-        }
-
-        if group_name == 'Numeric':
-            stats['mean_of_means'] = subset.mean().mean()
-            stats['mean_of_stds'] = subset.std().mean()
-            stats['min_of_mins'] = subset.min().min()
-            stats['max_of_maxs'] = subset.max().max()
-        elif group_name == 'Binary':
-            # For binary, just count the occurrences of the two values
-            # This is a simplification.
-            if n_cols > 0:
-                # Get value counts for the first binary column as a sample
-                counts = subset[cols[0]].value_counts(normalize=True)
-                stats['value1_proportion'] = counts.iloc[0] if len(counts) > 0 else 0.0
-                stats['value2_proportion'] = counts.iloc[1] if len(counts) > 1 else 0.0
-        elif group_name == 'Categorical':
-            stats['mean_unique_values'] = subset.nunique().mean()
-        elif group_name == 'Text':
-            stats['mean_unique_values'] = subset.nunique().mean()
-            stats['mean_string_length'] = subset.astype(str).apply(lambda x: x.str.len()).mean().mean()
-        elif group_name == 'Date':
-            min_date = subset.min().min() if not subset.min().empty else pd.NaT
-            max_date = subset.max().max() if not subset.max().empty else pd.NaT
-            stats['min_date'] = min_date
-            stats['max_date'] = max_date
-
-        summary_list.append(stats)
-
-    if not summary_list:
-        return pd.DataFrame()
-
-    summary_df = pd.DataFrame(summary_list).set_index('group_type')
-    return summary_df.fillna(0)
 
 def build_feature_table(X: pd.DataFrame):
     """Cria tabela de resumo das features, com roles e estatísticas básicas."""
@@ -288,7 +198,7 @@ def show_log_page():
         st.error(f"Erro ao ler o arquivo de log: {e}")
         return
 
-    if st.button("Limpar Log", help=f"""Limpa todo o conteúdo do arquivo {st.session_state.files.get('log')} e recarrega a página"""):
+    if st.button("Limpar Log", help=f"Limpa todo o conteúdo do arquivo {st.session_state.files.get('log')}ecarga a página"):
         try:
             with open(log_file_path, "w") as f:
                 f.truncate(0)

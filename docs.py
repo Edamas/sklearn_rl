@@ -81,3 +81,4 @@ def show_tcc_formatado_md():
 
 def show_agent_md():
     show_docs("docs/agent.md")
+

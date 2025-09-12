@@ -3,7 +3,6 @@ categorias_sklearn	categorias_sklearn.tsv
 conexoes	conexoes.tsv
 log	log.tsv
 sklearn_methods	sklearn_methods.tsv
-estimators	D_training/estimators.tsv
-parameters	D_training/parameters.tsv
+estimators	D_training\estimators.tsv
+parameters	D_training\parameters.tsv
 datasets_metadata	datasets_metadata.csv
-requirements	requirements.txt

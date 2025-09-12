@@ -74,6 +74,10 @@ def show_estimators():
     try:
         df = pd.read_csv(ESTIMATORS_TSV, sep='\t')
         
+        # Converte -9999 para -inf e 9999 para inf nas colunas relevantes
+        df.replace(-9999, float('-inf'), inplace=True)
+        df.replace(9999, float('inf'), inplace=True)
+        
         # Converte as colunas de string para listas reais
         df['params_list'] = df['params_list'].apply(
             lambda x: [item.strip().strip("'\"") for item in x.strip('[]').split(',')] if isinstance(x, str) and x.startswith('[') else []
@@ -103,6 +107,10 @@ def show_parameters():
     try:
         df = pd.read_csv(PARAMETERS_TSV, sep='\t')
         
+        # Converte -9999 para -inf e 9999 para inf nas colunas relevantes
+        df.replace(-9999, float('-inf'), inplace=True)
+        df.replace(9999, float('inf'), inplace=True)
+
         # Converte a coluna de string para lista real
         df['param_list'] = df['param_list'].apply(
             lambda x: [item.strip().strip("'\"") for item in x.strip('[]').split(',')] if isinstance(x, str) and x.startswith('[') else []

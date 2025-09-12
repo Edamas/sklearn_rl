@@ -1,10 +1,72 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 from datetime import datetime
 from functions import log_message, df_select_rows
-from E_results.E2_graphs import show_pipeline_graph
 import plotly.express as px
 import plotly.graph_objects as go
+import pydoc
+from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+from sklearn.utils import estimator_html_repr
+
+def display_pipeline_graphically(pipeline_repr):
+    """
+    Reconstructs a scikit-learn pipeline object from a dictionary representation
+    and displays its HTML diagram.
+    """
+    if not isinstance(pipeline_repr, dict):
+        st.warning("Não é possível exibir o gráfico do pipeline: a representação não é válida.")
+        return
+
+    try:
+        # 1. Reconstruct Preprocessor
+        reconstructed_transformers = []
+        for group_step in pipeline_repr.get('preprocessor', []):
+            group_name = group_step.get('group')
+            columns = group_step.get('columns', [])
+            
+            inner_steps = []
+            for step_name, step_info in group_step.get('steps', []):
+                class_path = step_info.get('class_path')
+                params = step_info.get('params', {})
+                
+                estimator_class = pydoc.locate(class_path)
+                if estimator_class:
+                    inner_steps.append((step_name, estimator_class(**params)))
+                else:
+                    raise ImportError(f"Não foi possível localizar a classe: {class_path}")
+            
+            group_pipeline = Pipeline(inner_steps)
+            reconstructed_transformers.append((group_name, group_pipeline, columns))
+        
+        reconstructed_preprocessor = ColumnTransformer(reconstructed_transformers, remainder='drop')
+
+        # 2. Reconstruct Estimator
+        estimator_info = pipeline_repr.get('estimator', {})
+        est_class_path = estimator_info.get('class_path')
+        est_params = estimator_info.get('params', {})
+        
+        estimator_class = pydoc.locate(est_class_path)
+        if not estimator_class:
+            raise ImportError(f"Não foi possível localizar a classe do estimador: {est_class_path}")
+            
+        reconstructed_estimator = estimator_class(**est_params)
+
+        # 3. Assemble final pipeline
+        final_pipeline = Pipeline([
+            ('preprocessor', reconstructed_preprocessor),
+            ('estimator', reconstructed_estimator)
+        ])
+
+        # 4. Display HTML representation
+        st.markdown("###### 5.5.4 Diagrama do Pipeline")
+        html_repr = estimator_html_repr(final_pipeline)
+        st.components.v1.html(html_repr, height=2000, scrolling=True)
+
+    except Exception as e:
+        st.error(f"Falha ao gerar o diagrama do pipeline: {e}")
+        log_message("ERROR", "Falha ao gerar diagrama do pipeline.", exception=e)
 
 def render_scatterplot(df_data, selected_index=None):
     if 'score' in df_data.columns and 'duration_seconds' in df_data.columns:
@@ -12,150 +74,116 @@ def render_scatterplot(df_data, selected_index=None):
         if 'timestamp' in df_plot.columns:
             df_plot['timestamp'] = pd.to_datetime(df_plot['timestamp'])
 
-        # --- User selections for plot ---
-        st.markdown("##### Controles do Gráfico")
-        col1, col2, col3, col4 = st.columns(4)
+        # --- New Ranking Logic ---
+        df_plot = df_plot.sort_values(by=['score', 'duration_seconds'], ascending=[False, True])
+        df_plot['ranking'] = range(1, len(df_plot) + 1)
+        df_plot['original_index'] = df_plot.index # Preserve original index
 
-        with col1:
-            st.markdown("###### Tipo de Gráfico")
-            plot_type = st.radio(
-                "Tipo de Gráfico",
-                ("Gráfico de Dispersão", "Gráfico de Linhas"),
-                index=0,
-                key="plot_type_selection",
-                label_visibility="collapsed"
-            )
+        with st.expander("5.4.1 Configuração do Gráfico", expanded=True):
+            # --- Plot Controls ---
+            col1, col2, col3 = st.columns(3)
 
-        axis_options = {
-            'Estimador': 'estimator_name',
-            'Status': 'status',
-            'Score': 'score',
-            'Timestamp': 'timestamp',
-            'Duração (s)': 'duration_seconds'
-        }
-        option_keys = list(axis_options.keys())
+            axis_options = {
+                'Estimador': 'estimator_name',
+                'Status': 'status',
+                'Score': 'score',
+                'Timestamp': 'timestamp',
+                'Duração (s)': 'duration_seconds',
+                'Ranking': 'ranking'
+            }
+            option_keys = list(axis_options.keys())
 
-        with col2:
-            st.markdown("###### Eixo X")
-            x_axis_selection = st.radio("Eixo X", option_keys, index=option_keys.index('Estimador'), key="x_axis_selection", label_visibility="collapsed")
+            with col1:
+                st.markdown("###### 5.4.1.1 Eixo X")
+                x_axis_selection = st.radio("Eixo X", option_keys, index=option_keys.index('Ranking'), key="x_axis_selection", label_visibility="collapsed")
 
-        with col3:
-            st.markdown("###### Eixo Y")
-            y_axis_selection = st.radio("Eixo Y", option_keys, index=option_keys.index('Score'), key="y_axis_selection", label_visibility="collapsed")
+            with col2:
+                st.markdown("###### 5.4.1.2 Eixo Y")
+                y_axis_selection = st.radio("Eixo Y", option_keys, index=option_keys.index('Score'), key="y_axis_selection", label_visibility="collapsed")
 
-        # Disable color selection for line chart as it's always by estimator
-        is_line_chart = plot_type == "Gráfico de Linhas"
-        with col4:
-            st.markdown("###### Legenda (Cor)")
-            color_selection = st.radio(
-                "Legenda (Cor)",
-                option_keys,
-                index=option_keys.index('Status'),
-                key="color_selection",
-                label_visibility="collapsed",
-                disabled=is_line_chart,
-                help="A legenda é sempre por Estimador no Gráfico de Linhas." if is_line_chart else ""
-            )
+            with col3:
+                st.markdown("###### 5.4.1.3 Legenda (Cor)")
+                color_selection = st.radio("Legenda (Cor)", option_keys, index=option_keys.index('Estimador'), key="color_selection", label_visibility="collapsed")
 
-        # Get actual column names from selections
         x_col = axis_options[x_axis_selection]
         y_col = axis_options[y_axis_selection]
-        
-        # --- Plotting ---
-        color_discrete_map = {}
-        category_orders = {}
-        
-        if is_line_chart:
-            color_col = 'estimator_name'
-            # Order estimators by mean score for a cleaner legend/plot
-            if not df_plot.empty:
-                mean_scores = df_plot.groupby('estimator_name')['score'].mean().sort_values(ascending=False)
-                category_orders['estimator_name'] = mean_scores.index.tolist()
-            title = f"{y_axis_selection} vs. {x_axis_selection} por Estimador"
-        else: # Scatter plot
-            color_col = axis_options[color_selection]
-            if color_col == 'status':
-                color_discrete_map = {'Erro': 'red', 'Sucesso': 'blue'}
-            title = f"{y_axis_selection} vs. {x_axis_selection} por {color_selection}"
+        color_col = axis_options[color_selection]
 
+        # --- Plotting ---
         plot_args = {
             "data_frame": df_plot,
             "x": x_col,
             "y": y_col,
             "color": color_col,
             "hover_name": "estimator_name",
-            "hover_data": {"params": True, "status": True, "score": True, "duration_seconds": True, "error": True},
-            "title": title,
-            "color_discrete_map": color_discrete_map,
-            "category_orders": category_orders
+            "hover_data": {c: True for c in df_plot.columns if c != 'original_index'},
+            "title": f"{y_axis_selection} vs. {x_axis_selection} por {color_selection}"
         }
 
-        if is_line_chart:
-            fig = px.line(**plot_args)
-        else:
-            plot_args["opacity"] = 0.7
-            fig = px.scatter(**plot_args)
+        # Set color scale
+        if color_col == 'timestamp':
+            # Use numeric values for a continuous color scale
+            plot_args['color'] = df_plot['timestamp'].astype('int64')
+            plot_args['color_continuous_scale'] = px.colors.sequential.Viridis
+        elif pd.api.types.is_numeric_dtype(df_plot[color_col]):
+            plot_args["color_continuous_scale"] = px.colors.sequential.Viridis
+        
+        if color_col == 'status':
+            plot_args["color_discrete_map"] = {'Erro': 'red', 'Sucesso': 'blue'}
+            
+        fig = px.scatter(**plot_args)
 
-        # Add a standout marker for the selected point
-        if selected_index is not None and selected_index in df_plot.index:
-            selected_row = df_plot.loc[selected_index]
-            fig.add_trace(go.Scatter(
-                x=[selected_row[x_col]],
-                y=[selected_row[y_col]],
-                mode='markers',
-                marker=dict(
-                    symbol='star',
-                    color='lime',
-                    size=15,
-                    line=dict(color='black', width=2)
-                ),
-                name='Selecionado',
-                hoverinfo='none'
-            ))
+        # Set color bar title for timestamp
+        if color_col == 'timestamp':
+            fig.update_layout(coloraxis_colorbar_title_text='Timestamp')
+
+        if selected_index is not None:
+            # Use original_index to find the selected row
+            selected_row_df = df_plot[df_plot['original_index'] == selected_index]
+            if not selected_row_df.empty:
+                selected_row = selected_row_df.iloc[0]
+                x_val = selected_row[x_col]
+                y_val = selected_row[y_col]
+
+                fig.add_trace(go.Scatter(x=[x_val], y=[y_val], mode='markers', marker=dict(symbol='star', color='lime', size=15, line=dict(color='black', width=2)), name='Selecionado', hoverinfo='none'))
 
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.info("Dados insuficientes para gerar o gráfico de desempenho geral (scores ou durações ausentes).")
 
-
 def results():
-    
-    st.header("5. Resultados") # Changed from "Desempenho"
+    st.header("5. Resultados")
 
-    if 'agent_results' not in st.session_state:
+    if 'agent_results' not in st.session_state or not st.session_state['agent_results']:
         log_message("WARNING", "Nenhum resultado de agente encontrado. Execute o agente primeiro.")
+        st.info("Nenhum resultado de treinamento disponível. Por favor, inicie um treinamento na aba anterior.")
         st.stop()
 
     results_data = st.session_state['agent_results']
     dataset_name = results_data.get("name", "N/A")
-    dataset_format = results_data.get("format", "N/A")
     df_results = results_data.get("results_df")
 
     if df_results is None or df_results.empty:
         log_message("WARNING", "O agente não produziu nenhum resultado para exibir.")
-        st.info("Nenhum resultado de treinamento gerado para exibir. Por favor, verifique a configuração do agente ou os dados de entrada.")
-        # Do not st.stop() here. Allow the rest of the function to render empty components.
+        st.info("Nenhum resultado de treinamento gerado para exibir.")
+        st.stop()
 
-    # Main layout for dataset info
     col_info1, col_info2 = st.columns(2)
     with col_info1:
-        st.markdown(f"**5.1 Nome do Dataset:** `{dataset_name}`") # Changed numbering
+        st.markdown(f"**5.1 Nome do Dataset:** `{dataset_name}`")
     with col_info2:
-        st.markdown(f"**5.2 Formato do Dataset:** `{dataset_format}`") # Changed numbering
+        st.markdown(f"**5.2 Formato do Dataset:** `Pandas DataFrame`")
 
-    st.markdown("### 5.3 Dataframe de Desempenho") # Changed numbering
+    st.markdown("### 5.3 Dataframe de Desempenho")
 
-    # Prepare the dataframe for display
     df_display = df_results.copy()
     df_display['timestamp'] = pd.to_datetime(df_display['timestamp']).dt.strftime('%d/%m/%Y %H:%M:%S')
     
-    columns_to_show_original = ['estimator_name', 'params', 'status', 'score', 'timestamp', 'duration_seconds', 'error', 'pipeline_steps']
-    existing_columns = [col for col in columns_to_show_original if col in df_display.columns]
-    df_display = df_display[existing_columns]
+    columns_to_show = ['estimator_name', 'status', 'score', 'timestamp', 'duration_seconds', 'error', 'pipeline_steps']
+    df_display = df_display[columns_to_show]
 
     df_display = df_display.rename(columns={
         'estimator_name': 'Estimador',
-        'params': 'Parâmetros',
         'status': 'Status',
         'score': 'Score',
         'timestamp': 'Timestamp',
@@ -164,77 +192,79 @@ def results():
         'pipeline_steps': 'Pipeline'
     })
 
-    df_display['Pipeline'] = df_display['Pipeline'].apply(lambda x: str(x))
+    # Convert object columns to string for display
+    df_display['Pipeline'] = df_display['Pipeline'].astype(str)
 
-    # Display the main dataframe (full width)
-    selected_trial_index = df_select_rows(
-        df_display,
-        selection_mode='single-row',
-        prompt="Selecione um episódio na tabela para ver os detalhes.",
-        key="results_dataframe_selection" # Added key
-    )
+    # Sort and Rank the dataframe
+    df_display.sort_values(by=['Score', 'Duração (s)'], ascending=[False, True], inplace=True)
+    df_display['Ranking'] = df_display.groupby(['Score', 'Duração (s)'], sort=False).ngroup() + 1
+    
+    # Reorder columns to show Ranking first
+    cols = ['Ranking'] + [col for col in df_display.columns if col != 'Ranking']
+    df_display = df_display[cols]
 
-    # Scatterplot always visible, highlights selected point
-    st.markdown("### 5.4 Desempenho Geral dos Modelos") # Renumbered
+    selected_trial_index = df_select_rows(df_display, selection_mode='single-row', prompt="Selecione um episódio na tabela para ver os detalhes.", key="results_dataframe_selection")
+
+    st.markdown("### 5.4 Desempenho Geral dos Modelos")
     render_scatterplot(df_results, selected_trial_index)
 
-    st.markdown("### 5.5 Detalhes do Episódio Selecionado") # Renumbered
+    st.markdown("### 5.5 Detalhes do Episódio Selecionado")
 
     if selected_trial_index is not None:
         selected_trial = df_results.loc[selected_trial_index]
 
-        col1, col2, col3 = st.columns(3)
+        col1, col2, col3, col4 = st.columns(4)
 
         with col1:
-            st.markdown("##### 5.5.1 Métricas principais") # Renumbered
-            
-            # Status
-            status = selected_trial.get('status', 'N/A')
-            st.metric(label="Status", value=status)
-
-            # Timestamp
+            st.markdown("##### 5.5.1 Métricas")
+            st.metric(label="Status", value=selected_trial.get('status', 'N/A'))
+            score_val = selected_trial.get('score', 0)
+            st.metric(label="Score", value=f"{score_val:.4f}")
             timestamp_val = pd.to_datetime(selected_trial.get('timestamp', 'N/A'))
             if pd.notna(timestamp_val):
                 st.metric(label="Timestamp", value=timestamp_val.strftime('%d/%m/%Y %H:%M:%S'))
-            else:
-                st.metric(label="Timestamp", value="N/A")
-
-            # Duração
             duration = selected_trial.get('duration_seconds', 0)
             st.metric(label="Duração", value=f"{duration:.4f} s")
 
-        with col2:
-            st.markdown("##### 5.5.2 Parâmetros") # Renumbered
-            try:
-                params_dict = eval(selected_trial['params'])
-                num_params = len(params_dict)
-                # Calculate dynamic height: 35px per row + 35px for header
-                df_height = (num_params + 1) * 35
-                # Clamp the height between a min and a max value
-                df_height = max(100, min(df_height, 600))
-                st.dataframe(pd.DataFrame.from_dict(params_dict, orient='index', columns=['Valor']), height=df_height)
-            except (SyntaxError, NameError):
-                st.write("Não foi possível exibir os parâmetros.")
-
-
-        with col3:
-            st.markdown("##### 5.5.3 Pipeline") # Renumbered
-            pipeline_steps = selected_trial['pipeline_steps']
-            # Ensure pipeline_steps is a list before getting its length
-            if isinstance(pipeline_steps, list):
-                num_steps = len(pipeline_steps)
-                # Calculate dynamic height: 120px per step, clamped
-                graph_height = max(500, min(num_steps * 120, 1000))
-                show_pipeline_graph(pipeline_steps, height=graph_height, show_params=True)
-            else:
-                # Fallback for unexpected data format
-                st.write("Não foi possível calcular a altura dinâmica do pipeline.")
-                show_pipeline_graph(pipeline_steps, height=500, show_params=True)
+        pipeline_repr = selected_trial.get('pipeline_steps')
+        
+        if isinstance(pipeline_repr, dict):
+            with col2:
+                st.markdown("##### 5.5.2 Detalhes do Pré-processador")
+                with st.expander("Pré-processador (`ColumnTransformer`)", expanded=True):
+                    preprocessor_steps = pipeline_repr.get('preprocessor', [])
+                    if preprocessor_steps:
+                        for group_step in preprocessor_steps:
+                            group_name = group_step.get('group')
+                            st.markdown(f"**Grupo:** `{group_name}`")
+                            st.markdown(f"**Colunas:** `{group_step.get('columns', [])}`")
+                            st.markdown("**Etapas:**")
+                            for step_name, step_info in group_step.get('steps', []):
+                                st.text(f"  - {step_name}: {step_info['class_path']}({step_info['params']})")
+                            st.divider()
+                    else:
+                        st.write("Nenhum passo de pré-processamento.")
+            with col3:
+                st.markdown("##### 5.5.3 Detalhes do Estimador")
+                with st.expander("Estimador Final", expanded=True):
+                    estimator_info = pipeline_repr.get('estimator', {})
+                    if estimator_info:
+                        st.markdown(f"**Nome:** `{estimator_info.get('name')}`")
+                        st.markdown("**Parâmetros:**")
+                        st.json(estimator_info.get('params', {}))
+                    else:
+                        st.write("Nenhuma informação do estimador.")
+            with col4:
+                display_pipeline_graphically(pipeline_repr)
+        else:
+            with col2:
+                st.warning("Formato de pipeline desconhecido ou não disponível.")
+                st.text(str(pipeline_repr))
 
     else:
         st.info("Selecione um episódio na tabela acima para ver seus detalhes.")
 
-    # Download button (remains at the bottom)
+    st.markdown("### 5.6 Download dos Resultados")
     csv = df_display.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Baixar resultados em CSV",

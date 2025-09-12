@@ -168,3 +168,65 @@ Para que o agente possa tomar decisões eficazes, ele precisa processar informa�
 Para começar, sugiro focar na **Agregação/Sumarização** para a representação de **datasets** e **registros históricos**. Para a representação do **pipeline em construção**, podemos iniciar com **Preenchimento/Truncamento** se usarmos MLPs simples para o agente.
 
 À medida que o agente evolui, podemos então explorar RNNs/Transformers para um tratamento mais sofisticado de dados sequenciais, e GNNs para estruturas de pipeline ainda mais complexas.
+
+### Plano de Refatoração: Pré-processamento Automático e Entrada Padronizada para o Agente
+
+Este plano detalha as mudanças necessárias para refatorar o sistema, permitindo que o agente de RL aprenda a construir pipelines de pré-processamento de forma dinâmica, com base em uma análise padronizada de qualquer dataset de entrada.
+
+**Objetivo:** Abstrair a entrada do agente, passando de colunas individuais para grupos de colunas com características semelhantes. Isso permitirá que o agente generalize seu aprendizado para diferentes datasets e construa pipelines de pré-processamento mais robustos e adequados.
+
+---
+
+#### Fase 1: Análise e Agrupamento Automático de Colunas
+
+1.  **Criar Nova Função de Análise (`functions.py`):**
+    *   Desenvolver uma função `analyze_and_group_columns(df)`.
+    *   **Lógica de Agrupamento:** Iterar sobre as colunas do dataset e classificá-las nos seguintes grupos com base em seu tipo e estatísticas:
+        *   **Numéricas:** Colunas de tipo numérico (`int`, `float`).
+        *   **Binárias:** Colunas numéricas com exatamente 2 valores únicos.
+        *   **Categóricas (Texto):** Colunas de tipo `object` ou `string`, com um número de valores únicos relativamente baixo (ex: < 50).
+        *   **Texto Livre:** Colunas de tipo `object` ou `string` com alta cardinalidade.
+        *   **Datas:** Colunas que podem ser convertidas para o tipo `datetime`.
+    *   **Lógica de Extração de Estatísticas:** Para cada grupo de colunas, calcular um conjunto fixo de estatísticas agregadas. Este será o vetor de features para o agente.
+        *   **Para grupos Numéricos/Binários:** Média das médias, média dos desvios-padrão, média da contagem de nulos, etc.
+        *   **Para grupos Categóricos/Texto:** Média da cardinalidade (valores únicos), média do comprimento das strings, etc.
+        *   **Para grupos de Datas:** Intervalo (min/max), frequência média, etc.
+    *   **Saída:** A função retornará um `DataFrame` de resumo onde cada linha representa um grupo de colunas, contendo as estatísticas e a lista de colunas pertencentes àquele grupo.
+
+#### Fase 2: Adaptação da Interface do Usuário
+
+1.  **Atualizar Seção de Datasets (`A_inputs/A1_datasets.py`):**
+    *   Após o usuário selecionar um dataset, chamar a nova função `analyze_and_group_columns`.
+    *   Dividir a seção "1. Seleção do Dataset" em duas:
+        *   **1.1 Datasets Disponíveis:** A tabela de seleção de datasets existente.
+        *   **1.2 Análise e Agrupamento de Atributos:** Exibir o novo DataFrame de resumo dos grupos de colunas (em modo somente leitura).
+    *   Armazenar o DataFrame de resumo no `st.session_state` para ser usado como estado do agente.
+
+2.  **Simplificar Definição de Features (`B_input_config/B1_features.py`):**
+    *   Remover a tabela de edição de features.
+    *   Substituí-la por um único `st.selectbox` para que o usuário identifique apenas a **coluna Alvo (Target `y`)**.
+    *   Todas as outras colunas serão consideradas features (`X`) e já estarão organizadas nos grupos definidos na Fase 1.
+    *   Determinar a tarefa (Classificação/Regressão) com base no tipo de dados da coluna alvo e salvar no `st.session_state`.
+
+#### Fase 3: Refatoração do Agente e do Loop de Treinamento
+
+1.  **Redefinir Estado e Ação do Agente (`D_training/agent_rl.py`):**
+    *   **Estado (State):** O estado de entrada para o agente não será mais uma configuração manual, mas sim o **DataFrame de resumo dos grupos de colunas** (convertido para um vetor 1D). Este formato é fixo e padronizado.
+    *   **Ação (Action):** A saída do agente (sua ação) será um conjunto de decisões de pré-processamento para cada *grupo* de colunas.
+        *   *Exemplo de Ação para o grupo numérico:* `{ "imputer": "mean", "scaler": "standard" }`
+        *   *Exemplo de Ação para o grupo categórico:* `{ "imputer": "most_frequent", "encoder": "onehot" }`
+
+2.  **Construção Dinâmica de Pipeline (`D_training/D1_training.py`):**
+    *   O centro da mudança estará na construção do pipeline do `scikit-learn`.
+    *   Utilizar `sklearn.compose.ColumnTransformer` para aplicar diferentes sequências de transformações a diferentes grupos de colunas.
+    *   **Fluxo no Loop de Treinamento:**
+        1.  O agente recebe o estado (tabela de estatísticas) e gera as ações (escolhas de pré-processamento para cada grupo).
+        2.  O código irá traduzir essas ações em instâncias de transformadores do `scikit-learn` (ex: `SimpleImputer`, `StandardScaler`, `OneHotEncoder`).
+        3.  Um `ColumnTransformer` será montado dinamicamente, associando cada pipeline de grupo às suas respectivas colunas.
+        4.  Este `preprocessor` será combinado com o estimador final em um `Pipeline` principal.
+        5.  O pipeline completo será então avaliado usando `cross_val_score`.
+
+#### Fase 4: Documentação
+
+1.  **Atualizar `agent.md`:**
+    *   Adicionar este plano detalhado ao final do arquivo `docs/agent.md` para registrar a nova arquitetura do agente.

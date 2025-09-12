@@ -32,10 +32,12 @@ class AgentHyperparameterParser:
         params = {}
         param_names_str = estimator_series.get('params_list', '[]')
         
-        # The string is like "['C','kernel',...]", so we strip the brackets and split by comma.
-        if isinstance(param_names_str, str) and param_names_str.startswith('[') and param_names_str.endswith(']'):
-            param_names = [p.strip().strip("'\"") for p in param_names_str[1:-1].split(',')]
-        else:
+        try:
+            # Use ast.literal_eval for safe parsing of the list string
+            param_names = ast.literal_eval(param_names_str)
+            if not isinstance(param_names, list):
+                param_names = []
+        except (ValueError, SyntaxError):
             param_names = []
 
         for param_name in param_names:
@@ -48,9 +50,50 @@ class AgentHyperparameterParser:
             if param_name not in self.params_df.index:
                 continue # Pula silenciosamente os parâmetros não aptos
 
-            param_rules = self.params_df.loc[param_name]
-            if isinstance(param_rules, pd.DataFrame):
-                param_rules = param_rules.iloc[0] # Usa a primeira regra se houver duplicatas
+            # --- Nova lógica para selecionar a regra correta ---
+            candidate_rules = self.params_df.loc[param_name]
+            
+            selected_rule = None
+            if isinstance(candidate_rules, pd.DataFrame):
+                # Tenta encontrar uma regra específica para o estimador atual
+                for _, rule in candidate_rules.iterrows():
+                    estimators_list_str = rule.get('estimators_list', '[]')
+                    try:
+                        # Safely evaluate the string representation of the list
+                        rule_estimators = ast.literal_eval(estimators_list_str)
+                        if not isinstance(rule_estimators, list):
+                            rule_estimators = []
+                    except (ValueError, SyntaxError):
+                        rule_estimators = []
+
+                    if estimator_name in rule_estimators:
+                        selected_rule = rule
+                        break # Encontrou a regra específica, pode parar
+                
+                # Se não encontrou uma regra específica, procura uma regra geral (lista vazia)
+                if selected_rule is None:
+                    for _, rule in candidate_rules.iterrows():
+                        estimators_list_str = rule.get('estimators_list', '[]')
+                        try:
+                            rule_estimators = ast.literal_eval(estimators_list_str)
+                            if not isinstance(rule_estimators, list):
+                                rule_estimators = []
+                        except (ValueError, SyntaxError):
+                            rule_estimators = []
+                        
+                        if not rule_estimators: # Se a lista de estimadores está vazia, é uma regra geral
+                            selected_rule = rule
+                            break # Usa a primeira regra geral encontrada
+            else: # Apenas uma regra para este parâmetro
+                selected_rule = candidate_rules
+            
+            if selected_rule is None:
+                st.warning(f"Aviso: Nenhuma regra de parâmetro adequada encontrada para '{param_name}' e estimador '{estimator_name}'. Pulando.")
+                continue
+            
+            param_rules = selected_rule # Usa a regra selecionada
+            # --- Fim da nova lógica ---
+
             param_type = param_rules.get('param_dtype')
             
             # Lida com valores que podem ser None
@@ -72,23 +115,71 @@ class AgentHyperparameterParser:
                     params[param_name] = random.uniform(min_val, max_val)
                 elif param_type == 'cat':
                     values_str = param_rules.get('param_list', '[]')
-                    possible_values = [v.strip() for v in values_str.strip('[]').split(',') if v.strip() and v.strip() != 'none']
-                    if not possible_values:
-                        continue # Pula se não houver valores possíveis
-                    chosen_value = random.choice(possible_values)
                     try:
-                        # Tenta avaliar o valor (ex: tuplas como '(100,)' ou booleanos)
-                        params[param_name] = eval(chosen_value)
-                    except (NameError, SyntaxError):
-                        params[param_name] = chosen_value # Mantém como string
+                        raw_values = ast.literal_eval(values_str)
+                        if not isinstance(raw_values, list) or not raw_values:
+                            continue
+                        
+                        # Convert string booleans/none to actual objects, leave other types as is
+                        possible_values = []
+                        for v in raw_values:
+                            if isinstance(v, str):
+                                v_lower = v.lower()
+                                if v_lower == 'true':
+                                    possible_values.append(True)
+                                elif v_lower == 'false':
+                                    possible_values.append(False)
+                                elif v_lower == 'none':
+                                    possible_values.append(None)
+                                else:
+                                    possible_values.append(v)
+                            else:
+                                possible_values.append(v)
+
+                    except (ValueError, SyntaxError):
+                        continue
+                    
+                    # Filter out None if it was already handled by the can_be_none logic
+                    if can_be_none:
+                        possible_values = [v for v in possible_values if v is not None]
+
+                    if not possible_values:
+                        continue
+
+                    params[param_name] = random.choice(possible_values)
                 elif param_type == 'bool':
                     params[param_name] = random.choice([True, False])
 
             except (ValueError, IndexError, TypeError) as e:
                 st.warning(f"Aviso: pulando parâmetro '{param_name}' devido a regra malformada: {param_rules.to_dict()} -> {e}")
         
-        print(f"DEBUG: Generated params for {estimator_name}: {params}")
         return params
+
+    def get_unique_random_estimators(self, num_models_to_evaluate: int):
+        """
+        Seleciona um número especificado de estimadores únicos e aleatórios
+        da lista de estimadores compatíveis.
+        """
+        if self.estimators_df.empty:
+            return pd.DataFrame() # Retorna um DataFrame vazio se não houver estimadores
+
+        # Garante que não tentamos selecionar mais estimadores do que disponíveis
+        num_to_select = min(num_models_to_evaluate, len(self.estimators_df))
+        
+        # Seleciona estimadores aleatoriamente
+        # .sample(frac=1) embaralha o DataFrame
+        # .head(num_to_select)
+        # ou .sample(n=num_to_select) se num_to_select < len(self.estimators_df)
+        # Para garantir unicidade e aleatoriedade, sample(n=...) é mais direto
+        
+        if num_to_select == 0:
+            return pd.DataFrame()
+
+        # Se num_to_select for igual ao número total de estimadores, sample(frac=1) é mais eficiente
+        if num_to_select == len(self.estimators_df):
+            return self.estimators_df.sample(frac=1, random_state=42) # Usar random_state para reprodutibilidade
+        else:
+            return self.estimators_df.sample(n=num_to_select, random_state=42)
 
 def create_estimator_instance(class_path, params):
     """Cria uma instância de um estimador de forma segura."""
@@ -142,6 +233,10 @@ def run_agent():
     # --- Inicia o processo de otimização ---
     parser = AgentHyperparameterParser(compatible_estimators, params_df)
     estimators_to_evaluate = parser.get_unique_random_estimators(num_models_to_evaluate)
+
+    if estimators_to_evaluate.empty:
+        st.error("Erro: Nenhum estimador compatível encontrado para avaliação. Ajuste a seleção de features/alvos ou o arquivo de estimadores.")
+        return
 
     all_trials_results = []
     progress_area = st.container()

@@ -1,0 +1,114 @@
+INSTRUÇÕES DETALHADAS PARA PREENCHIMENTO DAS TABELAS
+
+TABELA: estimators.tsv
+
+CAMPOS E REGRAS:
+
+estimator_name: Nome oficial do estimador (ex: RandomForestClassifier).
+
+estimator_type: Tipo principal (Classifier, Regressor, Cluster, Transformer, Meta-Estimator).
+
+category: Categoria específica (tree, ensemble, linear_model, svm, cluster, model_selection).
+
+descrição: Descrição concisa (1-2 linhas) da finalidade do estimador.
+
+class_path: Caminho completo da classe (ex: sklearn.ensemble.RandomForestClassifier).
+
+params_list: Lista Python com nomes dos parâmetros principais (ex: ['n_estimators','criterion','max_depth']).
+
+submethods_list: Lista Python com nomes dos principais métodos públicos (ex: ['fit','predict','predict_proba']).
+
+X_min: Valor mínimo esperado para features (-9999 para -infinito ou valores muito baixos).
+
+X_max: Valor máximo esperado para features (9999 para +infinito ou valores muito altos).
+
+y_min: Valor mínimo esperado para target (0 para classificação, -9999 para regressão).
+
+y_max: Valor máximo esperado para target (9999 para classificação multi-classe ou regressão).
+
+apt_for_training: True se for um estimador supervisionado/não supervisionado para treino.
+
+observações: Notas importantes, limitações ou alertas sobre o uso do estimador.
+
+from_sklearn_docs: True (sempre).
+
+input_X_structure: Estrutura de entrada esperada ((n_samples, n_features)).
+
+input_X_types: Tipos de dados aceitos para X (float,int).
+
+input_y_structure: Estrutura do target esperado ((n_samples,) ou (n_samples, n_outputs)).
+
+input_y_types: Tipos de dados aceitos para y (int,str para classificação, float para regressão).
+
+output_X_structure: 0 (não aplicável para a maioria).
+
+output_X_types: 0 (não aplicável para a maioria).
+
+output_y_structure: Estrutura da saída da predição ((n_samples,)).
+
+output_y_types: Tipos de dados de saída (int para classificação, float para regressão).
+
+exemplo: Código mínimo de exemplo de uso (formato string com \n).
+
+compatible_scores: Lista Python com métricas de avaliação compatíveis.
+
+TABELA: parameters.tsv
+
+CAMPOS E REGRAS:
+
+param_name: Nome oficial do parâmetro (ex: n_estimators).
+
+param_dtype: Tipo de dados (int, float, bool, cat para categórico, dynamic_list para listas variáveis).
+
+param_standard: Valor padrão.
+
+param_min: Valor mínimo (-9999 para -infinito).
+
+param_max: Valor máximo (9999 para +infinito).
+
+param_list: Lista Python com opções válidas (para dtype='cat'), vazia [] para outros.
+
+param_required: True se for obrigatório, False se opcional.
+
+descrição do parâmetro: Descrição clara da função do parâmetro.
+
+apt_for_training: True se afeta o processo de treinamento.
+
+observações: Informações adicionais, versões, comportamentos específicos.
+
+from_sklearn_docs: True (sempre).
+
+estimators_list: Lista Python com nomes dos estimadores que usam este parâmetro.
+
+EXEMPLOS COMPLETOS:
+
+Exemplo 1 (estimators.tsv):
+
+tsv
+RandomForestClassifier	Classifier	ensemble	A random forest classifier.	sklearn.ensemble.RandomForestClassifier	['n_estimators','criterion','max_depth','min_samples_split','max_features']	['fit','predict','predict_proba','score']	-9999	9999	0	9999	True	The default values for the parameters controlling the size of the trees lead to fully grown and unpruned trees.	True	(n_samples, n_features)	float,int	(n_samples,)	int,str	0	0	(n_samples,)	int	from sklearn.ensemble import RandomForestClassifier\nclf = RandomForestClassifier()\nclf.fit(X_train, y_train)	['accuracy','f1','precision','recall']
+Exemplo 2 (parameters.tsv):
+
+tsv
+n_estimators	int	100	1	9999	[]	False	The number of trees in the forest.	True	Changed in version 0.22: default changed from 10 to 100.	True	['RandomForestClassifier','ExtraTreesClassifier']
+criterion	cat	gini			['gini','entropy','log_loss']	False	The function to measure the quality of a split.	True	Supported criteria are "gini" for Gini impurity and "log_loss" and "entropy" for Shannon information gain.	True	['DecisionTreeClassifier','RandomForestClassifier']
+max_features	cat	sqrt			['sqrt','log2',None]	False	The number of features to consider when looking for the best split.	True	If int, consider max_features features. If float, max_features is a fraction. If "sqrt", max_features=sqrt(n_features). If "log2", max_features=log2(n_features). If None, max_features=n_features.	True	['RandomForestClassifier','ExtraTreesClassifier']
+PRÓXIMOS PASSOS:
+
+Para cada novo arquivo .txt da documentação do scikit-learn:
+
+Identifique se é um estimador ou um parâmetro.
+
+Para estimadores: Preencha a tabela estimators.tsv seguindo rigidamente a estrutura dos campos.
+
+Para parâmetros: Preencha a tabela parameters.tsv para cada parâmetro do estimador.
+
+Use -9999 e 9999 para representar infinitos.
+
+Formate listas como listas Python válidas.
+
+Mantenha a consistência com os registros já existentes.
+
+Verifique sempre a documentação oficial para valores padrão, ranges e opções válidas.
+
+Esta instrução garante padronização e qualidade no preenchimento das tabelas!
+

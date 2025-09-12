@@ -2,10 +2,11 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 import sklearn.datasets as sk_datasets
-from functions import df_select_rows, log_message, build_feature_table
+from functions import df_select_rows, log_message, analyze_and_group_columns
 from B_input_config.B1_features import feature_definition
 from C_agent_config.C1_agent_config import agent_configuration
 from D_training.D1_training import agent_training
+
 
 DATA_DIR = Path("A_inputs/A1_datasets")
 ESTIMATORS_FILE = st.session_state.files.get('estimators')
@@ -123,7 +124,7 @@ def update_datasets_metadata():
     progress_bar.empty()
 
 def datasets():
-    st.subheader("📚 1. Seleção do Dataset")
+    st.subheader("📚 1.1 Datasets Disponíveis")
 
     METADATA_CSV = Path(st.session_state.files.get('datasets_metadata'))
 
@@ -132,35 +133,51 @@ def datasets():
 
     if not METADATA_CSV.exists():
         st.info("Arquivo de metadados não encontrado. Clique em 'Atualizar Datasets' para gerá-lo.")
-        st.stop()
+        return
 
     df_meta = pd.read_csv(METADATA_CSV).set_index('Dataset')
     
     if df_meta.empty:
         log_message("WARNING", "Nenhum dataset encontrado. Adicione arquivos .csv ou .tsv na pasta 'data' e clique em 'Atualizar Datasets'.")
-        st.stop()
+        return
 
-    dataset_name = df_select_rows(df_meta, selection_mode='single-row', key="dataset_selection") # Added key
+    dataset_name = df_select_rows(df_meta, selection_mode='single-row', key="dataset_selection")
     if not dataset_name:
         st.info("Para começar, selecione um dataset na tabela.")
-        st.stop()
+        return
 
     df = load_dataset(dataset_name, df_meta.loc[dataset_name])
     
     if df is None:
         log_message("ERROR", f"Não foi possível carregar o dataset '{dataset_name}'.")
-        st.stop()
+        return
 
     st.success(f"Dataset '{dataset_name}' carregado com sucesso!")
 
+    st.subheader("📊 1.2 Análise e Agrupamento de Atributos")
+    summary_df = analyze_and_group_columns(df)
+    
+    if summary_df.empty:
+        st.warning("Não foi possível analisar e agrupar as colunas do dataset.")
+    else:
+        st.info("A tabela abaixo mostra os grupos de atributos identificados e suas estatísticas. O agente usará esta informação como entrada.")
+        st.dataframe(summary_df)
+
     # If dataset has changed, clear subsequent selections
     if st.session_state.get("dataset_name") != dataset_name:
-        keys_to_clear = ["X_cols", "y_cols", "compatible_estimators", "selected_estimator_names", "num_episodes"]
+        keys_to_clear = ["X_cols", "y_cols", "compatible_estimators", "selected_estimator_names", "num_episodes", "column_summary_df", "task_type"]
         for key in keys_to_clear:
             if key in st.session_state:
                 del st.session_state[key]
     
     st.session_state.dataset_name = dataset_name
     st.session_state.original_df = df
+    st.session_state.column_summary_df = summary_df
     
-    st.write(f"DEBUG: Dataset selected: {st.session_state.dataset_name}")
+    # --- Conditionally display subsequent sections ---
+    if st.session_state.get("dataset_name"):
+        feature_definition()
+        if st.session_state.get("y_cols") is not None: # Condition changed to check if target is defined
+            agent_configuration()
+            if st.session_state.get("compatible_estimators") is not None and not st.session_state.get("compatible_estimators").empty and st.session_state.get("num_episodes") is not None:
+                agent_training()
