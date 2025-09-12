@@ -104,15 +104,41 @@ class AgentHyperparameterParser:
                 continue
 
             try:
-                if param_type == 'int':
-                    min_val = int(param_rules['param_min'])
-                    max_val = int(param_rules['param_max'])
-                    params[param_name] = random.randint(min_val, max_val)
-                elif param_type == 'float':
-                    min_val = float(param_rules['param_min'])
-                    max_val = float(param_rules['param_max'])
-                    # Adicionar suporte para escala logarítmica se necessário no futuro
-                    params[param_name] = random.uniform(min_val, max_val)
+                if param_type == 'int' or param_type == 'float':
+                    try:
+                        default = float(param_rules['param_standard'])
+                        min_val = float(param_rules['param_min'])
+                        max_val = float(param_rules['param_max'])
+                        
+                        # Use a normal distribution centered around the default
+                        sigma = (max_val - min_val) / 4  # Std dev is 1/4 of the range
+                        if sigma == 0:
+                            value = default
+                        else:
+                            value = np.random.normal(default, sigma)
+                        
+                        # Clip the value to be within the min/max bounds
+                        value = np.clip(value, min_val, max_val)
+                        
+                        if param_type == 'int':
+                             params[param_name] = int(round(value))
+                        else: # float
+                             params[param_name] = value
+
+                    except (ValueError, TypeError):
+                        # Fallback to uniform for non-numeric defaults or invalid min/max
+                        try:
+                            if param_type == 'int':
+                                min_val = int(param_rules['param_min'])
+                                max_val = int(param_rules['param_max'])
+                                params[param_name] = random.randint(min_val, max_val)
+                            else: # float
+                                min_val = float(param_rules['param_min'])
+                                max_val = float(param_rules['param_max'])
+                                params[param_name] = random.uniform(min_val, max_val)
+                        except (ValueError, TypeError):
+                             pass # Silently skip if min/max are also invalid
+
                 elif param_type == 'cat':
                     values_str = param_rules.get('param_list', '[]')
                     try:
