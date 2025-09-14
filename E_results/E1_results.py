@@ -1,14 +1,17 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 from datetime import datetime
-from functions import log_message, df_select_rows
+from functions import df_select_rows
 import plotly.express as px
 import plotly.graph_objects as go
 import pydoc
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.utils import estimator_html_repr
+from functions import _append_to_erros_txt
+
 
 def display_pipeline_graphically(pipeline_repr):
     """
@@ -62,11 +65,17 @@ def display_pipeline_graphically(pipeline_repr):
         # 4. Display HTML representation
         st.markdown("###### 5.5.4 Diagrama do Pipeline")
         html_repr = estimator_html_repr(final_pipeline)
-        st.components.v1.html(html_repr, height=2000, scrolling=True)
+        components.html(html_repr, height=1000, scrolling=True)
 
     except Exception as e:
-        st.error(f"Falha ao gerar o diagrama do pipeline: {e}")
-        log_message("ERROR", "Falha ao gerar diagrama do pipeline.", exception=e)
+        error_message = f"Falha ao gerar o diagrama do pipeline: {e}"
+        st.error(error_message)
+        _append_to_erros_txt(error_message)
+        error_message = f"Falha ao gerar o diagrama do pipeline: {e}"
+        st.error(error_message)
+        _append_to_erros_txt(error_message)
+        _append_to_erros_txt(f"Exceção ao gerar o diagrama do pipeline: {e}")
+        st.exception(e)
 
 def render_scatterplot(df_data, selected_index=None):
     if 'score' in df_data.columns and 'duration_seconds' in df_data.columns:
@@ -152,10 +161,10 @@ def render_scatterplot(df_data, selected_index=None):
         st.info("Dados insuficientes para gerar o gráfico de desempenho geral (scores ou durações ausentes).")
 
 def results():
-    st.header("5. Resultados")
+    st.header("2. Configurações")
 
     if 'agent_results' not in st.session_state or not st.session_state['agent_results']:
-        log_message("WARNING", "Nenhum resultado de agente encontrado. Execute o agente primeiro.")
+        st.warning("Nenhum resultado de agente encontrado. Execute o agente primeiro.")
         st.info("Nenhum resultado de treinamento disponível. Por favor, inicie um treinamento na aba anterior.")
         st.stop()
 
@@ -164,17 +173,17 @@ def results():
     df_results = results_data.get("results_df")
 
     if df_results is None or df_results.empty:
-        log_message("WARNING", "O agente não produziu nenhum resultado para exibir.")
+        st.warning("O agente não produziu nenhum resultado para exibir.")
         st.info("Nenhum resultado de treinamento gerado para exibir.")
         st.stop()
 
     col_info1, col_info2 = st.columns(2)
     with col_info1:
-        st.markdown(f"**5.1 Nome do Dataset:** `{dataset_name}`")
+        st.markdown(f"**2.1 Nome do Dataset:** `{dataset_name}`")
     with col_info2:
-        st.markdown(f"**5.2 Formato do Dataset:** `Pandas DataFrame`")
+        st.markdown(f"**2.2 Formato do Dataset:** `Pandas DataFrame`")
 
-    st.markdown("### 5.3 Dataframe de Desempenho")
+    st.markdown("### 2.3 Episódios de Treinamento")
 
     df_display = df_results.copy()
     df_display['timestamp'] = pd.to_datetime(df_display['timestamp']).dt.strftime('%d/%m/%Y %H:%M:%S')
@@ -205,15 +214,15 @@ def results():
 
     selected_trial_index = df_select_rows(df_display, selection_mode='single-row', prompt="Selecione um episódio na tabela para ver os detalhes.", key="results_dataframe_selection")
 
-    st.markdown("### 5.4 Desempenho Geral dos Modelos")
+    st.markdown("### 2.4 Desempenho Geral dos Modelos")
     render_scatterplot(df_results, selected_trial_index)
 
-    st.markdown("### 5.5 Detalhes do Episódio Selecionado")
+    st.markdown("### 2.5 Detalhes do Episódio Selecionado")
 
     if selected_trial_index is not None:
         selected_trial = df_results.loc[selected_trial_index]
 
-        col1, col2, col3, col4 = st.columns(4)
+        col1, col2 = st.columns(2)
 
         with col1:
             st.markdown("##### 5.5.1 Métricas")
@@ -230,31 +239,6 @@ def results():
         
         if isinstance(pipeline_repr, dict):
             with col2:
-                st.markdown("##### 5.5.2 Detalhes do Pré-processador")
-                with st.expander("Pré-processador (`ColumnTransformer`)", expanded=True):
-                    preprocessor_steps = pipeline_repr.get('preprocessor', [])
-                    if preprocessor_steps:
-                        for group_step in preprocessor_steps:
-                            group_name = group_step.get('group')
-                            st.markdown(f"**Grupo:** `{group_name}`")
-                            st.markdown(f"**Colunas:** `{group_step.get('columns', [])}`")
-                            st.markdown("**Etapas:**")
-                            for step_name, step_info in group_step.get('steps', []):
-                                st.text(f"  - {step_name}: {step_info['class_path']}({step_info['params']})")
-                            st.divider()
-                    else:
-                        st.write("Nenhum passo de pré-processamento.")
-            with col3:
-                st.markdown("##### 5.5.3 Detalhes do Estimador")
-                with st.expander("Estimador Final", expanded=True):
-                    estimator_info = pipeline_repr.get('estimator', {})
-                    if estimator_info:
-                        st.markdown(f"**Nome:** `{estimator_info.get('name')}`")
-                        st.markdown("**Parâmetros:**")
-                        st.json(estimator_info.get('params', {}))
-                    else:
-                        st.write("Nenhuma informação do estimador.")
-            with col4:
                 display_pipeline_graphically(pipeline_repr)
         else:
             with col2:
@@ -264,7 +248,7 @@ def results():
     else:
         st.info("Selecione um episódio na tabela acima para ver seus detalhes.")
 
-    st.markdown("### 5.6 Download dos Resultados")
+    st.markdown("### 2.6 Download dos Resultados")
     csv = df_display.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Baixar resultados em CSV",

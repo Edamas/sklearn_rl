@@ -7,6 +7,7 @@ breast_cancer,569,31,17639,target,local,breast_cancer.csv
 BRL_USD Historical Data_Date_Price,6238,1,6238,,local,BRL_USD Historical Data_Date_Price.csv
 california_housing,20640,9,185760,,local,california_housing.csv
 circles,200,3,600,target,local,circles.csv
+"Custo médio m² - mão de obra, material e total (target)",152,7,1064,,local,"Custo médio m² - mão de obra, material e total (target).csv"
 diabetes,442,11,4862,target,local,diabetes.csv
 digits,1797,65,116805,target,local,digits.csv
 income_census,556,78,43368,,local,income_census.csv

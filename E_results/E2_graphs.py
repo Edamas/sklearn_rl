@@ -2,12 +2,13 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 from E_results import graphs
-from functions import log_message
+
 
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler # Assuming StandardScaler is always part of the pipeline
 from sklearn.utils import estimator_html_repr
 import pydoc
+from D_training.D1_agent_rl import _append_to_erros_txt
 
 DATA_DIR = Path("A_inputs/A1_datasets")
 
@@ -17,7 +18,7 @@ def graphs_app():
     # Selecionar dataset
     data_files = [f.name for f in DATA_DIR.glob("*.csv")] + [f.name for f in DATA_DIR.glob("*.tsv")]
     if not data_files:
-        log_message("WARNING", f"Nenhum arquivo .csv ou .tsv encontrado na pasta '{DATA_DIR}'.")
+        st.warning(f"Nenhum arquivo .csv ou .tsv encontrado na pasta '{DATA_DIR}'.")
         st.stop()
 
     selected_file = st.selectbox("Selecione um arquivo de dados:", data_files)
@@ -30,7 +31,11 @@ def graphs_app():
             else:
                 df = pd.read_csv(file_path)
         except Exception as e:
-            log_message("EXCEPTION", f"Erro ao ler o arquivo '{file_path.name}'.", exception=e)
+            error_message = f"Erro ao ler o arquivo '{file_path.name}': {e}"
+            st.error(error_message)
+            _append_to_erros_txt(error_message)
+            _append_to_erros_txt(f"Exceção ao ler o arquivo: {e}")
+            st.exception(e)
             st.stop()
 
         st.dataframe(df.head())
@@ -81,6 +86,8 @@ def show_pipeline_graph(pipeline_steps_repr, height=400, show_params=True): # Ad
             # Display in Streamlit
             st.components.v1.html(html_repr, height=height) # Use passed height
         except Exception as e:
-            st.error(f"Erro ao gerar o diagrama do pipeline: {e}")
+            error_message = f"Erro ao gerar o diagrama do pipeline: {e}"
+            st.error(error_message)
+            _append_to_erros_txt(error_message)
     else:
         st.info("Nenhuma etapa de pipeline para exibir.")

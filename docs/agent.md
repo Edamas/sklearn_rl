@@ -12,69 +12,6 @@ O objetivo é que o agente, por meio de tentativa e erro, descubra sequências d
 
 A inteligência do agente é alimentada por três arquivos TSV principais, que servem como sua base de conhecimento e histórico.
 
-### 2.1. `estimators.tsv`
-
-Este arquivo contém o catálogo de todos os estimadores (modelos e transformadores) do Scikit-learn que o agente pode utilizar. Ele é a fonte primária de metadados sobre cada "caixa" do pipeline.
-
-| Coluna | Tipo | Descrição | Exemplo |
-| :--- | :--- | :--- | :--- |
-| `estimator_name` | String | Nome do estimador (ex: `RandomForestClassifier`). | `PCA` |
-| `estimator_type` | String | Tipo geral do estimador (`Classifier`, `Regressor`, `Transformer`, `Cluster`). | `Transformer` |
-| `category` | String | Categoria de alto nível do estimador (ex: `ensemble`, `preprocessing`). | `decomposition` |
-| `description` | String | Breve descrição do estimador, extraída da documentação. | `Principal component analysis (PCA).` |
-| `class_path` | String | Caminho completo da classe Python do estimador. | `sklearn.decomposition.PCA` |
-| `params_list` | Lista de Strings | Nomes dos parâmetros que o agente pode otimizar para este estimador. | `[n_components, whiten]` |
-| `submethods_list` | Lista de Strings | Métodos públicos importantes do estimador (ex: `fit`, `transform`, `predict`). | `[fit, transform, inverse_transform]` |
-| `X_min` | Inteiro | Número mínimo de features de entrada (`X`) que o estimador aceita. | `1` |
-| `X_max` | Inteiro | Número máximo de features de entrada (`X`) que o estimador aceita. | `9999` |
-| `y_min` | Inteiro | Número mínimo de features de saída (`y`) que o estimador aceita (para alvos). | `0` (para transformers) |
-| `y_max` | Inteiro | Número máximo de features de saída (`y`) que o estimador aceita (para alvos). | `1` (para classificadores) |
-| `apt_for_training` | Booleano | Indica se o estimador está pronto para ser usado no treinamento (`True`) ou se precisa de revisão (`False`). | `True` |
-| `observações` | String | Notas e observações sobre o estimador (ex: inconsistências na documentação). | `Descrição fornecida incorreta.` |
-| `from_sklearn_docs` | Booleano | Indica se o registro foi preenchido automaticamente a partir da documentação do Scikit-learn. | `True` |
-| `input_X_structure` | String | Estrutura (shape) esperada para a entrada `X`. | `(n_samples, n_features)` |
-| `input_X_types` | String | Tipos de dados aceitos para `X` (ex: `float,int`). | `float,int` |
-| `input_y_structure` | String | Estrutura (shape) esperada para a entrada `y`. | `(n_samples,)` |
-| `input_y_types` | String | Tipos de dados aceitos para `y` (ex: `float,int`). | `float,int` |
-| `output_X_structure` | String | Estrutura (shape) da saída `X` após `transform`. | `(n_samples, n_components)` |
-| `output_X_types` | String | Tipos de dados da saída `X` após `transform`. | `float` |
-| `output_y_structure` | String | Estrutura (shape) da saída `y` após `predict`. | `(n_samples,)` |
-| `output_y_types` | String | Tipos de dados da saída `y` após `predict`. | `float,int` |
-
-### 2.2. `parameters.tsv`
-
-Este arquivo detalha as regras de otimização para cada hiperparâmetro, permitindo que o agente gere valores válidos e explore o espaço de parâmetros de forma inteligente.
-
-| Coluna | Tipo | Descrição | Exemplo |
-| :--- | :--- | :--- | :--- |
-| `param_name` | String | Nome do parâmetro (ex: `n_estimators`). | `n_components` |
-| `param_dtype` | String | Tipo de dado do parâmetro (`int`, `float`, `cat` (categórico), `bool`). | `int` |
-| `param_standard` | String | Valor padrão do parâmetro. | `None` |
-| `param_min` | Float/Int | Valor mínimo para parâmetros numéricos. | `0.0` |
-| `param_max` | Float/Int | Valor máximo para parâmetros numéricos. | `1.0` |
-| `param_list` | Lista de Strings | Valores possíveis para parâmetros categóricos (ex: `['auto', 'full']`). | `['auto', 'full', 'arpack']` |
-| `param_required` | Booleano | Indica se o parâmetro é obrigatório (`True`) ou opcional (`False`). | `False` |
-| `descrição do parâmetro` | String | Breve descrição do parâmetro, extraída da documentação. | `Number of components to keep.` |
-| `apt_for_training` | Booleano | Indica se o parâmetro está pronto para ser otimizado (`True`) ou se precisa de revisão (`False`). | `True` |
-| `observações` | String | Notas e observações sobre o parâmetro. | `Pode ser int, float ou 'mle'.` |
-| `from_sklearn_docs` | Booleano | Indica se o registro foi preenchido automaticamente a partir da documentação do Scikit-learn. | `True` |
-
-### 2.3. `history.tsv`
-
-Este arquivo registra os resultados de cada experimento (tentativa de pipeline e otimização de parâmetros) realizado pelo agente, servindo como base para o aprendizado e análise de desempenho.
-
-| Coluna | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `timestamp` | String | Data e hora da execução do experimento. |
-| `duration_seconds` | Float | Tempo de execução do experimento em segundos. |
-| `dataset_name` | String | Nome do dataset utilizado. |
-| `dataset_summary` | String | Resumo do dataset (ex: número de features, amostras). |
-| `estimator_name` | String | Nome do estimador principal utilizado. |
-| `accuracy` | Float | Acurácia do modelo (para tarefas de classificação). |
-| `r2_score` | Float | Coeficiente R² do modelo (para tarefas de regressão). |
-| `error` | String | Mensagem de erro, se houver. |
-| `[param_name]` | Vários | Uma coluna para cada parâmetro otimizado, com o valor utilizado. |
-
 ## 3. Fluxo de Trabalho do Agente
 
 O agente opera em um ciclo contínuo de exploração e otimização, guiado pelos dados dos arquivos TSV.
@@ -109,10 +46,6 @@ Para cada estimador compatível, o agente gera combinações aleatórias de hipe
 ### 3.4. Treinamento e Avaliação do Modelo
 
 O agente constrói um pipeline (com `StandardScaler` e o estimador selecionado), treina-o com os dados de treinamento e avalia seu desempenho usando validação cruzada (`cross_val_score`). O tempo de execução de cada experimento é registrado.
-
-### 3.5. Registro de Histórico
-
-Os resultados de cada experimento (incluindo os parâmetros utilizados, métricas de desempenho e tempo de execução) são registrados no `history.tsv`. Este histórico é fundamental para a análise de desempenho e para futuras otimizações.
 
 ### 3.6. Visualização de Resultados
 

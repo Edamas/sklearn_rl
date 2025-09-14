@@ -24,20 +24,7 @@ if 'files' not in st.session_state:
 LOG_FILE_PATH = st.session_state.files.get('log')
 
 # Initialize log_cleared_this_session in st.session_state if not present
-if 'log_cleared_this_session' not in st.session_state:
-    st.session_state.log_cleared_this_session = False
 
-# Clear log.tsv only once per session
-if not st.session_state.log_cleared_this_session:
-    if LOG_FILE_PATH and os.path.exists(LOG_FILE_PATH):
-        try:
-            with open(LOG_FILE_PATH, "w") as f:
-                f.truncate(0)
-            log_message("INFO", "Log file cleared on app start/refresh.", display_streamlit=False)
-            st.session_state.log_cleared_this_session = True # Mark as cleared
-        except Exception as e:
-            log_message("EXCEPTION", f"Erro ao limpar o arquivo de log '{LOG_FILE_PATH}'.", exception=e)
-            st.session_state.log_cleared_this_session = True # Mark as cleared even on error to prevent repeated attempts
 
 
 
@@ -67,7 +54,7 @@ st.set_page_config(
 from A_inputs.A1_datasets import datasets
 from B_input_config.B1_features import feature_definition
 from C_agent_config.C1_agent_config import agent_configuration
-from D_training.D1_training import agent_training
+from D_training.D2_training import agent_training
 
 # -----------------------------
 # Título
@@ -89,7 +76,8 @@ def handle_exception(exc_type, exc_value, exc_traceback):
         return
 
     exception_obj = exc_value if isinstance(exc_value, Exception) else Exception(str(exc_value))
-    log_message("EXCEPTION", "Ocorreu uma exceção não tratada.", exception=exception_obj)
-    st.error(f"Ocorreu um erro inesperado. Por favor, verifique o arquivo {st.session_state.files.get('log')} para mais detalhes.")
+    # log_message("EXCEPTION", "Ocorreu uma exceção não tratada.", exception=exception_obj) # Removido o log para arquivo
+    st.error(f"Ocorreu um erro inesperado: {exception_obj}") # Mensagem de erro mais direta
+    st.exception(exception_obj) # Exibe o traceback completo na tela
 
 sys.excepthook = handle_exception

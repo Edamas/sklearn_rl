@@ -7,7 +7,7 @@ from datetime import datetime
 import traceback
 from typing import Optional
 
-LOG_FILE = "log.tsv"
+# LOG_FILE = "log.tsv" # Comentado para desativar a escrita em arquivo
 
 def log_message(level: str, message: str, exception: Optional[Exception] = None, display_streamlit: bool = True):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -15,17 +15,23 @@ def log_message(level: str, message: str, exception: Optional[Exception] = None,
 
     if exception:
         log_entry += f"	{traceback.format_exc()}"
+        # Imprimir traceback na tela para exceções
+        if display_streamlit:
+            st.exception(exception) # Streamlit exibe o traceback formatado
+        else:
+            print(log_entry) # Fallback para console se não for Streamlit
     else:
-        log_entry += "\t" # Add empty column for consistency
+        log_entry += "	" # Add empty column for consistency
+        if not display_streamlit:
+            print(log_entry) # Imprimir no console se não for Streamlit
 
-    with open(LOG_FILE, "a", encoding="utf-8") as f:
-        f.write(log_entry + "\n")
+    # Removida a escrita no arquivo LOG_FILE
 
     if display_streamlit:
         if level == "ERROR" or level == "EXCEPTION":
-            st.error(f"Um erro ocorreu. Veja {LOG_FILE} para detalhes: {message}")
+            st.error(f"Um erro ocorreu: {message}") # Removida a referência ao LOG_FILE
         elif level == "WARNING":
-            st.warning(f"Um aviso ocorreu. Veja {LOG_FILE} para detalhes: {message}")
+            st.warning(f"Um aviso ocorreu: {message}") # Removida a referência ao LOG_FILE
         else: # INFO
             st.info(message)
 
@@ -198,7 +204,7 @@ def show_log_page():
         st.error(f"Erro ao ler o arquivo de log: {e}")
         return
 
-    if st.button("Limpar Log", help=f"Limpa todo o conteúdo do arquivo {st.session_state.files.get('log')}ecarga a página"):
+    if st.button("Limpar Log", help=f"Limpa todo o conteúdo do arquivo {st.session_state.files.get('log')}ecarga a página"):
         try:
             with open(log_file_path, "w") as f:
                 f.truncate(0)

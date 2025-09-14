@@ -17,6 +17,9 @@ def agent_configuration():
     n_features = len(X_cols)
     n_targets = len(y_cols) if y_cols is not None else 0
 
+    st.write(f"n_features: {n_features}")
+    st.write(f"n_targets: {n_targets}")
+
     # Determine dataset types from column summary
     column_summary = st.session_state.get("column_summary_df")
     dataset_X_types = set()
@@ -28,6 +31,7 @@ def agent_configuration():
     
     if not dataset_X_types:
         dataset_X_types = {'float', 'int'} # Default
+    st.write(f"dataset_X_types: {dataset_X_types}")
 
     # Basic compatibility
     filter_basic = (
@@ -38,6 +42,7 @@ def agent_configuration():
         (estimators_df['y_max'] >= n_targets)
     )
     compatible_estimators_step1 = estimators_df[filter_basic].copy()
+    st.write(f"Estimadores após filtro básico (step1): {len(compatible_estimators_step1)}")
 
     # Type compatibility for X
     def check_input_types(estimator_types):
@@ -58,13 +63,18 @@ def agent_configuration():
     compatible_estimators_step2 = compatible_estimators_step1[
         compatible_estimators_step1['input_X_types'].apply(check_input_types)
     ].copy() # Added .copy() to avoid SettingWithCopyWarning
+    st.write(f"Estimadores após filtro de tipos (step2): {len(compatible_estimators_step2)}")
 
     # New: Structure compatibility for X
     # Treat any tuple as compatible, and simplify other conditions
     compatible_estimators_step3 = compatible_estimators_step2.copy() # Start with a copy of step2 results
 
+    st.write("DEBUG: input_X_structure values for estimators in step2 (before structure filter):")
+    for index, row in compatible_estimators_step2.iterrows():
+        st.write(f"  - Estimator: {row['estimator_name']}, input_X_structure: {row['input_X_structure']}, type: {type(row['input_X_structure'])}")
+
     final_structure_filter = compatible_estimators_step3['input_X_structure'].apply(
-        lambda x: (isinstance(x, (tuple, list)) or # Any tuple or list is approved
+        lambda x: (isinstance(x, tuple) or # Any tuple is approved
                    (isinstance(x, str) and x.lower() == 'array-like') or
                    (isinstance(x, str) and ('n_features' in x.lower() or 'n_samples' in x.lower())) or
                    (x is None) or # If it's None, it's approved
@@ -73,6 +83,7 @@ def agent_configuration():
     )
 
     compatible_estimators_step3 = compatible_estimators_step3[final_structure_filter].copy()
+    st.write(f"Estimadores após filtro de estrutura (step3): {len(compatible_estimators_step3)}")
 
     # Task-specific filtering
     if task_type == "Classification":
@@ -83,14 +94,15 @@ def agent_configuration():
         compatible_estimators = compatible_estimators_step3[
             compatible_estimators_step3['estimator_type'].isin(['Transformer', 'Cluster', 'CovarianceEstimator', 'OutlierDetector'])
         ]
+    st.write(f"Estimadores após filtro de tarefa: {len(compatible_estimators)}")
 
-    st.markdown(f"Foram encontrados **{len(compatible_estimators)}** estimadores compatíveis com a sua configuração de dados.")
+    st.write(f"Foram encontrados **{len(compatible_estimators)}** estimadores compatíveis com a sua configuração de dados (Features: {n_features}, Alvos: {n_targets}, Tarefa: {task_type}).")
 
     if compatible_estimators.empty:
         st.error("Nenhum estimador compatível encontrado. Ajuste a seleção de features/alvos ou o arquivo de estimadores.")
         st.stop()
 
-    st.markdown("### 2.2.1 Selecione o Estimador para Avaliação")
+    st.markdown("### 2.3.1 Selecione o Estimador para Avaliação")
     st.info("Selecione um ou mais estimadores compatíveis na tabela abaixo.")
     
     selected_indices = df_select_rows(
@@ -112,7 +124,7 @@ def agent_configuration():
         "2.3.2 Episódios de Treinamento",
         min_value=1,
         max_value=1000,
-        value=100,
+        value=min(10, 1000),
         help="Número total de pipelines que o agente criará e avaliará.",
         key="num_episodes_slider"
     )

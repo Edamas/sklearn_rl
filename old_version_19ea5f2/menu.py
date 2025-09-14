@@ -6,7 +6,7 @@ from functions import show_log_page, manage_files_df # Assuming show_log_page an
 from A_inputs.A1_datasets import datasets
 from B_input_config.B1_features import feature_definition
 from C_agent_config.C1_agent_config import agent_configuration
-from D_training.D1_training import agent_training
+from D_training.D2_training import agent_training
 from E_results.E1_results import results
 from E_results.E2_graphs import graphs_app
 from docs import (
