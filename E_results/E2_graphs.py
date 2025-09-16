@@ -1,14 +1,11 @@
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-from E_results import graphs
-
-
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler # Assuming StandardScaler is always part of the pipeline
 from sklearn.utils import estimator_html_repr
 import pydoc
-from D_training.D1_agent_rl import _append_to_erros_txt
+
 
 DATA_DIR = Path("A_inputs/A1_datasets")
 
@@ -33,8 +30,6 @@ def graphs_app():
         except Exception as e:
             error_message = f"Erro ao ler o arquivo '{file_path.name}': {e}"
             st.error(error_message)
-            _append_to_erros_txt(error_message)
-            _append_to_erros_txt(f"Exceção ao ler o arquivo: {e}")
             st.exception(e)
             st.stop()
 
@@ -88,6 +83,6 @@ def show_pipeline_graph(pipeline_steps_repr, height=400, show_params=True): # Ad
         except Exception as e:
             error_message = f"Erro ao gerar o diagrama do pipeline: {e}"
             st.error(error_message)
-            _append_to_erros_txt(error_message)
+            
     else:
         st.info("Nenhuma etapa de pipeline para exibir.")

@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from .utils import convert_column_to_list, convert_inf_values
+from functions import create_optimized_estimators_tsv # Import the new function
 
 def show_estimators():
     st.header("Estimadores do Agente")
@@ -14,6 +15,10 @@ def show_estimators():
     """)
     metadata_tab, view_tab = st.tabs(['Metadados', 'Exibição'])
     
+    # Define file paths for the original and optimized TSV
+    ORIGINAL_ESTIMATORS_TSV = st.session_state.files.get('estimators', 'D_training/estimators.tsv')
+    OPTIMIZED_ESTIMATORS_TSV = st.session_state.files.get('estimators_optimized', 'D_training/estimators_for_algorithm.tsv')
+
     with metadata_tab:
         # Descrição resumida
         
@@ -46,6 +51,19 @@ def show_estimators():
         | `output_y_structure` | String | Estrutura (shape) da saída `y` após `predict`. | `(n_samples,)` |
         | `output_y_types` | String | Tipos de dados da saída `y` após `predict`. | `float,int` |
         """)
+
+        st.markdown("--- ")
+        st.subheader("Otimização do Catálogo de Estimadores para o Agente")
+        st.markdown("""
+        O arquivo `estimators.tsv` completo contém diversas colunas que são úteis para documentação, mas não são diretamente utilizadas pelo algoritmo do agente durante o treinamento. Para otimizar o uso de memória e o desempenho do agente, você pode criar uma versão "resumida" deste arquivo.
+
+        Esta versão otimizada (`estimators_for_algorithm.tsv`) conterá apenas as colunas essenciais que o algoritmo do agente realmente consulta. O arquivo original (`estimators.tsv`) permanecerá inalterado.
+        """)
+        if st.button("Criar/Atualizar `estimators_for_algorithm.tsv`", help="Cria ou atualiza o arquivo TSV otimizado para o algoritmo do agente, contendo apenas as colunas essenciais."):
+            create_optimized_estimators_tsv(ORIGINAL_ESTIMATORS_TSV, OPTIMIZED_ESTIMATORS_TSV)
+            st.rerun() # Rerun to show toast message immediately
+        st.markdown("--- ")
+
     with view_tab:
         st.subheader("Tabela `estimators.tsv`")
 

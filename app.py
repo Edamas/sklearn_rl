@@ -27,5 +27,7 @@ if 'files' not in st.session_state:
             st.session_state['files'][name] = path
 
 # Cria o menu de navegação. ESSENCIAL para a estrutura da aplicação.
-from menu import create_menu  # deve ser importado só após a criação de 'files' na session_state
-create_menu()  # # Não remover ou alterar esta chamada.
+from menu import main  # deve ser importado só após a criação de 'files' na session_state
+
+if __name__ == '__main__':
+    main()  # Não remover ou alterar esta chamada.

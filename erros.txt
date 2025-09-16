@@ -1,21 +1,4 @@
-[2025-09-13 22:03:47] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'height'
-[2025-09-13 22:03:47] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'height'
-[2025-09-13 22:03:47] Exceção ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'height'
-[2025-09-13 22:04:23] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-13 22:04:23] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-13 22:04:23] Exceção ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-13 22:05:14] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-13 22:05:14] Falha ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-13 22:05:14] Exceção ao gerar o diagrama do pipeline: HtmlMixin.html() got an unexpected keyword argument 'scrolling'
-[2025-09-14 11:36:14] Falha ao gerar o diagrama do pipeline: PassiveAggressiveRegressor.__init__() got an unexpected keyword argument 'class_weight'
-[2025-09-14 11:36:14] Falha ao gerar o diagrama do pipeline: PassiveAggressiveRegressor.__init__() got an unexpected keyword argument 'class_weight'
-[2025-09-14 11:36:14] Exceção ao gerar o diagrama do pipeline: PassiveAggressiveRegressor.__init__() got an unexpected keyword argument 'class_weight'
-[2025-09-14 11:38:32] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:38:32] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:38:32] Exceção ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:38:36] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:38:36] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:38:36] Exceção ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:41:46] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:41:46] Falha ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
-[2025-09-14 11:41:46] Exceção ao gerar o diagrama do pipeline: _BaseRidgeCV.__init__() got an unexpected keyword argument 'copy_X'
+2025-09-15 14:18:53.182475: Erro ao refit pipeline: The 'alpha' parameter of MLPClassifier must be a float in the range [0.0, inf). Got 'float' instead.
+2025-09-15 14:19:04.497140: Erro ao refit pipeline: Negative values in data passed to MultinomialNB (input X).
+2025-09-15 14:19:06.399186: Erro ao refit pipeline: The 'alpha' parameter of MLPClassifier must be a float in the range [0.0, inf). Got 'float' instead.
+2025-09-15 14:52:46.916471: Erro ao refit pipeline: The 'alpha' parameter of RidgeClassifier must be a float in the range [0.0, inf) or an instance of 'numpy.ndarray'. Got 'float' instead.

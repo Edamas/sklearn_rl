@@ -220,10 +220,45 @@ def show_feature_editor(X: pd.DataFrame):
     return edited
 
 
-def _append_to_erros_txt(message):
-    """Appends a message with a timestamp to erros.txt."""
-    # Assuming erros.txt is in the project root
-    erros_file_path = st.session_state.files.get('erros', 'erros.txt')
-    timestamp = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')
-    with open(erros_file_path, 'a', encoding='utf-8') as f:
-        f.write(f"[{timestamp}] {message}\n")
+import os
+from pathlib import Path
+
+def create_optimized_estimators_tsv(original_tsv_path: str, output_tsv_path: str):
+    """
+    Reads the original estimators.tsv, selects only the actively used columns,
+    and saves them to a new optimized TSV file.
+    """
+    st.toast(f"Criando arquivo otimizado de estimadores: {output_tsv_path}")
+
+    actively_used_columns = [
+        'estimator_name', 'class_path', 'estimator_type', 'input_X_structure',
+        'input_X_types', 'input_y_structure', 'input_y_types', 'output_X_structure',
+        'output_X_types', 'output_y_structure', 'output_y_types', 'compatible_scores'
+    ]
+
+    try:
+        # Read the original TSV file
+        df_original = pd.read_csv(original_tsv_path, sep='\t', low_memory=False)
+
+        # Select only the actively used columns
+        df_optimized = df_original[actively_used_columns]
+
+        # Ensure the output directory exists
+        output_dir = Path(output_tsv_path).parent
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Save the optimized DataFrame to a new TSV file
+        df_optimized.to_csv(output_tsv_path, sep='\t', index=False)
+        st.toast(f"Arquivo otimizado de estimadores criado com sucesso em: {output_tsv_path}")
+        return True
+    except FileNotFoundError:
+        st.error(f"Erro: O arquivo original de estimadores '{original_tsv_path}' não foi encontrado.")
+        return False
+    except KeyError as e:
+        st.error(f"Erro: Coluna essencial faltando no arquivo original de estimadores: {e}. Verifique se '{original_tsv_path}' está completo.")
+        return False
+    except Exception as e:
+        st.error(f"Ocorreu um erro ao criar o arquivo otimizado de estimadores: {e}")
+        return False
+
+

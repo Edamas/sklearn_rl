@@ -8,7 +8,8 @@ def agent_configuration():
     if X_cols is None:
         return
 
-    st.subheader("2.3 Configuração do Agente")
+    st.subheader("2. Processing")
+    st.markdown("### Configuração do Agente")
     y_cols = st.session_state.get("y_cols")
     task_type = st.session_state.get("task_type")
 
@@ -84,22 +85,21 @@ def agent_configuration():
             compatible_estimators_step3['estimator_type'].isin(['Transformer', 'Cluster', 'CovarianceEstimator', 'OutlierDetector'])
         ]
 
-    st.markdown(f"Foram encontrados **{len(compatible_estimators)}** estimadores compatíveis com a sua configuração de dados.")
+    st.info(f"Foram encontrados **{len(compatible_estimators)}** estimadores compatíveis.")
 
     if compatible_estimators.empty:
-        st.error("Nenhum estimador compatível encontrado. Ajuste a seleção de features/alvos ou o arquivo de estimadores.")
+        st.warning("Nenhum estimador compatível encontrado. Ajuste features/alvos ou arquivo de estimadores.")
         st.stop()
 
-    st.markdown("### 2.2.1 Selecione o Estimador para Avaliação")
-    st.info("Selecione um ou mais estimadores compatíveis na tabela abaixo.")
+    st.markdown("### Selecione o Estimador para Avaliação")
     
     selected_indices = df_select_rows(
         compatible_estimators[['estimator_name', 'estimator_type', 'category']],
-        prompt="Selecione um ou mais estimadores na tabela acima."
+        prompt="Selecione estimadores compatíveis na tabela abaixo."
     )
 
     if not selected_indices:
-        st.warning("Nenhum estimador selecionado para avaliação. Por favor, selecione pelo menos um.")
+        st.warning("Nenhum estimador selecionado. Selecione pelo menos um.")
         st.stop()
 
     selected_estimators_df = compatible_estimators.loc[selected_indices]
@@ -109,7 +109,7 @@ def agent_configuration():
     st.session_state.selected_estimator_names = selected_estimator_names
 
     num_episodes = st.slider(
-        "2.3.2 Episódios de Treinamento",
+        "Episódios de Treinamento",
         min_value=1,
         max_value=1000,
         value=100,

@@ -13,7 +13,7 @@ from sklearn.pipeline import Pipeline
 import importlib # Added for dynamic imports <- (necessário?)
 # from sklearn.experimental import enable_iterative_imputer # nào usado
 
-estimators_file_path = st.session_state.files.get('estimators', 'D_training/estimators.tsv')
+estimators_file_path = st.session_state.files.get('estimators_optimized', 'D_training/estimators_for_algorithm.tsv')
 parameters_file_path = st.session_state.files.get('parameters', 'D_training/parameters.tsv')
 class AgentRL:
     def __init__(self, files_dict, project_root):
@@ -220,6 +220,13 @@ class AgentRL:
                     #     processed_params[param_name] = np.std(X_data) # Exemplo: desvio padrão dos dados
                     # elif param_name == 'mean' and X_data is not None:
                     #     processed_params[param_name] = np.mean(X_data) # Exemplo: média dos dados
+                    elif param_value == 'float':
+                        # Get min/max for the specific parameter from parameters_df
+                        param_info = self.parameters_df[(self.parameters_df['param_name'] == param_name) & 
+                                                        (self.parameters_df['estimators_list'].str.contains(estimator_name, na=False))].iloc[0]
+                        min_val = float(param_info['param_min'])
+                        max_val = float(param_info['param_max'])
+                        processed_params[param_name] = np.random.uniform(min_val, max_val)
                     else:
                         processed_params[param_name] = param_value
                 else:
