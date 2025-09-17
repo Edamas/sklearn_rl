@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from functions import df_select_rows
 
 def render_gestao_tcc():
     st.title("Gestão do TCC")
@@ -12,76 +13,230 @@ def render_gestao_tcc():
 
 **Justificativa:** O campo do Aprendizado de Máquina (ML) é complexo. A automação (AutoML) surge para democratizar seu acesso. Este trabalho propõe o uso de Aprendizado por Reforço (RL) para preencher a lacuna de abordagens mais inteligentes em AutoML.""")
         st.divider()
-        st.header("Rúbricas da Banca de Avaliação")
-        st.markdown("""**Estrutura do TCC**
-- **Descrição:** Descreve claramente e de maneira completa todos os tópicos solicitados.
+        st.header("Rubricas de Avaliação (Nota 8)")
 
-**Apresentação oral**
-- **Descrição:** Apresentar oralmente o trabalho, respeitando o intervalo entre 15 a 20 minutos e de uma forma clara, com domínio.""")
+        @st.cache_data(show_spinner=False)
+        def load_and_process_rubricas_data_for_gestao_do_tcc():
+            import pandas as pd
+            import re
+
+            try:
+                with open("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.md", 'r', encoding='utf-8') as f:
+                    md_content = f.read()
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.md não encontrado.")
+                return pd.DataFrame()
+
+            entrega = None
+            competencia = None
+            rubricas_map = {}
+
+            for line in md_content.splitlines():
+                line = line.strip()
+                if line.startswith('# '):
+                    match = re.search(r'`(Entrega[^`]+)`', line)
+                    if match:
+                        entrega = match.group(1)
+                elif line.startswith('##### '):
+                    match = re.search(r'`([^`]+)`', line)
+                    if match:
+                        competencia = match.group(1)
+                elif re.match(r'^\d+\.\d+\.\d+', line):
+                    rubrica_text_from_md = re.sub(r'^\d+\.\d+\.\d+\s+', '', line).strip()
+                    rubrica_id_match = re.match(r'^(\d+\.\d+\.\d+)', line)
+                    if rubrica_id_match:
+                        rubrica_id = rubrica_id_match.group(1)
+                        rubricas_map[rubrica_id] = {
+                            "Entrega": entrega,
+                            "Competência": competencia,
+                        }
+            
+            df_map = pd.DataFrame.from_dict(rubricas_map, orient='index').reset_index().rename(columns={'index': 'id'})
+
+            try:
+                df_rubricas = pd.read_csv("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.tsv", sep='\t')
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.tsv não encontrado.")
+                return pd.DataFrame()
+            
+            def extract_id(text):
+                match = re.match(r'^(\d+\.\d+\.\d+)', str(text))
+                if match:
+                    return match.group(1)
+                return None
+
+            df_rubricas['id'] = df_rubricas['Rubrica de Avaliação'].apply(extract_id)
+            df_full = pd.merge(df_rubricas, df_map, on='id', how='left')
+            return df_full
+
+        df_full = load_and_process_rubricas_data_for_gestao_do_tcc()
+        
+        if not df_full.empty:
+            funcao_nome = "Gestão do TCC"
+            if funcao_nome in df_full.columns:
+                df_filtered = df_full[df_full[funcao_nome] == 8].copy()
+
+                if not df_filtered.empty:
+                    df_display = df_filtered[['Rubrica de Avaliação']].copy()
+                    df_display.rename(columns={'Rubrica de Avaliação': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
+                    
+                    selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_do_tcc")
+
+                    if selected_index is not None and selected_index in df_filtered.index:
+                        selected_rubrica = df_filtered.loc[selected_index]
+                        st.subheader("Ficha da Rubrica")
+                        
+                        st.markdown(f"**Entrega:** {selected_rubrica.get('Entrega', 'N/A')}")
+                        st.markdown(f"**Competência:** {selected_rubrica.get('Competência', 'N/A')}")
+                        st.markdown(f"**Rubrica de Avaliação:** {selected_rubrica.get('Rubrica de Avaliação', 'N/A')}")
+                        st.markdown(f"**Aplicação no projeto:** {funcao_nome}")
+                else:
+                    st.info(f"Nenhuma rubrica com nota 8 para '{funcao_nome}'.")
+            else:
+                st.error(f"Coluna '{funcao_nome}' não encontrada em rubricas.tsv.")
 
         st.divider()
-        with st.expander("Rubricas de avaliação relacionadas", expanded=False):
-            st.markdown("""# 3. `Banca de Avaliação (2 avaliadores)`
-##### 3.1 	`Apresentação oral`
-	3.1.1 	(Cada aluno deve) Apresentar oralmente o trabalho
-	3.1.2 	Apresentar respeitando o intervalo entre 15 a 20 minutos Apresentar o trabalho de uma forma clara.
-	3.1.3 	Garantir que o trabalho seja expresso (apresentado) com domínio (sem dificuldades)
-##### 3.2 	`Comunicação / Linguagem`
-	3.2.1 	Empregar habilidades para comunicar-se utilizando as variadas linguagens
-	3.2.2 	Garantir que a estruturação da escrita geral facilita a compreensão.
-	3.2.3 	Garantir que a escrita não contém erros de ortografia
-	3.2.4 	Garantir que a escrita não contém erros de gramática
-	3.2.5 	Garantir que a escrita não contém erros de pontuação
-	3.2.6 	Criar estratégia para que o texto seja organizado
-	3.2.7 	Criar estratégia para que o texto seja coerente, sem trechos incoerentes
-	3.2.8 	Criar estratégia para que o texto apresente sentido
-	3.2.9 	Criar estratégia para que o texto seja bem estruturado
-	3.2.10 	Criar estratégia para que o texto tenha sempre articulação entre as partes
-	3.2.11 	Apresentar propositalmente sentido e articulação na integralidade do texto
-	3.2.12 	Escrever todas as citações e referências bibliográficas na norma ABNT
-##### 3.3 	`Considerações finais`
-	3.3.1 	Apresentar claramente as contribuições do trabalho realizado
-	3.3.2 	Apresentar claramente as limitações do trabalho realizado
-	3.3.3 	Apresentar de forma completa as contribuições ou limitações do trabalho
-##### 3.4 	`Estrutura do TCC`
-	3.4.1 	Descreve claramente e de maneira completa todos os tópicos solicitados
-	3.4.2 	Garantir que todos os tópicos solicitados sejam claramente atendidos
-	3.4.3 	Demonstrar empenho
-	3.4.4 	Demonstrar esforço em buscar as informações solicitadas
-##### 3.5 	`Método/Métodos`
-	3.5.1 	Apresentar a competência de escolha e desenvolvimento do método
-	3.5.2 	Apresentar o processo de escolha ou combinação dos métodos
-	3.5.3 	Escolher um ou mais métodos adequados
-	3.5.4 	Pesquisar além da literatura (convencional)
-	3.5.5 	Utilizar (deixar claro) referencial de fontes confiáveis
-	3.5.6 	Adaptar os métodos a partir da sua capacidade de análise, criação e ajustes a uma realidade apresentada
-	3.5.7 	Pesquisar "mais" sobre o assunto
-	3.5.8 	Dar contribuições ao texto original
-	3.5.9 	Demonstrar compreensão do método como um caminho para um fim determinado
-	3.5.10 	Ater-se ao tema
-	3.5.11 	Eliminar redundâncias de conteúdo (com a parte introdutória do texto)
-##### 3.6 	`Resolução de problemas / Objetivo geral / Objetivos específicos / Desenvolvimento`
-	3.6.1 	Empregar habilidades para entender e resolver problemas de um cenário profissional
-	3.6.2 	Empregar habilidades para entender e resolver problemas de um cenário profissional
-##### 3.7 	`Resolução de problemas / Objetivo geral / Objetivos específicos /Desenvolvimento`
-	3.7.1 	Desenvolver o problema solucionado (justificativa)
-	3.7.2 	Descrever os desafios para a solução
-	3.7.3 	Descrever claramente os objetivos
-	3.7.4 	Distinguir os objetivos gerais dos específicos
-	3.7.5 	Deve haver mais de um objetivo complementar
-	3.7.6 	Apresentar um objetivo geral
-	3.7.7 	Apresentar múltiplos objetivos complementares
-	3.7.8 	Apresentar os problemas de forma abrangente (não parte dele)
-	3.7.9 	Apresentar claramente e completa as limitações do trabalho realizado
-	3.7.10 	Apresentar de forma clara e completa as contribuições do trabalho realizado
-	3.7.11 	Apresentar clareza na formulação do problema/solução científica
-	3.7.12 	Apresentar clareza no desenvolvimento do problema/solução científica
-##### 3.8 	`Resultados / Discussão dos dados`
-	3.8.1 	Analisar os resultadosà luz do referencial teórico
-	3.8.2 	Apresentar os resultados""")
+        st.subheader('Organograma funcional do TCC')
+        st.markdown('''
+<style>
+    .organograma table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .organograma th, .organograma td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        vertical-align: top;
+    }
+    .organograma .team-academics {
+        background-color: #e6f7ff;
+    }
+    .organograma .team-developers {
+        background-color: #f0f0f0;
+    }
+    .organograma .io {
+        font-size: 12px;
+        color: #555;
+        text-align: left;
+    }
+    .organograma .arrows {
+        font-size: 20px;
+        color: #555;
+    }
+</style>
+<div class="organograma">
+    <table>
+        <tr>
+            <th colspan="4" class="team-academics">Time Academics</th>
+        </tr>
+        <tr>
+            <!-- Gestão Acadêmica -->
+            <td>
+                <b>Gestão Acadêmica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Resumos de disciplinas<br>
+                &lt; Pesquisa em bibliografias<br>
+                &lt; Entregas AVA</div>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Lista de Disciplinas<br>
+                &gt; Orientações<br>
+                &gt; Comunicação em Fóruns</div>
+            </td>
+            <!-- Gestão de Projetos (TCC) -->
+            <td>
+                <b>Gestão de Projetos (TCC)</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Lista de Disciplinas<br>
+                &lt; Planos de sprints</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Objetivos, justificativas<br>
+                &gt; Cronograma</div>
+            </td>
+            <!-- Pesquisa Acadêmica -->
+            <td>
+                <b>Pesquisa Acadêmica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Objetivos, justificativas<br>
+                &lt; Exploração de bibliotecas</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Referências bibliográficas<br>
+                &gt; Embasamento teórico</div>
+            </td>
+            <!-- Desenvolvimento Acadêmico -->
+            <td>
+                <b>Desenvolvimento Acadêmico</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Referências bibliográficas<br>
+                &lt; Artefatos (prints, vídeos)</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Templates ABNT<br>
+                &gt; Vídeo final (YouTube)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4"><span class="arrows">↕️</span></td>
+        </tr>
+        <tr>
+            <th colspan="4" class="team-developers">Time Developers</th>
+        </tr>
+        <tr>
+            <!-- Gestão de Documentação de Software -->
+            <td>
+                <b>Gestão de Documentação de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Docs técnicos e de libs</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Documentação "traduzida"</div>
+            </td>
+            <!-- Gestão de Projeto de Software -->
+            <td>
+                <b>Gestão de Projeto de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Documentação técnica<br>
+                &lt; Objetivos do TCC</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Planos de sprints<br>
+                &gt; Backlog</div>
+            </td>
+            <!-- Pesquisa Científica -->
+            <td>
+                <b>Pesquisa Científica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Planos de sprints<br>
+                &lt; Pesquisa de mercado</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Resultados experimentais</div>
+            </td>
+            <!-- Desenvolvimento de Software -->
+            <td>
+                <b>Desenvolvimento de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Resultados experimentais<br>
+                &lt; Requisitos da Proposta</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Código e Artefatos visuais (GitHub)</div>
+            </td>
+        </tr>
+    </table>
+</div>
+''', unsafe_allow_html=True)
+            
         st.divider()
-        st.header("Referências e Fontes")
-        st.markdown("- N/A")
+        
+    
+    st.divider()
+    st.header("Referências e Fontes")
+    st.markdown("- N/A")
+    
     with col2:
         st.subheader("Organograma Funcional")
         data = {
@@ -101,5 +256,4 @@ def render_gestao_tcc():
         st.subheader("Requisitos")
         st.markdown("- Delinear área de estudo.\n- Apresentar autores.")
 
-        st.divider()
-        st.markdown("### Organograma Funcional da Equipe\nEste organograma detalha as funções e interações entre os membros das equipes Academics e Developers, incluindo suas comunicações internas e externas.\n\n#### Equipe Academics\n| Gestão Acadêmica | Gestão de Projetos (TCC) | Pesquisa Acadêmica | Desenvolvimento Acadêmico |\n| :---: | :---: | :---: | :---: |\n| < Orientação da Orientadora, Estratégias de Relatório <br> Atualização da Orientadora, Resumos de disciplinas Relacionadas, Pesquisa em bibliografias do curso <br> > Lista de Disciplinas, Orientações Orientadora, Rubricas, Conteúdos disciplina TCC, comunicação em Forums, Bibliografia do TCC > | < Objetivos do projeto, justificativas, cronograma, estratégias definidas <br> Gestão de Projeto Acadêmico <br> > Objetivos, justificativas, cronograma, estratégias definidas > | < Referências bibliográficas, orientações da disciplina, embasamento teórico <br> Pesquisa Acadêmica de Data Science <br> > Exploração de bibliotecas, análise de dados, resultados experimentais > | < Templates ABNT, organização do Word, vídeo final, link para capa <br> Desenvolvimento Acadêmico <br> > YouTube, Teams, OneDrive > |\n\n| ^ | ^ | ^ | ^ |\n| v | v | v | v |\n\n#### Equipe Developers\n| Gestão Acadêmica (Doc) | Gestão de Projetos (Proposta) | Pesquisa Científica | Desenvolvimento de Software |\n| :---: | :---: | :---: | :---: |\n| < Documentação técnica, fóruns SkLearn, Docs compartilhados <br> Gestão de Documentação de Software <br> > Documentação técnica, fóruns SkLearn, Docs compartilhados > | < Planos de sprints, backlog, integração acadêmica, coordenação técnica <br> Gestão de Projeto de Software <br> > Planos de sprints, backlog, integração acadêmica, coordenação técnica > | < Exploração de bibliotecas, análise de dados, resultados experimentais <br> Pesquisa científica de Data Science <br> > Exploração de bibliotecas, análise de dados, resultados experimentais > | < Docs SkLearn <br> Desenvolvimento de Software <br> > GitHub, Streamlit Community Cloud, Teams, Documentação e Fóruns de Bibliotecas (sklearn, streamlit) > |\n\n*Conexões Horizontais e Verticais representadas pelas setas de Input (<) e Output (>) dentro de cada célula e entre as linhas de equipes.*")
+        

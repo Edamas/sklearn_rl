@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from functions import df_select_rows
 
 def render_gestao_proposta():
     st.title("Gestão da Proposta")
@@ -114,10 +115,229 @@ def render_gestao_proposta():
             st.markdown("<h5 style='color: #20B2AA;'><b>Fontes de Receita</b></h5>", unsafe_allow_html=True)
             st.markdown("- Nota de aprovação no TCC\n- Potencial de publicação\n- Criação de portfólio e propriedade intelectual")
         
+        st.header("Organograma Funcional do TCC")
+        st.markdown('''
+<style>
+    .organograma table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .organograma th, .organograma td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+        vertical-align: top;
+    }
+    .organograma .team-academics {
+        background-color: #e6f7ff;
+    }
+    .organograma .team-developers {
+        background-color: #f0f0f0;
+    }
+    .organograma .io {
+        font-size: 12px;
+        color: #555;
+        text-align: left;
+    }
+    .organograma .arrows {
+        font-size: 20px;
+        color: #555;
+    }
+</style>
+<div class="organograma">
+    <table>
+        <tr>
+            <th colspan="4" class="team-academics">Time Academics</th>
+        </tr>
+        <tr>
+            <!-- Gestão Acadêmica -->
+            <td>
+                <b>Gestão Acadêmica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Resumos de disciplinas<br>
+                &lt; Pesquisa em bibliografias<br>
+                &lt; Entregas AVA</div>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Lista de Disciplinas<br>
+                &gt; Orientações<br>
+                &gt; Comunicação em Fóruns</div>
+            </td>
+            <!-- Gestão de Projetos (TCC) -->
+            <td>
+                <b>Gestão de Projetos (TCC)</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Lista de Disciplinas<br>
+                &lt; Planos de sprints</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Objetivos, justificativas<br>
+                &gt; Cronograma</div>
+            </td>
+            <!-- Pesquisa Acadêmica -->
+            <td>
+                <b>Pesquisa Acadêmica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Objetivos, justificativas<br>
+                &lt; Exploração de bibliotecas</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Referências bibliográficas<br>
+                &gt; Embasamento teórico</div>
+            </td>
+            <!-- Desenvolvimento Acadêmico -->
+            <td>
+                <b>Desenvolvimento Acadêmico</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Referências bibliográficas<br>
+                &lt; Artefatos (prints, vídeos)</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Templates ABNT<br>
+                &gt; Vídeo final (YouTube)</div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4"><span class="arrows">↕️</span></td>
+        </tr>
+        <tr>
+            <th colspan="4" class="team-developers">Time Developers</th>
+        </tr>
+        <tr>
+            <!-- Gestão de Documentação de Software -->
+            <td>
+                <b>Gestão de Documentação de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Docs técnicos e de libs</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Documentação "traduzida"</div>
+            </td>
+            <!-- Gestão de Projeto de Software -->
+            <td>
+                <b>Gestão de Projeto de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Documentação técnica<br>
+                &lt; Objetivos do TCC</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Planos de sprints<br>
+                &gt; Backlog</div>
+            </td>
+            <!-- Pesquisa Científica -->
+            <td>
+                <b>Pesquisa Científica</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Planos de sprints<br>
+                &lt; Pesquisa de mercado</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Resultados experimentais</div>
+            </td>
+            <!-- Desenvolvimento de Software -->
+            <td>
+                <b>Desenvolvimento de Software</b><br>
+                <div class="io"><b>Input:</b><br>
+                &lt; Resultados experimentais<br>
+                &lt; Requisitos da Proposta</div><br>
+                <span class="arrows">↔️</span><br>
+                <div class="io"><b>Output:</b><br>
+                &gt; Código e Artefatos visuais (GitHub)</div>
+            </td>
+        </tr>
+    </table>
+</div>
+''', unsafe_allow_html=True)
         st.divider()
 
+        st.divider()
+        st.header("Rubricas de Avaliação (Nota 8)")
+
+        @st.cache_data(show_spinner=False)
+        def load_and_process_rubricas_data_for_gestao_da_proposta():
+            import pandas as pd
+            import re
+
+            try:
+                with open("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.md", 'r', encoding='utf-8') as f:
+                    md_content = f.read()
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.md não encontrado.")
+                return pd.DataFrame()
+
+            entrega = None
+            competencia = None
+            rubricas_map = {}
+
+            for line in md_content.splitlines():
+                line = line.strip()
+                if line.startswith('# '):
+                    match = re.search(r'`(Entrega[^`]+)`', line)
+                    if match:
+                        entrega = match.group(1)
+                elif line.startswith('##### '):
+                    match = re.search(r'`([^`]+)`', line)
+                    if match:
+                        competencia = match.group(1)
+                elif re.match(r'^\d+\.\d+\.\d+', line):
+                    rubrica_text_from_md = re.sub(r'^\d+\.\d+\.\d+\s+', '', line).strip()
+                    rubrica_id_match = re.match(r'^(\d+\.\d+\.\d+)', line)
+                    if rubrica_id_match:
+                        rubrica_id = rubrica_id_match.group(1)
+                        rubricas_map[rubrica_id] = {
+                            "Entrega": entrega,
+                            "Competência": competencia,
+                        }
+            
+            df_map = pd.DataFrame.from_dict(rubricas_map, orient='index').reset_index().rename(columns={'index': 'id'})
+
+            try:
+                df_rubricas = pd.read_csv("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.tsv", sep='\t')
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.tsv não encontrado.")
+                return pd.DataFrame()
+            
+            def extract_id(text):
+                match = re.match(r'^(\d+\.\d+\.\d+)', str(text))
+                if match:
+                    return match.group(1)
+                return None
+
+            df_rubricas['id'] = df_rubricas['Rubrica de Avaliação'].apply(extract_id)
+            df_full = pd.merge(df_rubricas, df_map, on='id', how='left')
+            return df_full
+
+        df_full = load_and_process_rubricas_data_for_gestao_da_proposta()
+        
+        if not df_full.empty:
+            funcao_nome = "Gestão da Proposta"
+            if funcao_nome in df_full.columns:
+                df_filtered = df_full[df_full[funcao_nome] == 8].copy()
+
+                if not df_filtered.empty:
+                    df_display = df_filtered[['Rubrica de Avaliação']].copy()
+                    df_display.rename(columns={'Rubrica de Avaliação': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
+                    
+                    selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_da_proposta")
+
+                    if selected_index is not None and selected_index in df_filtered.index:
+                        selected_rubrica = df_filtered.loc[selected_index]
+                        st.subheader("Ficha da Rubrica")
+                        
+                        st.markdown(f"**Entrega:** {selected_rubrica.get('Entrega', 'N/A')}")
+                        st.markdown(f"**Competência:** {selected_rubrica.get('Competência', 'N/A')}")
+                        st.markdown(f"**Rubrica de Avaliação:** {selected_rubrica.get('Rubrica de Avaliação', 'N/A')}")
+                        st.markdown(f"**Aplicação no projeto:** {funcao_nome}")
+                else:
+                    st.info(f"Nenhuma rubrica com nota 8 para '{funcao_nome}'.")
+            else:
+                st.error(f"Coluna '{funcao_nome}' não encontrada em rubricas.tsv.")
+
+    with col2:
+        st.divider()
         st.header("Referências e Fontes")
-        st.markdown("""-   **PROJECT MANAGEMENT INSTITUTE. *Um guia do conhecimento em gerenciamento de projetos (Guia PMBOK®)*. 6. ed. Newtown Square, PA: Project Management Institute, 2017.**
+        st.markdown("""
+-   **PROJECT MANAGEMENT INSTITUTE. *Um guia do conhecimento em gerenciamento de projetos (Guia PMBOK®)*. 6. ed. Newtown Square, PA: Project Management Institute, 2017.**
     -   **Aplicação:** Utilizado para estruturar o Project Charter, definindo escopo, planejamento e cronograma.
 
 -   **OSTERWALDER, Alexander; PIGNEUR, Yves. *Business Model Generation: inovação em modelos de negócios*. Rio de Janeiro: Alta Books, 2011.**
@@ -126,92 +346,6 @@ def render_gestao_proposta():
 -   **BROWN, Tim. *Design thinking*. Rio de Janeiro: Elsevier, 2010.**
     -   **Aplicação:** Utilizado no processo de seleção da proposta, com Divergência (brainstorming) e Convergência (avaliação e pontuação).
 """)
-
-        st.divider()
-        st.header("Rubricas de avaliação relacionadas")
-        st.markdown("""# 1. `Entrega 1 - Projeto`
-##### 1.1 `Colaborativa`
-	1.1.1 	Individual: Contribuir para a construção conjunta buscando objetivos comuns
-	1.1.2 	Individual: se integrar com o grupo
-	1.1.3 	Individual: participar de todas as reuniões
-	1.1.4 	Individual: contribuir com trabalhos entregues
-	1.1.5 	Individual: Contribuiu entregando o combinado de forma completa
-	1.1.6 	Individual: Contribuir com qualidade
-	1.1.7 	Individual: Ser pontual, respeitando o prazo/tempo combinado
-##### 1.2 `Comunicativa`
-	1.2.1 	Empregar habilidades para comunicar-se utilizando as variadas linguagens
-	1.2.2 	Garantir que a estruturação da escrita geral facilita a compreensão.
-	1.2.3 	Garantir que a escrita não contém erros de ortografia
-	1.2.4 	Garantir que a escrita não contém erros de gramática
-	1.2.5 	Garantir que a escrita não contém erros de pontuação
-	1.2.6 	Criar estratégia para que o texto seja organizado
-	1.2.7 	Criar estratégia para que o texto seja coerente, sem trechos incoerentes
-	1.2.8 	Criar estratégia para que o texto apresente sentido
-	1.2.9 	Criar estratégia para que o texto seja bem estruturado
-	1.2.10 	Criar estratégia para que o texto tenha sempre articulação entre as partes
-	1.2.11 	Apresentar propositalmente sentido e articulação na integralidade do texto
-	1.2.12 	Escrever todas as citações e referências bibliográficas na norma ABNT
-##### 1.3 	`Cronograma`
-	1.3.1 	Elaborar um cronograma robusto
-	1.3.2 	Destacar os materiais
-	1.3.3 	Destacar recursos (humanos) - Responsáveis por cada atividade
-	1.3.4 	Especificar limites de datas
-	1.3.5 	Indicar adequadamente como a pesquisa ocorrerá
-##### 1.4 	`Inovação`
-	1.4.1 	Empregar habilidades e estratégias para criar soluções profissionais inovadoras
-	1.4.2 	Contribuir com responsabilidade para inovar (no processo de TCC)
-	1.4.3 	Contribuir com responsabilidade na análise de dados da solução/pesquisa (no processo de TCC)
-	1.4.4 	Buscar inovações de formatação (no processo de TCC)
-	1.4.5 	Buscar inovações de escrita  no processo de TCC
-	1.4.6 	Buscar inovações na relação entre as pessoas
-	1.4.7 	Buscar inovar na análise de dados do trabalho que foi proposto, a partir conhecimento adquirido durante o curso
-	1.4.8 	Assumir riscos
-	1.4.9 	Compreender o risco como tentativa de inovar, independente de sucesso
-	1.4.10 	Se comprometer mais com os riscos para testar uma inovação para o trabalho
-##### 1.5 	`Investigativa`
-	1.5.1 	Empregar habilidades para conciliar a teoria acadêmica com problema real
-	1.5.2 	Restringir, Não deixar abrangente
-	1.5.3 	O grupo escolheu o método adequado e/ou combinou alguns métodos disponíveis
-##### 1.6 	`Método/Métodos`
-	1.6.1 	Apresentar a competência de escolha e desenvolvimento do método
-	1.6.2 	Apresentar o processo de escolha ou combinação dos métodos
-	1.6.3 	Escolher um ou mais métodos adequados
-	1.6.4 	Pesquisar além da literatura (convencional)
-	1.6.5 	Utilizar (deixar claro) referencial de fontes confiáveis
-	1.6.6 	Adaptar os métodos a partir da sua capacidade de análise, criação e ajustes a uma realidade apresentada
-	1.6.7 	Pesquisar "mais" sobre o assunto
-	1.6.8 	Dar contribuições ao texto original
-	1.6.9 	Demonstrar compreensão do método como um caminho para um fim determinado
-	1.6.10 	Ater-se ao tema
-	1.6.11 	Eliminar redundâncias de conteúdo (com a parte introdutória do texto)
-##### 1.7 	`Profissional / Referencial teórico`
-	1.7.1 	Relacionar conhecimentos desenvolvidos com o curso
-	1.7.2 	Empregar habilidades de relacionar os conhecimentos desenvolvidos no curso com o campo profissional
-	1.7.3 	Não fugir do tema
-	1.7.4 	Não ser redundante com a parte introdutória do texto
-	1.7.5 	Escolher e/ou combinar métodos adequados disponíveis
-	1.7.6 	Pesquisar além da literatura apresentada em fontes confiáveis (Pesquisar mais sobre o assunto)
-	1.7.7 	Dar contribuições ao texto original (ampliar compreensão sobre o tema)
-	1.7.8 	Adaptar os métodos a partir da sua capacidade de análise, criação e ajustes a uma realidade apresentada
-	1.7.9 	Evidenciar compreensão do método como um caminho para um fim determinado.
-##### 1.8 	`Resolução de problemas / Objetivo geral / Objetivos específicos / Desenvolvimento`
-	1.8.1 	Empregar habilidades para entender e resolver problemas de um cenário profissional
-##### 1.9 	`Resolução de problemas / Objetivo geral / Objetivos específicos /Desenvolvimento`
-	1.9.1 	Desenvolver o problema solucionado (justificativa)
-	1.9.2 	Descrever os desafios para a solução
-	1.9.3 	Descrever claramente os objetivos
-	1.9.4 	Distinguir os objetivos gerais dos específicos
-	1.9.5 	Deve haver mais de um objetivo complementar
-	1.9.6 	Apresentar um objetivo geral
-	1.9.7 	Apresentar múltiplos objetivos complementares
-	1.9.8 	Apresentar os problemas de forma abrangente (não parte dele)
-	1.9.9 	Apresentar claramente e completa as limitações do trabalho realizado
-	1.9.10 	Apresentar de forma clara e completa as contribuições do trabalho realizado
-	1.9.11 	Apresentar clareza na formulação do problema/solução científica
-	1.9.12 	Apresentar clareza no desenvolvimento do problema/solução científica
-##### 1.10 	`Tecnológica`
-	1.10.1 	Usar tecnologia para solucionar problemas""")
-
     with col2:
         st.subheader("Organograma Funcional")
         data = {

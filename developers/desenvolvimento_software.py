@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from functions import df_select_rows
 
 def render_desenvolvimento_software():
     st.title("Desenvolvimento de Software")
@@ -76,83 +77,94 @@ def render_desenvolvimento_software():
         st.markdown("- [Repositório GitHub](https://github.com/Edamas/sklearn_rl)\n- [Aplicação Streamlit Live](https://sklearn-rl.streamlit.app/)")
         st.divider()
 
-        st.header("Referências e Fontes")
-        st.markdown("- N/A")
+        
 
         st.divider()
-        st.header("Rubricas de avaliação relacionadas")
-        st.markdown("""# 2. `Entrega 2 - Desenvolvimento`
-##### 2.1 	`Colaborativa`
-	2.1.1 	Individual: Contribuir para a construção conjunta buscando objetivos comuns
-	2.1.2 	Individual: se integrar com o grupo
-	2.1.3 	Individual: participar de todas as reuniões
-	2.1.4 	Individual: contribuir com trabalhos entregues
-	2.1.5 	Individual: Contribuiu entregando o combinado de forma completa
-	2.1.6 	Individual: Contribuir com qualidade
-	2.1.7 	Individual: Ser pontual, respeitando o prazo/tempo combinado
-##### 2.2 	`Comunicação / Linguagem`
-	2.2.1 	Empregar habilidades para comunicar-se utilizando as variadas linguagens
-	2.2.2 	Garantir que a estruturação da escrita geral facilita a compreensão.
-	2.2.3 	Garantir que a escrita não contém erros de ortografia
-	2.2.4 	Garantir que a escrita não contém erros de gramática
-	2.2.5 	Garantir que a escrita não contém erros de pontuação
-	2.2.6 	Criar estratégia para que o texto seja organizado
-	2.2.7 	Criar estratégia para que o texto seja coerente, sem trechos incoerentes
-	2.2.8 	Criar estratégia para que o texto apresente sentido
-	2.2.9 	Criar estratégia para que o texto seja bem estruturado
-	2.2.10 	Criar estratégia para que o texto tenha sempre articulação entre as partes
-	2.2.11 	Apresentar propositalmente sentido e articulação na integralidade do texto
-	2.2.12 	Escrever todas as citações e referências bibliográficas na norma ABNT
-##### 2.3 	`Considerações finais`
-	2.3.1 	Apresentar claramente as contribuições do trabalho realizado
-	2.3.2 	Apresentar claramente as limitações do trabalho realizado
-	2.3.3 	Apresentar de forma completa as contribuições ou limitações do trabalho
-##### 2.4 	`Inovação`
-	2.4.1 	Empregar habilidades e estratégias para criar soluções profissionais inovadoras
-	2.4.2 	Contribuir com responsabilidade para inovar (no processo de TCC)
-	2.4.3 	Contribuir com responsabilidade na análise de dados da solução/pesquisa (no processo de TCC)
-	2.4.4 	Buscar inovações de formatação (no processo de TCC)
-	2.4.5 	Buscar inovações de escrita  no processo de TCC
-	2.4.6 	Buscar inovações na relação entre as pessoas
-	2.4.7 	Buscar inovar na análise de dados do trabalho que foi proposto, a partir conhecimento adquirido durante o curso
-	2.4.8 	Assumir riscos
-	2.4.9 	Compreender o risco como tentativa de inovar, independente de sucesso
-	2.4.10 	Se comprometer mais com os riscos para testar uma inovação para o trabalho
-##### 2.5 	`Investigativa`
-	2.5.1 	Empregar habilidades para conciliar a teoria acadêmica com problema real
-	2.5.2 	Restringir, Não deixar abrangente
-	2.5.3 	O grupo escolheu o método adequado e/ou combinou alguns métodos disponíveis
-##### 2.6 	`Profissional / Referencial teórico`
-	2.6.1 	Relacionar conhecimentos desenvolvidos com o curso
-	2.6.2 	Empregar habilidades de relacionar os conhecimentos desenvolvidos no curso com o campo profissional
-	2.6.3 	Não fugir do tema
-	2.6.4 	Não ser redundante com a parte introdutória do texto
-	2.6.5 	Escolher e/ou combinar métodos adequados disponíveis
-	2.6.6 	Pesquisar além da literatura apresentada em fontes confiáveis (Pesquisar mais sobre o assunto)
-	2.6.7 	Dar contribuições ao texto original (ampliar compreensão sobre o tema)
-	2.6.8 	Adaptar os métodos a partir da sua capacidade de análise, criação e ajustes a uma realidade apresentada
-	2.6.9 	Evidenciar compreensão do método como um caminho para um fim determinado.
-##### 2.7 	`Resolução de problemas / Objetivo geral / Objetivos específicos / Desenvolvimento`
-	2.7.1 	Empregar habilidades para entender e resolver problemas de um cenário profissional
-##### 2.8 	`Resolução de problemas / Objetivo geral / Objetivos específicos /Desenvolvimento`
-	2.8.1 	Desenvolver o problema solucionado (justificativa)
-	2.8.2 	Descrever os desafios para a solução
-	2.8.3 	Descrever claramente os objetivos
-	2.8.4 	Distinguir os objetivos gerais dos específicos
-	2.8.5 	Deve haver mais de um objetivo complementar
-	2.8.6 	Apresentar um objetivo geral
-	2.8.7 	Apresentar múltiplos objetivos complementares
-	2.8.8 	Apresentar os problemas de forma abrangente (não parte dele)
-	2.8.9 	Apresentar claramente e completa as limitações do trabalho realizado
-	2.8.10 	Apresentar de forma clara e completa as contribuições do trabalho realizado
-	2.8.11 	Apresentar clareza na formulação do problema/solução científica
-	2.8.12 	Apresentar clareza no desenvolvimento do problema/solução científica
-##### 2.9 	`Resultados / Discussão dos dados`
-	2.9.1 	Analisar os resultadosà luz do referencial teórico
-	2.9.2 	Apresentar os resultados
-##### 2.10 	`Tecnológica`
-	2.10.1 	Usar tecnologia para solucionar problemas""")
+        st.header("Rubricas de Avaliação (Nota 8)")
 
+        @st.cache_data(show_spinner=False)
+        def load_and_process_rubricas_data_for_desenvolvimento_de_software():
+            import pandas as pd
+            import re
+
+            try:
+                with open("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.md", 'r', encoding='utf-8') as f:
+                    md_content = f.read()
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.md não encontrado.")
+                return pd.DataFrame()
+
+            entrega = None
+            competencia = None
+            rubricas_map = {}
+
+            for line in md_content.splitlines():
+                line = line.strip()
+                if line.startswith('# '):
+                    match = re.search(r'`(Entrega[^`]+)`', line)
+                    if match:
+                        entrega = match.group(1)
+                elif line.startswith('##### '):
+                    match = re.search(r'`([^`]+)`', line)
+                    if match:
+                        competencia = match.group(1)
+                elif re.match(r'^\d+\.\d+\.\d+', line):
+                    rubrica_text_from_md = re.sub(r'^\d+\.\d+\.\d+\s+', '', line).strip()
+                    rubrica_id_match = re.match(r'^(\d+\.\d+\.\d+)', line)
+                    if rubrica_id_match:
+                        rubrica_id = rubrica_id_match.group(1)
+                        rubricas_map[rubrica_id] = {
+                            "Entrega": entrega,
+                            "Competência": competencia,
+                        }
+            
+            df_map = pd.DataFrame.from_dict(rubricas_map, orient='index').reset_index().rename(columns={'index': 'id'})
+
+            try:
+                df_rubricas = pd.read_csv("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.tsv", sep='\t')
+            except FileNotFoundError:
+                st.error("Arquivo rubricas.tsv não encontrado.")
+                return pd.DataFrame()
+            
+            def extract_id(text):
+                match = re.match(r'^(\d+\.\d+\.\d+)', str(text))
+                if match:
+                    return match.group(1)
+                return None
+
+            df_rubricas['id'] = df_rubricas['Rubrica de Avaliação'].apply(extract_id)
+            df_full = pd.merge(df_rubricas, df_map, on='id', how='left')
+            return df_full
+
+        df_full = load_and_process_rubricas_data_for_desenvolvimento_de_software()
+        
+        if not df_full.empty:
+            funcao_nome = "Desenvolvimento de Software"
+            if funcao_nome in df_full.columns:
+                df_filtered = df_full[df_full[funcao_nome] == 8].copy()
+
+                if not df_filtered.empty:
+                    df_display = df_filtered[['Rubrica de Avaliação']].copy()
+                    df_display.rename(columns={'Rubrica de Avaliação': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
+                    
+                    selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_desenvolvimento_de_software")
+
+                    if selected_index is not None and selected_index in df_filtered.index:
+                        selected_rubrica = df_filtered.loc[selected_index]
+                        st.subheader("Ficha da Rubrica")
+                        
+                        st.markdown(f"**Entrega:** {selected_rubrica.get('Entrega', 'N/A')}")
+                        st.markdown(f"**Competência:** {selected_rubrica.get('Competência', 'N/A')}")
+                        st.markdown(f"**Rubrica de Avaliação:** {selected_rubrica.get('Rubrica de Avaliação', 'N/A')}")
+                        st.markdown(f"**Aplicação no projeto:** {funcao_nome}")
+                else:
+                    st.info(f"Nenhuma rubrica com nota 8 para '{funcao_nome}'.")
+            else:
+                st.error(f"Coluna '{funcao_nome}' não encontrada em rubricas.tsv.")
+
+        st.divider()
+        st.header("Referências e Fontes")
+        st.markdown("- N/A")
     with col2:
         st.subheader("Organograma Funcional")
         data = {
