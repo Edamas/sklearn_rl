@@ -5,7 +5,7 @@ def render_pesquisa_cientifica():
     st.title("Pesquisa Científica")
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.markdown("Esta gestão cria as táticas da equipe com embasamento teórico e prático, explorando bibliotecas, analisando dados e conduzindo experimentos em conexão direta com o desenvolvedor.")
+        st.markdown("A gestão de pesquisa cria táticas para a equipe, com embasamento e desenvolvimento teórico. No time Developers, o gestor de pesquisa se conecta com os membros de desenvolvimento (programador/desenvolvedor) para explorar a parte teórica de bibliotecas online, livros ou desenvolvimento/exploração.")
         st.divider()
 
         st.header("Metodologia e Modelos de Agentes")
@@ -68,7 +68,7 @@ def render_pesquisa_cientifica():
         def highlight_row(row):
             if row.Função == "Pesquisa Científica": return ['color: white; background-color: #31333F'] * len(row)
             return ['color: black; background-color: white'] * len(row)
-        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, use_container_width=True)
+        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
         st.markdown("##### Inputs\n- Pesquisa de mercado")

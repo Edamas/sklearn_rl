@@ -5,14 +5,18 @@ def render_gestao_academica():
     st.title("Gestão Acadêmica")
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.markdown("Esta gestão é responsável pela comunicação com a parte administrativa do grupo, pelo gerenciamento das entregas do TCC no sistema AVA, pela comunicação de resumos e informações importantes para a equipe, e pela organização geral dos arquivos acadêmicos.")
+        st.markdown("O membro acadêmico no time Academics se comunica com a parte administrativa ou executiva do grupo (de 8 pessoas) e com o sistema AVA, cuidando das entregas do grupo para a disciplina de TCC. Enquanto a turma de pesquisa pode focar em conteúdos de outras disciplinas, o acadêmico se dedica à disciplina de TCC, comunicando ao grupo resumos e informações importantes. Também interage com o fórum e organiza os arquivos acadêmicos.")
         st.divider()
         st.header("Cronograma e Entregas")
-        st.markdown("""| Quinzenas | Início | Atividade | Vencimento | Carência |
-| :---: | :---: | :---: | :---: | :---: |
-| Quinzena 3 | 08/09/2025 | Primeira entrega | 16/09/2025 | 21/09/2025 |
-| Quinzena 6 | 20/10/2025 | Segunda entrega | 28/10/2025 | 03/11/2025 |
-| Quinzena 7 | 03/11/2025 | Terceira entrega | 11/11/2025 | 16/11/2025 |""")
+        cronograma_path = "D:\\PROGRAMACAO\\sklearn_rl\\docs\\cronograma.tsv"
+        try:
+            df_cronograma = pd.read_csv(cronograma_path, sep='\t')
+            df_cronograma.rename(columns={'Vencimento das atividades': 'Vencimento'}, inplace=True)
+            st.dataframe(df_cronograma, hide_index=True, width='stretch')
+        except FileNotFoundError:
+            st.error(f"Arquivo de cronograma não encontrado: {cronograma_path}")
+        except Exception as e:
+            st.error(f"Erro ao carregar ou processar o cronograma: {e}")
         st.divider()
         st.header("Referências e Fontes")
         st.markdown("- Documentação e calendário oficial da disciplina de TCC.")
@@ -26,7 +30,7 @@ def render_gestao_academica():
         def highlight_row(row):
             if row.Função == "Gestão Acadêmica": return ['color: white; background-color: #31333F'] * len(row)
             return ['color: black; background-color: white'] * len(row)
-        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, use_container_width=True)
+        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
         st.markdown("##### Inputs\n- Orientações e Rubricas")

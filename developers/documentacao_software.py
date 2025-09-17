@@ -5,7 +5,7 @@ def render_documentacao_software():
     st.title("Documentação de Software")
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.markdown("Esta gestão converte a tecnicidade do projeto em termos escritos para o TCC, criando uma ponte entre a linguagem técnica e a acadêmica. A revisão final do conteúdo é de responsabilidade do par no time Academics.")
+        st.markdown("No time Developers, o membro com foco acadêmico converte a tecnicidade dos desenvolvedores e as especificidades do projeto em termos escritos e encorpados. A revisão final é feita pelo acadêmico do time Academics, mas cada membro revisa a parte do seu 'par' de setor, aplicando suas competências em processos de aplicação diferentes, mas da mesma natureza.")
         st.divider()
         st.header("Referências e Fontes")
         st.markdown("- N/A")
@@ -19,7 +19,7 @@ def render_documentacao_software():
         def highlight_row(row):
             if row.Função == "Documentação de Software": return ['color: white; background-color: #31333F'] * len(row)
             return ['color: black; background-color: white'] * len(row)
-        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, use_container_width=True)
+        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
         st.markdown("##### Inputs\n- Docs técnicos e de libs")

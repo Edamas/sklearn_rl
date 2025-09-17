@@ -181,7 +181,7 @@ def show_feature_table(X: pd.DataFrame):
             "gráfico": st.column_config.LineChartColumn("Distribuição Normalizada"),
         },
         hide_index=True,
-        use_container_width=True,
+        width='stretch',
         disabled=[
             "Coluna", "min", "mean", "median",
             "max", "std", "nulos", "nao_nulos", "dtype"
@@ -214,7 +214,7 @@ def show_feature_editor(X: pd.DataFrame):
             "Gráfico": st.column_config.LineChartColumn("Gráfico", width="medium"),
         },
         hide_index=True,
-        use_container_width=True,
+        width='stretch',
         num_rows="dynamic",
     )
     return edited

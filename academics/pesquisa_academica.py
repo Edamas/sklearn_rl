@@ -5,7 +5,7 @@ def render_pesquisa_academica():
     st.title("Pesquisa Acadêmica")
     col1, col2 = st.columns([3, 1])
     with col1:
-        st.markdown("Esta gestão é responsável pelo embasamento teórico do trabalho, realizando a busca por livros, referências (primárias e secundárias) e orientações da disciplina, e comunicando-se com a orientadora e a banca.")
+        st.markdown("A gestão de pesquisa cria táticas para a equipe, com embasamento e desenvolvimento teórico. No contexto acadêmico do TCC de Ciência de Dados, explora a teoria de bibliotecas online e livros. O gestor de pesquisa busca referências (principais e secundárias) da disciplina de TCC, orientações, e se comunica com a orientadora, banca avaliadora e demais membros do grupo.")
         st.divider()
         st.header("Fundamentação Teórica")
         st.markdown("A fundamentação aborda conceitos de agentes inteligentes, sistemas autônomos, AutoML e a biblioteca Scikit-learn, com base em autores como Russell & Norvig (2020), Pedregosa et al. (2011) e Feurer et al. (2019).")
@@ -29,7 +29,7 @@ def render_pesquisa_academica():
         def highlight_row(row):
             if row.Função == "Pesquisa Acadêmica": return ['color: white; background-color: #31333F'] * len(row)
             return ['color: black; background-color: white'] * len(row)
-        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, use_container_width=True)
+        st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
         st.markdown("##### Inputs\n- Bibliografia do curso")

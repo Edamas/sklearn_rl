@@ -78,7 +78,7 @@ def render_scatterplot(df_data, x_col, y_col, color_col, selected_orig_idx=None)
                 )
             )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
 
 # ------------------------------------------------------------------
