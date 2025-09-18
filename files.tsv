@@ -1,10 +1,12 @@
 file_name	file_path
 .gitignore	.gitignore
+add_function_to_registro	add_function_to_registro.py
 analyze_estimators_tsv	analyze_estimators_tsv.py
 app	app.py
 categorias_sklearn	categorias_sklearn.tsv
 conexoes	conexoes.tsv
 datasets_metadata	datasets_metadata.csv
+debug_rubricas	debug_rubricas.py
 erros	erros.txt
 functions	functions.py
 GEMINI	GEMINI.md
@@ -14,6 +16,7 @@ README	README.md
 requirements	requirements.txt
 sklearn_methods	sklearn_methods.tsv
 update_cronograma	update_cronograma.py
+update_cronograma_script	update_cronograma_script.py
 settings	.vscode\settings.json
 fill_rubricas_application	academics\fill_rubricas_application.py
 formatacao_e_apresentacao	academics\formatacao_e_apresentacao.py
@@ -23,9 +26,6 @@ pesquisa_academica	academics\pesquisa_academica.py
 Relatorio_de_Projeto	academics\Relatorio_de_Projeto.py
 A1_datasets	A_inputs\A1_datasets.py
 __init__	A_inputs\__init__.py
-blobs	A_inputs\A1_datasets\blobs.csv
-blobs2x100	A_inputs\A1_datasets\blobs2x100.csv
-blobs3x500	A_inputs\A1_datasets\blobs3x500.csv
 blobs5x1000	A_inputs\A1_datasets\blobs5x1000.csv
 breast_cancer	A_inputs\A1_datasets\breast_cancer.csv
 BRL_USD Historical Data_Date_Price	A_inputs\A1_datasets\BRL_USD Historical Data_Date_Price.csv
@@ -74,7 +74,6 @@ sklearn_methods_1	docs\sklearn_methods.xlsx
 TCC_FORMATADO	docs\TCC_FORMATADO.md
 temas_de_TCC_Univesp	docs\temas_de_TCC_Univesp.tsv
 Template_TCC	docs\Template_TCC.docx
-whatsapp	docs\whatsapp.txt
 ~$Resumos	docs\~$Resumos.xlsx
 D1_agent_rl	D_training\D1_agent_rl.py
 D2_training	D_training\D2_training.py
