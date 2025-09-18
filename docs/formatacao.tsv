@@ -1,32 +1,32 @@
-estilo_id	nome_estilo	fonte_nome	fonte_tamanho	alinhamento	recuo_primeira_linha	espacamento_antes	espacamento_depois	espacamento_entre_linhas	negrito	italico	sublinhado	cor_fonte	observacoes
-1	Capa - Universidade	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-2	Capa - Curso	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-3	Capa - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-4	Capa - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-5	Capa - Local	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-6	Capa - Ano	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-7	Folha de Rosto - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-8	Folha de Rosto - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-9	Folha de Rosto - Natureza do Trabalho	Arial	10	Justificado	8	0	1.5	1.5	False	False	False	Preto	Recuo de 8cm da margem esquerda
-10	Folha de Rosto - Local	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-11	Folha de Rosto - Ano	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-12	Folha de Aprovação - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-13	Folha de Aprovação - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-14	Folha de Aprovação - Natureza do Trabalho	Arial	10	Justificado	8	0	1.5	1.5	False	False	False	Preto	Recuo de 8cm da margem esquerda
-15	Folha de Aprovação - Data e Conceito	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto	
-16	Folha de Aprovação - Banca	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto	
-17	Resumo - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-18	Resumo - Texto	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto	
-19	Resumo - Palavras-chave	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto	
-20	Abstract - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-21	Abstract - Texto	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto	
-22	Abstract - Keywords	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto	
-23	Sumário - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto	
-24	Sumário - Item	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto	
-25	Título 1	Arial	12	Esquerda	0	0	1.5	1.5	True	False	False	Preto	
-26	Título 2	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto	
-27	Título 3	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto	
-28	Título 4	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto	
-29	Parágrafo	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto	
-30	Citação Longa	Arial	10	Justificado	4	0	1	1	False	False	False	Preto	Recuo de 4cm da margem esquerda
-31	Referência	Arial	12	Esquerda	0	0	1	1	False	False	False	Preto	Espaçamento simples entre linhas e duplo entre referências
+estilo_id	nome_estilo	fonte_nome	fonte_tamanho	alinhamento	recuo_primeira_linha	espacamento_antes	espacamento_depois	espacamento_entre_linhas	negrito	italico	sublinhado	cor_fonte	observacoes	codigo_visual
+1	Capa - Universidade	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+2	Capa - Curso	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+3	Capa - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+4	Capa - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+5	Capa - Local	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+6	Capa - Ano	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+7	Folha de Rosto - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+8	Folha de Rosto - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+9	Folha de Rosto - Natureza do Trabalho	Arial	10	Justificado	8	0	1.5	1.5	False	False	False	Preto	Recuo de 8cm da margem esquerda	<span style="font-family: 'Arial'; font-size: 10pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 8cm; color: black;"></span>
+10	Folha de Rosto - Local	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+11	Folha de Rosto - Ano	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+12	Folha de Aprovação - Autores	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+13	Folha de Aprovação - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+14	Folha de Aprovação - Natureza do Trabalho	Arial	10	Justificado	8	0	1.5	1.5	False	False	False	Preto	Recuo de 8cm da margem esquerda	<span style="font-family: 'Arial'; font-size: 10pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 8cm; color: black;"></span>
+15	Folha de Aprovação - Data e Conceito	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+16	Folha de Aprovação - Banca	Arial	12	Centralizado	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+17	Resumo - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+18	Resumo - Texto	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 1.25cm; color: black;"></span>
+19	Resumo - Palavras-chave	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 1.25cm; color: black;"></span>
+20	Abstract - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+21	Abstract - Texto	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 1.25cm; color: black;"></span>
+22	Abstract - Keywords	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 1.25cm; color: black;"></span>
+23	Sumário - Título	Arial	12	Centralizado	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: center; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+24	Sumário - Item	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+25	Título 1	Arial	12	Esquerda	0	0	1.5	1.5	True	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black; font-weight: bold;"></span>
+26	Título 2	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+27	Título 3	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+28	Título 4	Arial	12	Esquerda	0	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 0cm; color: black;"></span>
+29	Parágrafo	Arial	12	Justificado	1.25	0	1.5	1.5	False	False	False	Preto		<span style="font-family: 'Arial'; font-size: 12pt; text-align: justify; line-height: 1.5; margin-top: 0em; margin-bottom: 1.5em; text-indent: 1.25cm; color: black;"></span>
+30	Citação Longa	Arial	10	Justificado	4	0	1	1	False	False	False	Preto	Recuo de 4cm da margem esquerda	<span style="font-family: 'Arial'; font-size: 10pt; text-align: justify; line-height: 1; margin-top: 0em; margin-bottom: 1em; text-indent: 4cm; color: black;"></span>
+31	Referência	Arial	12	Esquerda	0	0	1	1	False	False	False	Preto	Espaçamento simples entre linhas e duplo entre referências	<span style="font-family: 'Arial'; font-size: 12pt; text-align: left; line-height: 1; margin-top: 0em; margin-bottom: 1em; text-indent: 0cm; color: black;"></span>
