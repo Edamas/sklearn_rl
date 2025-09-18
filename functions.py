@@ -10,6 +10,22 @@ import numpy as np
 import re
 import os
 
+def get_card_style():
+    return """
+    <style>
+        .card {
+            border: 1px solid #e6e6e6;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .card-title {
+            font-weight: bold;
+        }
+    </style>
+    """
+
 def df_select_rows(df, selection_mode: Literal['single-row', 'multi-row'] = 'multi-row', prompt: Optional[str] = None, key: str = "dataframe_selection"):
     """
     NÃO MODIFICAR ESSA FUNÇÃO, POIS ELA É IMPORTANTE PARA TODOS OS DATAFRAMES SELECIONÁVEIS DO PROJETO.
