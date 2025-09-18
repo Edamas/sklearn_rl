@@ -1,7 +1,4 @@
 Dataset,Registros,Colunas,Células Totais,Alvo,Tipo,Comando
-blobs,200,3,600,target,local,blobs.csv
-blobs2x100,200,3,600,target,local,blobs2x100.csv
-blobs3x500,500,4,2000,target,local,blobs3x500.csv
 blobs5x1000,1000,5,5000,target,local,blobs5x1000.csv
 breast_cancer,569,31,17639,target,local,breast_cancer.csv
 BRL_USD Historical Data_Date_Price,6238,2,12476,,local,BRL_USD Historical Data_Date_Price.csv

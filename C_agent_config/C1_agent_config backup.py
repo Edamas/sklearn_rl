@@ -69,7 +69,6 @@ def agent_configuration():
     # Treat any tuple as compatible, and simplify other conditions
     compatible_estimators_step3 = compatible_estimators_step2.copy() # Start with a copy of step2 results
 
-    st.write("DEBUG: input_X_structure values for estimators in step2 (before structure filter):")
     for index, row in compatible_estimators_step2.iterrows():
         st.write(f"  - Estimator: {row['estimator_name']}, input_X_structure: {row['input_X_structure']}, type: {type(row['input_X_structure'])}")
 

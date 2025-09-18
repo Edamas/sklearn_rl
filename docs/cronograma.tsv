@@ -1,8 +1,65 @@
-Quinzenas	Início	Atividade	Vencimento das atividades	Carência
-Quinzena 1	11/08/2025			
-Quinzena 2	25/08/2025			
-Quinzena 3	08/09/2025	Primeira entrega	16/09/2025 às 23:59	21/09/2025 às 23:59
-Quinzena 4	22/09/2025			
-Quinzena 5	06/10/2025			
-Quinzena 6	20/10/2025	Segunda entrega	28/10/2025 às 23:59	03/11/2025 às 23:59
-Quinzena 7	03/11/2025	Terceira entrega	11/11/2025 às 23:59	16/11/2025 às 23:59
+Quinzena	Início	Fim	Função	Tarefa	Responsável
+Quinzena 1	2025-08-11	2025-08-24	Gestão Acadêmica	Organização de documentos de referência e comunicação inicial com a Univesp.	Elysio
+Quinzena 1	2025-08-11	2025-08-24	Gestão do TCC	Definição da estrutura inicial do projeto e planejamento de recursos humanos.	Elysio
+Quinzena 1	2025-08-11	2025-08-24	Pesquisa Acadêmica	Levantamento de temas e referências bibliográficas iniciais para propostas.	Todos
+Quinzena 1	2025-08-11	2025-08-24	Formatação e Apresentação	Análise de templates e requisitos de formatação para o TCC.	Wesllei
+Quinzena 1	2025-08-11	2025-08-24	Documentação de Software	Levantamento de ferramentas e padrões de documentação para o projeto.	Elysio
+Quinzena 1	2025-08-11	2025-08-24	Gestão da Proposta	Coleta e organização de propostas de TCC e requisitos iniciais.	Elysio
+Quinzena 1	2025-08-11	2025-08-24	Pesquisa Científica	Análise de competições e oportunidades de pesquisa em IA.	Elysio
+Quinzena 1	2025-08-11	2025-08-24	Desenvolvimento de Software	Configuração do ambiente de desenvolvimento e versionamento (Git).	Elysio
+Quinzena 2	2025-08-25	2025-09-07	Gestão Acadêmica	Acompanhamento da eleição da proposta e comunicação de prazos.	Edna
+Quinzena 2	2025-08-25	2025-09-07	Gestão do TCC	Finalização da seleção da proposta e alinhamento de objetivos.	Todos
+Quinzena 2	2025-08-25	2025-09-07	Pesquisa Acadêmica	Aprofundamento da pesquisa bibliográfica para a proposta selecionada.	Todos
+Quinzena 2	2025-08-25	2025-09-07	Formatação e Apresentação	Início da estruturação do documento base do TCC.	Wesllei
+Quinzena 2	2025-08-25	2025-09-07	Documentação de Software	Início da documentação de requisitos e arquitetura do protótipo.	Elysio
+Quinzena 2	2025-08-25	2025-09-07	Gestão da Proposta	Detalhamento da proposta selecionada e criação do backlog inicial.	Elysio
+Quinzena 2	2025-08-25	2025-09-07	Pesquisa Científica	Definição de métricas e estratégias de avaliação para o protótipo.	Todos
+Quinzena 2	2025-08-25	2025-09-07	Desenvolvimento de Software	Implementação do protótipo v1.0 (agente inicial) e refatoração de features.	Elysio
+Quinzena 3	2025-09-08	2025-09-21	Gestão Acadêmica	Monitoramento de prazos de entrega e comunicação com a orientação.	Edna
+Quinzena 3	2025-09-08	2025-09-21	Gestão do TCC	Revisão dos objetivos e escopo do protótipo.	Todos
+Quinzena 3	2025-09-08	2025-09-21	Pesquisa Acadêmica	Revisão da fundamentação teórica para o protótipo atual.	Todos
+Quinzena 3	2025-09-08	2025-09-21	Formatação e Apresentação	Formatação e revisão do relatório do protótipo.	Wesllei
+Quinzena 3	2025-09-08	2025-09-21	Documentação de Software	Atualização da documentação técnica do protótipo.	Elysio
+Quinzena 3	2025-09-08	2025-09-21	Gestão da Proposta	Gerenciamento do backlog e planejamento de sprints para o protótipo.	Elysio
+Quinzena 3	2025-09-08	2025-09-21	Pesquisa Científica	Análise de resultados preliminares do protótipo.	Todos
+Quinzena 3	2025-09-08	2025-09-21	Desenvolvimento de Software	Desenvolvimento e refatoração do protótipo (v1.1 a v1.4), incluindo melhorias de UI e hiperparâmetros.	Elysio
+Quinzena 4	2025-09-22	2025-10-05	Gestão Acadêmica	Preparação para a próxima entrega acadêmica e alinhamento com a orientação.	
+Quinzena 4	2025-09-22	2025-10-05	Gestão do TCC	Revisão do plano de projeto e alinhamento com os objetivos de agentes avançados.	
+Quinzena 4	2025-09-22	2025-10-05	Pesquisa Acadêmica	Pesquisa aprofundada sobre Agentes Ponderados, Meta-Aprendizado e Otimização Bayesiana.	
+Quinzena 4	2025-09-22	2025-10-05	Formatação e Apresentação	Definição de padrões para documentação de experimentos e resultados.	
+Quinzena 4	2025-09-22	2025-10-05	Documentação de Software	Documentação detalhada dos Agentes 2 e 3 (arquitetura, implementação).	
+Quinzena 4	2025-09-22	2025-10-05	Gestão da Proposta	Planejamento de sprints para implementação e experimentação dos novos agentes.	
+Quinzena 4	2025-09-22	2025-10-05	Pesquisa Científica	Definição de metodologia experimental e seleção de datasets para os novos agentes.	
+Quinzena 4	2025-09-22	2025-10-05	Desenvolvimento de Software	Implementação dos Agentes 2 (Aleatório Ponderado) e 3 (Meta-Aprendizado).	
+Quinzena 5	2025-10-06	2025-10-19	Gestão Acadêmica	Acompanhamento do progresso das atividades e comunicação de eventuais desvios.	
+Quinzena 5	2025-10-06	2025-10-19	Gestão do TCC	Avaliação do progresso em relação aos objetivos e ajuste de rota, se necessário.	
+Quinzena 5	2025-10-06	2025-10-19	Pesquisa Acadêmica	Pesquisa sobre Algoritmos Genéticos e Otimização Bayesiana para agentes.	
+Quinzena 5	2025-10-06	2025-10-19	Formatação e Apresentação	Elaboração de templates para relatórios de experimentos e gráficos.	
+Quinzena 5	2025-10-06	2025-10-19	Documentação de Software	Documentação detalhada dos Agentes 4 e 5 (arquitetura, implementação).	
+Quinzena 5	2025-10-06	2025-10-19	Gestão da Proposta	Gerenciamento do backlog de experimentos e análise de resultados preliminares.	
+Quinzena 5	2025-10-06	2025-10-19	Pesquisa Científica	Execução e monitoramento dos experimentos com os Agentes 2 e 3.	
+Quinzena 5	2025-10-06	2025-10-19	Desenvolvimento de Software	Implementação dos Agentes 4 (Algoritmo Genético) e 5 (Otimização Bayesiana).	
+Quinzena 6	2025-10-20	2025-11-02	Gestão Acadêmica	Revisão de requisitos para a entrega final do TCC.	
+Quinzena 6	2025-10-20	2025-11-02	Gestão do TCC	Revisão geral do conteúdo do TCC e alinhamento com a banca.	
+Quinzena 6	2025-10-20	2025-11-02	Pesquisa Acadêmica	Revisão da fundamentação teórica e contribuição para a seção de discussão.	
+Quinzena 6	2025-10-20	2025-11-02	Formatação e Apresentação	Formatação final do TCC (ABNT) e preparação de slides para apresentação.	
+Quinzena 6	2025-10-20	2025-11-02	Documentação de Software	Consolidação da documentação técnica do projeto.	
+Quinzena 6	2025-10-20	2025-11-02	Gestão da Proposta	Finalização do backlog e garantia de que todos os requisitos foram atendidos.	
+Quinzena 6	2025-10-20	2025-11-02	Pesquisa Científica	Análise final dos resultados dos experimentos e redação da seção de resultados.	
+Quinzena 6	2025-10-20	2025-11-02	Desenvolvimento de Software	Finalização de artefatos visuais e código para a apresentação.	
+Quinzena 7	2025-11-03	2025-11-16	Gestão Acadêmica	Submissão final do TCC e acompanhamento do processo.	
+Quinzena 7	2025-11-03	2025-11-16	Gestão do TCC	Revisão final e aprovação do documento completo do TCC.	
+Quinzena 7	2025-11-03	2025-11-16	Pesquisa Acadêmica	Revisão final da bibliografia e citações.	
+Quinzena 7	2025-11-03	2025-11-16	Formatação e Apresentação	Revisão final da formatação, coesão e vídeo de apresentação.	
+Quinzena 7	2025-11-03	2025-11-16	Documentação de Software	Revisão final da documentação do software.	
+Quinzena 7	2025-11-03	2025-11-16	Gestão da Proposta	Verificação final de conformidade com os requisitos do projeto.	
+Quinzena 7	2025-11-03	2025-11-16	Pesquisa Científica	Revisão final da análise de resultados e conclusões.	
+Quinzena 7	2025-11-03	2025-11-16	Desenvolvimento de Software	Preparação final do ambiente para demonstração e apresentação.	
+Quinzena 8	2025-11-17	2025-11-30	Gestão Acadêmica	Acompanhamento da apresentação e feedback da banca.	
+Quinzena 8	2025-11-17	2025-11-30	Gestão do TCC	Participação na apresentação e defesa do TCC.	
+Quinzena 8	2025-11-17	2025-11-30	Pesquisa Acadêmica	Suporte na defesa teórica do TCC.	
+Quinzena 8	2025-11-17	2025-11-30	Formatação e Apresentação	Suporte técnico durante a apresentação.	
+Quinzena 8	2025-11-17	2025-11-30	Documentação de Software	Atualização da documentação pós-feedback.	
+Quinzena 8	2025-11-17	2025-11-30	Gestão da Proposta	Avaliação pós-projeto e lições aprendidas.	
+Quinzena 8	2025-11-17	2025-11-30	Pesquisa Científica	Discussão dos resultados com a banca.	
+Quinzena 8	2025-11-17	2025-11-30	Desenvolvimento de Software	Demonstração do agente e funcionalidades.	

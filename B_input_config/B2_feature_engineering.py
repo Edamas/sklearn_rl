@@ -98,7 +98,6 @@ def apply_transformations(df, config_df):
 
     # --- Step 1: Perform all transformations ---
     # Iterate through the original config_df to apply all transformations
-    print(f"DEBUG: config_df received by apply_transformations:\n{config_df}")
     for _, row in config_df.iterrows():
         col_name = row["Coluna"]
         
@@ -126,7 +125,7 @@ def apply_transformations(df, config_df):
             
         ma_window = row["Criar Média Móvel (Intervalo)"]
         if ma_window > 0 and col_name in df_transformed.columns:
-            df_transformed[f'{col_name}_ma{ma_window}'] = df_transformed[col_name].rolling(window=ma_window).mean()
+            df_transformed[f'{col_name}_ma{ma_window}'] = df_transformed[col_name].rolling(window=ma_window).mean().shift(1)
 
         lag_steps = row["Criar Lag (Passos Anteriores)"]
         if lag_steps > 0 and col_name in df_transformed.columns:
@@ -137,13 +136,10 @@ def apply_transformations(df, config_df):
             df_transformed[f'{col_name}_diff{diff_steps}'] = df_transformed[col_name].diff(periods=diff_steps)
 
         if row["Criar Média Expansiva"] and col_name in df_transformed.columns:
-            df_transformed[f'{col_name}_expanding_mean'] = df_transformed[col_name].expanding().mean()
-
-    print(f"DEBUG: df_transformed columns AFTER all transformations (before elimination): {df_transformed.columns.tolist()}")
+            df_transformed[f'{col_name}_expanding_mean'] = df_transformed[col_name].expanding().mean().shift(1)
 
     # --- Step 2: Identify all columns to eliminate (original and derived) ---
     cols_to_eliminate_by_user = config_df[config_df['Eliminar Coluna'] == True]['Coluna'].tolist()
-    print(f"DEBUG: cols_to_eliminate_by_user: {cols_to_eliminate_by_user}")
     
     all_cols_to_drop = set()
     for col in cols_to_eliminate_by_user:
@@ -175,13 +171,10 @@ def apply_transformations(df, config_df):
         if col in config_df['Coluna'].values and config_df[config_df['Coluna'] == col]['Criar Média Expansiva'].iloc[0]:
             all_cols_to_drop.add(f'{col}_expanding_mean')
 
-    print(f"DEBUG: all_cols_to_drop: {all_cols_to_drop}")
 
     # --- Step 3: Determine the final set of columns to KEEP and explicitly select them ---
     columns_to_keep = [col for col in df_transformed.columns if col not in all_cols_to_drop]
-    print(f"DEBUG: columns_to_keep: {columns_to_keep}")
     df_transformed = df_transformed[columns_to_keep] # Explicitly select columns
-    print(f"DEBUG: df_transformed columns AFTER explicit selection: {df_transformed.columns.tolist()}")
 
     # --- Step 4: Determine X_cols and y_cols from the cleaned df_transformed ---
     y_cols = []
@@ -195,8 +188,6 @@ def apply_transformations(df, config_df):
             y_cols.append(col_name)
             
     X_cols = [col for col in df_transformed.columns if col not in y_cols]
-    print(f"DEBUG: X_cols before return: {X_cols}")
-    print(f"DEBUG: y_cols before return: {y_cols}")
 
     df_transformed.bfill(inplace=True)
     df_transformed.ffill(inplace=True)

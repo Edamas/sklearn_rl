@@ -50,6 +50,3 @@ def create_menu():
     pages = get_pages_config()
     pg = st.navigation(pages)
     pg.run()
-
-def main():
-    create_menu()

@@ -1,4 +1,176 @@
-2025-09-15 14:18:53.182475: Erro ao refit pipeline: The 'alpha' parameter of MLPClassifier must be a float in the range [0.0, inf). Got 'float' instead.
-2025-09-15 14:19:04.497140: Erro ao refit pipeline: Negative values in data passed to MultinomialNB (input X).
-2025-09-15 14:19:06.399186: Erro ao refit pipeline: The 'alpha' parameter of MLPClassifier must be a float in the range [0.0, inf). Got 'float' instead.
-2025-09-15 14:52:46.916471: Erro ao refit pipeline: The 'alpha' parameter of RidgeClassifier must be a float in the range [0.0, inf) or an instance of 'numpy.ndarray'. Got 'float' instead.
+16/09/2025 23:15:02	NearestNeighbors	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:17:00	KernelPCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:18:09	SpectralEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:18:55	TSNE	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:19:43	LatentDirichletAllocation	Negative values in data passed to LatentDirichletAllocation.fit.
+16/09/2025 23:19:43	LatentDirichletAllocation	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:21:23	FastICA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	SimpleImputer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	SkewedChi2Sampler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	VarianceThreshold	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	PolynomialCountSketch	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	PolynomialFeatures	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	StandardScaler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	SplineTransformer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	FeatureHasher	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:57:14	EmpiricalCovariance	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:11	PCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	GraphicalLasso	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	ShrunkCovariance	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:57:13	PCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	OneHotEncoder	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	VarianceThreshold	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	RBFSampler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:56	OrdinalEncoder	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	KernelDensity	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	OneHotEncoder	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	MaxAbsScaler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:56	PolynomialFeatures	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	FunctionTransformer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	SplineTransformer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	FeatureHasher	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	KBinsDiscretizer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	RBFSampler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	OrdinalEncoder	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	VarianceThreshold	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	RobustScaler	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:12	RadiusNeighborsTransformer	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	KMeans	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	KernelDensity	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	NearestNeighbors	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:01	PCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	SparsePCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	EmpiricalCovariance	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	SparsePCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	BayesianGaussianMixture	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	SpectralCoclustering	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:24	DBSCAN	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	MiniBatchKMeans	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	BayesianGaussianMixture	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	MiniBatchKMeans	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:58	RandomTreesEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:01	Birch	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:56	HDBSCAN	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	IsolationForest	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:58	Birch	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	IsolationForest	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	DBSCAN	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:57:14	HDBSCAN	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:57:13	AgglomerativeClustering	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:49	MiniBatchDictionaryLearning	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	NMF	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:59	FastICA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	FastICA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:02	LocallyLinearEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:12	OneClassSVM	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:12	LocallyLinearEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:58	SpectralClustering	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:24	Isomap	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:02	OPTICS	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:05	Isomap	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:36	DictionaryLearning	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:42	KernelPCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:11	SpectralEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:48	KernelPCA	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:30	SpectralEmbedding	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:56	DictionaryLearning	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:12	TSNE	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:22	TSNE	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:01	TSNE	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:49:22	AffinityPropagation	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:57:13	MDS	_Scorer._score() missing 1 required positional argument: 'y_true'
+16/09/2025 23:50:03	ColumnTransformer	ColumnTransformer.__init__() missing 1 required positional argument: 'transformers'
+16/09/2025 23:50:12	ColumnTransformer	ColumnTransformer.__init__() missing 1 required positional argument: 'transformers'
+16/09/2025 23:49:36	GaussianRandomProjection	eps=0.100000 and n_samples=4158 lead to a target dimension of 7142 which is larger than the original space with n_features=15
+16/09/2025 23:49:01	GaussianRandomProjection	eps=0.100000 and n_samples=4158 lead to a target dimension of 7142 which is larger than the original space with n_features=15
+16/09/2025 23:48:51	GaussianRandomProjection	eps=0.100000 and n_samples=4158 lead to a target dimension of 7142 which is larger than the original space with n_features=15
+16/09/2025 23:49:11	SelectKBest	estimator requires y to be passed, but the target y is None
+16/09/2025 23:49:42	SelectKBest	estimator requires y to be passed, but the target y is None
+16/09/2025 23:48:51	SelectKBest	estimator requires y to be passed, but the target y is None
+16/09/2025 23:49:11	CCA	Input y contains NaN.
+16/09/2025 23:49:36	CCA	Input y contains NaN.
+16/09/2025 23:49:42	KernelCenterer	Kernel matrix must be a square matrix. Input is a 4158x15 matrix.
+16/09/2025 23:49:49	LabelBinarizer	LabelBinarizer.fit() takes 2 positional arguments but 3 were given
+16/09/2025 23:49:49	LabelBinarizer	LabelBinarizer.fit() takes 2 positional arguments but 3 were given
+16/09/2025 23:50:03	MiniBatchNMF	Negative values in data passed to MiniBatchNMF (input X).
+16/09/2025 23:49:36	NMF	Negative values in data passed to NMF initialization.
+16/09/2025 23:49:49	GraphicalLasso	Non SPD result: the system is too ill-conditioned for this solver. The system is too ill-conditioned for this solver
+16/09/2025 23:49:49	GraphicalLasso	Non SPD result: the system is too ill-conditioned for this solver. The system is too ill-conditioned for this solver
+16/09/2025 23:57:13	SelectFromModel	SelectFromModel.__init__() missing 1 required positional argument: 'estimator'
+16/09/2025 23:49:36	SparseCoder	SparseCoder.__init__() missing 1 required positional argument: 'dictionary'
+16/09/2025 23:48:51	SparseCoder	SparseCoder.__init__() missing 1 required positional argument: 'dictionary'
+16/09/2025 23:50:03	SparseCoder	SparseCoder.__init__() missing 1 required positional argument: 'dictionary'
+16/09/2025 23:50:03	HDBSCAN	The 'alpha' parameter of cross_val_score must be a float in the range (0.0, inf). Got -1168.1000949783156 instead.
+16/09/2025 23:49:49	MiniBatchSparsePCA	The 'alpha' parameter of cross_val_score must be a float in the range [0.0, inf). Got 'int' instead.
+16/09/2025 23:50:03	MiniBatchSparsePCA	The 'alpha' parameter of cross_val_score must be a float in the range [0.0, inf). Got 'int' instead.
+16/09/2025 23:49:49	NeighborhoodComponentsAnalysis	This NeighborhoodComponentsAnalysis estimator requires y to be passed, but the target y is None.
+16/09/2025 23:49:49	NeighborhoodComponentsAnalysis	This NeighborhoodComponentsAnalysis estimator requires y to be passed, but the target y is None.
+Regressors in active set degenerate. Dropping a regressor, after 11 iterations, i.e. alpha=6.694e+01, with an active set of 9 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.  
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 8 iterations, i.e. alpha=5.887e+01, with an active set of 8 regressors, and the smallest cholesky pivot element being 9.657e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 7 iterations, i.e. alpha=8.533e+01, with an active set of 7 regressors, and the smallest cholesky pivot element being 9.599e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 8 iterations, i.e. alpha=7.280e+01, with an active set of 8 regressors, and the smallest cholesky pivot element being 9.186e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 7 iterations, i.e. alpha=8.595e+01, with an active set of 7 regressors, and the smallest cholesky pivot element being 9.599e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 7 iterations, i.e. alpha=9.936e+01, with an active set of 5 regressors, and the smallest cholesky pivot element being 7.598e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 16 iterations, i.e. alpha=7.423e+01, with an active set of 10 regressors, and the smallest cholesky pivot element being 3.161e-08. Reduce max_iter or increase eps parameters. 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 13 iterations, i.e. alpha=8.370e+01, with an active set of 9 regressors, and the smallest cholesky pivot element being 9.125e-08. Reduce max_iter or increase eps parameters.  
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 16 iterations, i.e. alpha=5.660e+01, with an active set of 10 regressors, and the smallest cholesky pivot element being 3.161e-08. Reduce max_iter or increase eps parameters. 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 13 iterations, i.e. alpha=8.059e+01, with an active set of 9 regressors, and the smallest cholesky pivot element being 9.125e-08. Reduce max_iter or increase eps parameters.  
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 14 iterations, i.e. alpha=9.312e+01, with an active set of 10 regressors, and the smallest cholesky pivot element being 7.146e-08. Reduce max_iter or increase eps parameters. 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=3.095e+04, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 23 iterations, alpha=1.548e+04, previous alpha=1.548e+04, with an active set of 14 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=6.585e+04, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 24 iterations, alpha=3.292e+04, previous alpha=3.292e+04, with an active set of 15 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=3.270e+04, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 19 iterations, alpha=1.635e+04, previous alpha=1.635e+04, with an active set of 12 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=1.677e+04, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 23 iterations, alpha=8.387e+03, previous alpha=8.387e+03, with an active set of 14 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=7.564e+04, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 19 iterations, alpha=3.782e+04, previous alpha=3.782e+04, with an active set of 12 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 5 iterations, i.e. alpha=5.881e+02, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 6 iterations, i.e. alpha=2.941e+02, with an active set of 4 regressors, and the smallest cholesky pivot element being 9.186e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 16 iterations, alpha=1.470e+02, previous alpha=1.470e+02, with an active set of 9 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 3 iterations, i.e. alpha=4.078e+03, with an active set of 3 regressors, and the smallest cholesky pivot element being 9.541e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 6 iterations, i.e. alpha=2.039e+03, with an active set of 6 regressors, and the smallest cholesky pivot element being 2.356e-08. Reduce max_iter or increase eps parameters.   
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 33 iterations, i.e. alpha=1.019e+03, with an active set of 15 regressors, and the smallest cholesky pivot element being 4.712e-08. Reduce max_iter or increase eps parameters. 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:723: ConvergenceWarning: Regressors in active set degenerate. Dropping a regressor, after 45 iterations, i.e. alpha=1.019e+03, with an active set of 15 regressors, and the smallest cholesky pivot element being 4.344e-08. Reduce max_iter or increase eps parameters. 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_least_angle.py:753: ConvergenceWarning: Early stopping the lars path, as the residues are small and the current value of alpha is no longer well controlled. 48 iterations, alpha=1.019e+03, previous alpha=1.019e+03, with an active set of 15 regressors.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\manifold\_mds.py:677: FutureWarning: The default value of `n_init` will change from 4 to 1 in 1.9.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\linear_model\_coordinate_descent.py:681: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 7.200e-03, tolerance: 4.147e-03
+File "C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\pandas\core\window\rolling.py", line 619, in _apply | return self._apply_columnwise(homogeneous_func, name, numeric_only) | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\pandas\core\window\rolling.py", line 472, in _apply_columnwise | return self._apply_series(homogeneous_func, name) | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+File "C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\pandas\core\window\rolling.py", line 454, in _apply_series | raise DataError("No numeric types to aggregate") from err | pandas.errors.DataError: No numeric types to aggregate 
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\manifold\_isomap.py:360: UserWarning: The number of connected components of the neighbors graph is 22 > 1. Completing the graph to fit Isomap might be slow. Increase the number of neighbors to avoid this issue.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\scipy\sparse\_index.py:168: SparseEfficiencyWarning:  Changing the sparsity structure of a csr_matrix is expensive. lil and dok are more efficient.
+C:\Users\e_damas\anaconda3\envs\sklearn_rl\Lib\site-packages\sklearn\neural_network\_multilayer_perceptron.py:781: ConvergenceWarning: Stochastic Optimizer: Maximum iterations (200) reached and the optimization hasn't converged yet. warnings.warn(
+D:\PROGRAMACAO\sklearn_rl\D_training\D2_training.py:434: PerformanceWarning: DataFrame is highly fragmented.  This is usually the result of calling `frame.insert` many times, which has poor performance.  Consider joining all columns at once using pd.concat(axis=1) instead. To get a de-fragmented frame, use `newframe = frame.copy()` all_predictions_df[str(i)] = np.array(preds)

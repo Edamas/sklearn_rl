@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from functions import df_select_rows
+import functions as f
+from functions import df_select_rows, get_rubricas_by_function_score_8
 
 def render_pesquisa_academica():
     st.title("Pesquisa Acadêmica")
@@ -11,150 +12,66 @@ def render_pesquisa_academica():
         st.header("Fundamentação Teórica")
         st.markdown("A fundamentação aborda conceitos de agentes inteligentes, sistemas autônomos, AutoML e a biblioteca Scikit-learn, com base em autores como Russell & Norvig (2020), Pedregosa et al. (2011) e Feurer et al. (2019).")
         st.divider()
-        st.header("Rubricas de Avaliação (Nota 8)")
+        st.subheader("Rubricas relacionadas")
+        # Obter o DataFrame filtrado da função
+        df_filtered_rubricas = get_rubricas_by_function_score_8("Pesquisa Acadêmica")
 
-        @st.cache_data(show_spinner=False)
-        def load_and_process_rubricas_data_for_pesquisa_academica():
-            import pandas as pd
-            import re
-
-            try:
-                with open("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.md", 'r', encoding='utf-8') as f:
-                    md_content = f.read()
-            except FileNotFoundError:
-                st.error("Arquivo rubricas.md não encontrado.")
-                return pd.DataFrame()
-
-            entrega = None
-            competencia = None
-            rubricas_map = {}
-
-            for line in md_content.splitlines():
-                line = line.strip()
-                if line.startswith('# '):
-                    match = re.search(r'`(Entrega[^`]+)`', line)
-                    if match:
-                        entrega = match.group(1)
-                elif line.startswith('##### '):
-                    match = re.search(r'`([^`]+)`', line)
-                    if match:
-                        competencia = match.group(1)
-                elif re.match(r'^\d+\.\d+\.\d+', line):
-                    rubrica_text_from_md = re.sub(r'^\d+\.\d+\.\d+\s+', '', line).strip()
-                    rubrica_id_match = re.match(r'^(\d+\.\d+\.\d+)', line)
-                    if rubrica_id_match:
-                        rubrica_id = rubrica_id_match.group(1)
-                        rubricas_map[rubrica_id] = {
-                            "Entrega": entrega,
-                            "Competência": competencia,
-                        }
+        if not df_filtered_rubricas.empty:
+            # Preparar o DataFrame para exibição interativa
+            df_display = df_filtered_rubricas[['rubrica']].copy()
+            df_display.rename(columns={'rubrica': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
             
-            df_map = pd.DataFrame.from_dict(rubricas_map, orient='index').reset_index().rename(columns={'index': 'id'})
+            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_academica")
 
-            try:
-                df_rubricas = pd.read_csv("D:\\PROGRAMACAO\\sklearn_rl\\docs\\rubricas.tsv", sep='\t')
-            except FileNotFoundError:
-                st.error("Arquivo rubricas.tsv não encontrado.")
-                return pd.DataFrame()
-            
-            def extract_id(text):
-                match = re.match(r'^(\d+\.\d+\.\d+)', str(text))
-                if match:
-                    return match.group(1)
-                return None
-
-            df_rubricas['id'] = df_rubricas['Rubrica de Avaliação'].apply(extract_id)
-            df_full = pd.merge(df_rubricas, df_map, on='id', how='left')
-            return df_full
-
-        df_full = load_and_process_rubricas_data_for_pesquisa_academica()
-        
-        if not df_full.empty:
-            funcao_nome = "Pesquisa Acadêmica"
-            if funcao_nome in df_full.columns:
-                df_filtered = df_full[df_full[funcao_nome] == 8].copy()
-
-                if not df_filtered.empty:
-                    df_display = df_filtered[['Rubrica de Avaliação']].copy()
-                    df_display.rename(columns={'Rubrica de Avaliação': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
-                    
-                    selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_academica")
-
-                    if selected_index is not None and selected_index in df_filtered.index:
-                        selected_rubrica = df_filtered.loc[selected_index]
-                        st.subheader("Ficha da Rubrica")
-                        
-                        st.markdown(f"**Entrega:** {selected_rubrica.get('Entrega', 'N/A')}")
-                        st.markdown(f"**Competência:** {selected_rubrica.get('Competência', 'N/A')}")
-                        st.markdown(f"**Rubrica de Avaliação:** {selected_rubrica.get('Rubrica de Avaliação', 'N/A')}")
-                        st.markdown(f"**Aplicação no projeto:** {funcao_nome}")
-                else:
-                    st.info(f"Nenhuma rubrica com nota 8 para '{funcao_nome}'.")
+            if selected_index is not None and selected_index in df_filtered_rubricas.index:
+                selected_rubrica = df_filtered_rubricas.loc[selected_index]
+                st.subheader("Ficha da Rubrica")
+                
+                # Exibir a ficha da rubrica com a formatação desejada
+                st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
+                st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
+                st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
+                st.markdown(f"    Aplicação no projeto:")
+                st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.error(f"Coluna '{funcao_nome}' não encontrada em rubricas.tsv.")
+                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+        else:
+            st.info("Nenhuma rubrica relacionada à função 'Pesquisa Acadêmica' encontrada.")
         
 
         st.divider()
-        with st.expander("Disciplinas Relacionadas ao Projeto", expanded=False):
-            disciplinas_path = "D:\\PROGRAMACAO\\sklearn_rl\\docs\\disciplinas_relacionadas.tsv"
-            try:
-                df_disciplinas = pd.read_csv(disciplinas_path, sep='\t')
+        st.header("Análise de Temas de TCCs de Ciência de Dados da Univesp")
+        st.markdown("""
+        A análise dos temas de TCCs de Ciência de Dados da Univesp revela que a maioria dos trabalhos se concentra em pesquisa científica, em vez de desenvolvimento de produtos ou soluções de negócio. Essa tendência influenciou a decisão de restringir o escopo inicial deste projeto para um TCC de pesquisa científica.
+        No entanto, é importante ressaltar que o agente de RL desenvolvido neste projeto tem potencial para se tornar um produto. Ele pode ser expandido para uma ferramenta interativa que auxilia estudantes e pesquisadores na seleção de algoritmos e configuração de parâmetros do Scikit-learn, otimizando o fluxo de trabalho de modelagem preditiva.
+        """)
+        
+        df_temas = pd.read_csv('docs/temas_de_TCC_Univesp.tsv', sep='\t', engine='python')
+        st.markdown(f.get_card_style(), unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class='card'>
+            <div class='card-body'>
+                <h5 class='card-title'><font color='#FFD700'>{df_temas.columns[0]}</font></h5>
+                <p class='card-text'><font color='#ADD8E6'>{df_temas.columns[1]}</font></p>
+                <p class='card-text'><font color='#90EE90'>{df_temas.columns[2]}</font></p>
+                <p class='card-text'><font color='#FFA07A'>{df_temas.columns[3]}</font></p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-                # Add 'Relevância' column based on a simple mapping
-                relevance_map = {
-                    "Algoritmos e Programação de Computadores I": 5,
-                    "Algoritmos e Programação de Computadores II": 5,
-                    "Introdução a Ciência de Dados": 5,
-                    "Aprendizado de Máquinas": 5,
-                    "Mineração de Dados": 5,
-                    "Computação Escalável": 5,
-                    "Redes Neurais": 5,
-                    "Aprendizado Profundo": 5,
-                    "Visualização Computacional": 5,
-                    "Processamento de Linguagem Natural": 5,
-                    "Engenharia de Software": 4,
-                    "Modelagem e Inferência Estatística": 4,
-                    "Banco de Dados": 3,
-                    "Infraestrutura de Sistemas de Software Redes, Nuvem": 3,
-                    "Pensamento Computacional": 3,
-                    "Fundamentos Matemáticos para Computação": 3,
-                    "Cálculo I": 2,
-                    "Cálculo II": 2,
-                    "Projeto Integrador em Computação I": 4,
-                    "Projeto Integrador em Computação II": 4,
-                    "Projeto Integrador em Computação III": 4,
-                    "Projeto Integrador em Computação IV": 4,
-                    "Desenvolvimento web": 3,
-                    "Introdução a Conceitos de Computação": 3,
-                    "Sistemas Computacionais (Organização e Arquitetura de Computadores, SO)": 3,
-                    "Ética, Cidadania e Sociedade": 1,
-                    "Leitura e Produção de Textos": 1,
-                    "Inglês": 1,
-                    "Matemática Básica": 2,
-                    "Gestão da Inovação e Desenvolvimento de Produtos": 2,
-                    "Formação Profissional em Computação": 1,
-                    "Impactos da Computação na Sociedade": 1,
-                    "Planejamento Estratégico de Negócios": 2,
-                    "Estágio Supervisionado para Bacharelado em Ciência de Dados": 1,
-                    "Trabalho de Conclusão de Curso (TCC)": 5, # TCC is highly relevant
-                    "Eletiva": 1 # Default for unknown
-                }
-                df_disciplinas['Relevância'] = df_disciplinas['Disciplina:'].map(relevance_map).fillna(1).astype(int)
+        df_select_rows(df_temas, selection_mode='multi-row', key=f"temas_tcc_univesp")
+        st.divider()
+        st.header("Registro de Atividades")
+        f.show_registro_atividades_by_function("Pesquisa Acadêmica")
+        st.divider()
+        st.header("Cronograma e Entregas")
+        f.show_cronograma_by_function("Pesquisa Acadêmica")
+        st.divider()
+        st.header("Disciplinas Relacionadas")
+        f.show_disciplinas_relacionadas_vri("Pesquisa Acadêmica")
 
-                # Sort by relevance
-                df_disciplinas_sorted = df_disciplinas.sort_values(by='Relevância', ascending=False)
+        f.show_referencias_by_function("Pesquisa Acadêmica")
 
-                # Select relevant columns for display
-                display_cols = ['Bimestre', 'Disciplina:', 'Relevância', 'Objetivo: ', 'Ementa:', 'Conteúdo programático', 'Bibliografia Básica e Complementar']
-                st.dataframe(df_disciplinas_sorted[display_cols], hide_index=True, width='stretch')
-
-            except FileNotFoundError:
-                st.error(f"Arquivo de disciplinas não encontrado: {disciplinas_path}")
-            except Exception as e:
-                st.error(f"Erro ao carregar ou processar as disciplinas: {e}")
-    st.divider()
-    st.header("Referências e Fontes")
-    st.markdown("- ABNT – NBR 14724.\n- FEURER, M. et al. Auto-sklearn 2.0.\n- PEDREGOSA, F. et al. Scikit-learn: Machine Learning in Python.\n- RUSSELL, S.; NORVIG, P. Artificial Intelligence: A Modern Approach.\n- ZOPH, B.; LE, Q. V. Neural Architecture Search with Reinforcement Learning.")
     with col2:
         st.subheader("Organograma Funcional")
         data = {

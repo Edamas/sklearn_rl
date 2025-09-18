@@ -362,7 +362,7 @@ def results():
                 # Definir estilos específicos para cada trace
                 fig_preds.for_each_trace(
                     lambda trace: trace.update(mode='markers', marker=dict(symbol='circle-open', size=3, opacity=0.5, color='red')) if trace.name == target_col_name
-                    else trace.update(mode='markers', marker=dict(symbol='circle', opacity=0.5, size=2, color='yellow'))
+                    else trace.update(mode='markers', marker=dict(symbol='circle', opacity=0.5, size=2, color='blue'))
                 )
                 fig_preds.update_layout(hovermode="x unified")
                 st.plotly_chart(fig_preds, width='stretch')
