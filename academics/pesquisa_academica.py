@@ -47,19 +47,26 @@ def render_pesquisa_academica():
         """)
         
         df_temas = pd.read_csv('docs/temas_de_TCC_Univesp.tsv', sep='\t', engine='python')
-        st.markdown(f.get_card_style(), unsafe_allow_html=True)
-        st.markdown(f"""
-        <div class='card'>
-            <div class='card-body'>
-                <h5 class='card-title'><font color='#FFD700'>{df_temas.columns[0]}</font></h5>
-                <p class='card-text'><font color='#ADD8E6'>{df_temas.columns[1]}</font></p>
-                <p class='card-text'><font color='#90EE90'>{df_temas.columns[2]}</font></p>
-                <p class='card-text'><font color='#FFA07A'>{df_temas.columns[3]}</font></p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        
+        st.info("Selecione um tema na tabela abaixo para ver os detalhes.")
+        selected_index = f.df_select_rows(df_temas, selection_mode='single-row', key=f"temas_tcc_univesp")
 
-        df_select_rows(df_temas, selection_mode='multi-row', key=f"temas_tcc_univesp")
+        if selected_index is not None and selected_index in df_temas.index:
+            selected_tema = df_temas.loc[selected_index]
+            st.subheader("Ficha do Tema")
+            st.markdown(f.get_card_style(), unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'><font color='#FFD700'>{selected_tema['títulos tcc univesp']}</font></h5>
+                    <p class='card-text'><font color='#ADD8E6'>Nº Páginas:</font> {selected_tema['nº páginas']}</p>
+                    <p class='card-text'><font color='#90EE90'>Complexidade do Tema:</font> {selected_tema['Complexidade do tema']}</p>
+                    <p class='card-text'><font color='#FFA07A'>Nível de Incerteza Científica:</font> {selected_tema['Nível de Incerteza Científica']}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("Nenhum tema selecionado.")
         st.divider()
         st.header("Registro de Atividades")
         f.show_registro_atividades_by_function("Pesquisa Acadêmica")

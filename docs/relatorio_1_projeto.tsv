@@ -1,0 +1,215 @@
+secao_id	paragrafo_id	linha_id	texto	estilo_id	formato_especifico	observacoes
+capa	1	1	UNIVERSIDADE VIRTUAL DO ESTADO DE SÃO PAULO	1		
+capa	2	1	CIÊNCIA DE DADOS	2		
+capa	3	1	CINTIA AGUENA ZANETTI	3		
+capa	3	2	EDNA APARECIDA NASCIMENTO	3		
+capa	3	3	ELYSIO DAMASCENO DA SILVA NETO	3		
+capa	3	4	GUSTAVO DANIEL MARTINEZ MADEIRA	3		
+capa	3	5	JOSÉ DONIZETE DE LIMA	3		
+capa	3	6	PASCOAL FERNANDES NETO	3		
+capa	3	7	WESLLEI MOREIRA DE SOUSA SABINO	3		
+capa	3	8	WILSON MATOS DE CARVALHO NETO	3		
+capa	4	1	Análise de Desempenho de Agente de Inteligência Artificial Autônoma na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquina (AutoML)	4		
+capa	5	1	São Paulo – SP	5		
+capa	6	1	2025	6		
+folha_de_rosto	1	1	CINTIA AGUENA ZANETTI	7		
+folha_de_rosto	1	2	EDNA APARECIDA NASCIMENTO	7		
+folha_de_rosto	1	3	ELYSIO DAMASCENO DA SILVA NETO	7		
+folha_de_rosto	1	4	GUSTAVO DANIEL MARTINEZ MADEIRA	7		
+folha_de_rosto	1	5	JOSÉ DONIZETE DE LIMA	7		
+folha_de_rosto	1	6	PASCOAL FERNANDES NETO	7		
+folha_de_rosto	1	7	WESLLEI MOREIRA DE SOUSA SABINO	7		
+folha_de_rosto	1	8	WILSON MATOS DE CARVALHO NETO	7		
+folha_de_rosto	2	1	Análise de Desempenho de Agente de Inteligência Artificial Autônoma na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquina (AutoML)	8		
+folha_de_rosto	3	1	Trabalho de Conclusão de Curso apresentado ao curso de Bacharelado em Ciências de Dados da Universidade Virtual do Estado de São Paulo como requisito parcial para obtenção do título de Graduação em Ciências de Dados.	9		
+folha_de_rosto	4	1	São Paulo – SP	10		
+folha_de_rosto	5	1	2025	11		
+folha_de_aprovacao	1	1	CINTIA AGUENA ZANETTI	12		
+folha_de_aprovacao	1	2	EDNA APARECIDA NASCIMENTO	12		
+folha_de_aprovacao	1	3	ELYSIO DAMASCENO DA SILVA NETO	12		
+folha_de_aprovacao	1	4	GUSTAVO DANIEL MARTINEZ MADEIRA	12		
+folha_de_aprovacao	1	5	JOSÉ DONIZETE DE LIMA	12		
+folha_de_aprovacao	1	6	PASCOAL FERNANDES NETO	12		
+folha_de_aprovacao	1	7	WESLLEI MOREIRA DE SOUSA SABINO	12		
+folha_de_aprovacao	1	8	WILSON MATOS DE CARVALHO NETO	12		
+folha_de_aprovacao	2	1	Análise de Desempenho de Agente de Inteligência Artificial Autônoma na Utilização da Suíte Scikit-learn em Projetos de Aprendizado de Máquina (AutoML)	13		
+folha_de_aprovacao	3	1	Trabalho de Conclusão de Curso apresentado ao curso de Bacharelado em Ciências de Dados da Universidade Virtual do Estado de São Paulo como requisito parcial para obtenção do título de Graduação em Ciências de Dados.	14		
+folha_de_aprovacao	4	1	Aprovado em: ____________	15		
+folha_de_aprovacao	4	2	Conceito: ____________	15		
+folha_de_aprovacao	5	1	BANCA EXAMINADORA	16		
+folha_de_aprovacao	6	1	________________________________________	16		
+folha_de_aprovacao	6	2	Prof. Fernanda Pereira Guidotti	16		
+folha_de_aprovacao	6	3	Universidade Virtual do Estado de São Paulo	16		
+folha_de_aprovacao	6	4	Presidente	16		
+folha_de_aprovacao	7	1	________________________________________	16		
+folha_de_aprovacao	7	2	Prof. [Nome do Professor]	16		
+folha_de_aprovacao	7	3	Universidade Virtual do Estado de São Paulo	16		
+folha_de_aprovacao	7	4	Membro	16		
+folha_de_aprovacao	8	1	________________________________________	16		
+folha_de_aprovacao	8	2	Prof. [Nome do Professor]	16		
+folha_de_aprovacao	8	3	Universidade Virtual do Estado de São Paulo	16		
+folha_de_aprovacao	8	4	Membro	16		
+resumo	1	1	RESUMO	17		
+resumo	2	1	Este trabalho tem como objetivo analisar o desempenho de agentes de inteligência artificial autônomos na utilização da suíte Scikit-learn em projetos de aprendizado de máquina no contexto de AutoML (Automated Machine Learning). A crescente demanda por soluções capazes de automatizar etapas como a preparação de dados, a seleção de algoritmos e o ajuste de hiperparâmetros evidencia a relevância de ferramentas que reduzam a dependência de conhecimento técnico especializado, otimizando tempo e recursos. Nesse cenário, os agentes autônomos se destacam por sua capacidade de realizar tarefas complexas de forma automática, possibilitando maior eficiência na construção, avaliação e validação de modelos. Utilizando aprendizado por reforço, o agente proposto será capaz de aprender a construir pipelines de machine learning de forma autônoma, selecionando e combinando algoritmos do Scikit-learn. Os resultados serão comparados com abordagens manuais, considerando métricas de acurácia, F1-score, tempo de execução e custo computacional. Espera-se que o agente autônomo apresente desempenho competitivo, reduzindo significativamente o tempo de desenvolvimento e otimizando o uso de recursos.	18		
+resumo	3	1	PALAVRAS-CHAVE: Inteligência Artificial; Agentes Autônomos; Machine Learning; AutoML; Scikit-learn; Aprendizado por Reforço.	19		
+abstract	1	1	ABSTRACT	20		
+abstract	2	1	This study aims to analyze the performance of autonomous artificial intelligence agents using the Scikit-learn suite in machine learning projects within the context of AutoML (Automated Machine Learning). The growing demand for solutions capable of automating tasks such as data preparation, algorithm selection, and hyperparameter tuning highlights the relevance of tools that reduce the need for specialized technical knowledge, optimizing time and resources. In this scenario, autonomous agents stand out for their ability to perform complex tasks automatically, enabling greater efficiency in model building, evaluation, and validation. Using reinforcement learning, the proposed agent will be able to learn to build machine learning pipelines autonomously, by selecting and combining Scikit-learn algorithms. The results will be compared with manual approaches, considering metrics such as accuracy, F1-score, execution time, and computational cost. It is expected that the autonomous agent will present competitive performance, significantly reducing development time and optimizing resource usage.	21		
+abstract	3	1	KEYWORDS: Artificial Intelligence; Autonomous Agents; Machine Learning; AutoML; Scikit-learn; Reinforcement Learning.	22		
+sumario	1	1	SUMÁRIO	23		
+sumario	2	1	1. INTRODUÇÃO	24		
+sumario	2	2	2. OBJETIVOS	24		
+sumario	2	3	   2.1 OBJETIVO GERAL	24		
+sumario	2	4	   2.2 OBJETIVO ESPECÍFICO	24		
+sumario	2	5	3. JUSTIFICATIVA E DELIMITAÇÃO AO PROBLEMA	24		
+sumario	2	6	4. FUNDAMENTAÇÃO TEÓRICO	24		
+sumario	2	7	4.1 Agentes Autônomos e Sistemas Inteligentes	24		
+sumario	2	8	4.2 Automated Machine Learning (AutoML)	24		
+sumario	2	9	4.3 Scikit-learn e Ecossistema de Ferramentas	24		
+sumario	2	10	4.4 Aprendizado por Reforço Aplicado a AutoML	24		
+sumario	2	11	5. METODOLOGIA	24		
+sumario	2	12	5.1 Seleção de Conjuntos de Dados	24		
+sumario	2	13	5.2 Implementação do Agente Autônomo	24		
+sumario	2	14	5.3 Configuração Manual de Modelos	24		
+sumario	2	15	5.4 Métricas de Avaliação	24		
+sumario	2	16	5.5 Análise Comparativa	24		
+sumario	2	17	6. CRONOGRAMA	24		
+sumario	2	18	7. RESULTADOS ESPERADOS	24		
+sumario	2	19	8. CONSIDERAÇÕES FINAIS	24		
+sumario	2	20	REFERÊNCIAS	24		
+introducao	1	1	1. INTRODUÇÃO	25		
+introducao	2	1	O avanço da Inteligência Artificial (IA) e do Aprendizado de Máquina (Machine Learning – ML) tem impulsionado o desenvolvimento de sistemas cada vez mais autônomos, capazes de executar tarefas complexas com mínima intervenção humana. Nesse contexto, os agentes autônomos e as ferramentas de AutoML (Aprendizado de Máquina Automatizado) assumem papel central, pois automatizam etapas cruciais do processo de modelagem, como a seleção de algoritmos, o ajuste de hiperparâmetros e a validação de modelos.	29		
+introducao	3	1	Entre as bibliotecas mais consolidadas para ML, o Scikit-learn destaca-se por sua versatilidade, robustez e ampla adoção acadêmica e industrial. Ele oferece recursos que podem ser potencializados quando integrados a sistemas de AutoML, ampliando a eficiência e reduzindo custos computacionais. Assim, este trabalho propõe analisar como agentes de inteligência artificial autônomos podem utilizar essa suíte para otimizar o desempenho em projetos de aprendizado de máquina, comparando os resultados obtidos com aqueles provenientes de abordagens tradicionais.	29		
+objetivos	1	1	2. OBJETIVOS	25		
+objetivos	2	1	2.1 OBJETIVO GERAL	26		
+objetivos	3	1	Analisar o desempenho de agentes de Inteligência Artificial Autônomos na utilização da suíte Scikit-learn para tarefas de aprendizado de máquina em projetos AutoML.	29		
+objetivos	4	1	2.2 OBJETIVOS ESPECÍFICOS	26		
+objetivos	5	1	• Investigar a aplicabilidade de agentes autônomos em diferentes contextos de aprendizado de máquina.	29		
+objetivos	5	2	•Comparar os resultados obtidos por AutoML com agentes autônomos em relação a modelos configurados manualmente.	29		
+objetivos	5	3	•Analisar métricas de desempenho como acurácia, precisão, recall, F1-score, tempo de execução e custo computacional.	29		
+objetivos	5	4	•Avaliar a escalabilidade da abordagem em diferentes conjuntos de dados.	29		
+objetivos	5	5	•Identificar desafios, limitações e possíveis melhorias no uso de agentes autônomos com Scikit-learn.	29		
+justificativa	1	1	3. JUSTIFICATIVA E DELIMITAÇÃO AO PROBLEMA	25		
+justificativa	2	1	O campo do Aprendizado de Máquina (Machine Learning – ML) caracteriza-se por sua ampla abrangência e elevada complexidade. A construção de um pipeline de ML, que engloba etapas como pré-processamento de dados, seleção de algoritmos, otimização de hiperparâmetros e avaliação de modelos, exige não apenas conhecimento técnico avançado, mas também significativo investimento de tempo. Essa complexidade constitui uma barreira de entrada, dificultando que profissionais e pesquisadores, mesmo aqueles que dispõem de dados relevantes, explorem de forma eficaz o potencial do ML.	29		
+justificativa	3	1	A automação desses processos, conhecida como AutoML (Automated Machine Learning), surge como alternativa para democratizar o acesso a técnicas de aprendizado de máquina. Entretanto, muitas das ferramentas de AutoML atualmente disponíveis ainda se apoiam em estratégias exaustivas, como a busca em grade, que são computacionalmente custosas e pouco eficientes. Nesse cenário, identifica-se uma lacuna na literatura quanto ao uso de abordagens mais inteligentes, adaptativas e escaláveis para a construção de pipelines de ML.	29		
+justificativa	4	1	Este Trabalho de Conclusão de Curso propõe-se a preencher essa lacuna por meio da investigação da viabilidade de uma abordagem inovadora: a utilização de um agente de Inteligência Artificial Autônomo baseado em Aprendizado por Reforço (Reinforcement Learning – RL). O RL, subárea da Inteligência Artificial, dedica-se ao estudo de como agentes inteligentes podem tomar decisões sequenciais em um ambiente, de modo a maximizar recompensas cumulativas.	29		
+justificativa	5	1	A partir dessa perspectiva, o presente estudo busca empregar um agente capaz de aprender, por tentativa e erro, a construir pipelines de ML de forma autônoma e otimizada, selecionando os recursos mais adequados da biblioteca Scikit-learn. Além de comprovar a viabilidade técnica dessa proposta, pretende-se também analisar a estratégia desenvolvida pelo agente, oferecendo contribuições relevantes para a ciência de dados, ao revelar combinações e sequências de ferramentas que poderiam não ser facilmente identificadas por um cientista humano.	29		
+justificativa	6	1	A relevância deste trabalho manifesta-se em três dimensões principais. No âmbito acadêmico, contribui para o avanço do estado da arte em AutoML, ao explorar uma metodologia ainda pouco aplicada, com potencial para publicações e apresentações em eventos especializados. No campo da inovação tecnológica, os resultados podem fundamentar o desenvolvimento de ferramentas mais inteligentes e eficientes, superando limitações das abordagens tradicionais. Por fim, no contexto mercadológico, a automação de tarefas complexas em ML apresenta elevado potencial de aplicação prática, despertando interesse de empresas de tecnologia, pesquisadores e profissionais da área.	29		
+fundamentacao	1	1	4. FUNDAMENTAÇÃO TEÓRICA	25		
+fundamentacao	2	1	4.1 Agentes Autônomos e Sistemas Inteligentes	26		
+fundamentacao	3	1	Agentes autônomos são sistemas capazes de operar de forma independente em um ambiente, tomando decisões com base em percepções e objetivos predefinidos. Segundo Russell e Norvig (2020), um agente inteligente é qualquer entidade que percebe seu ambiente por meio de sensores e age sobre esse ambiente por meio de atuadores. No contexto de machine learning, agentes autônomos podem ser utilizados para automatizar tarefas como seleção de features, escolha de algoritmos e ajuste de hiperparâmetros.	29		
+fundamentacao	4	1	4.2 Automated Machine Learning (AutoML)	26		
+fundamentacao	5	1	AutoML refere-se ao processo de automatização de tarefas de machine learning, desde o pré-processamento de dados até a implantação do modelo. Feurer et al. (2019) destacam que o AutoML permite que usuários sem expertise avançada em ML construam modelos eficientes por meio de ferramentas como Auto-Sklearn, TPOT e H2O.ai. Tais ferramentas combinam técnicas de meta-aprendizado, otimização bayesiana e busca em espaço de hiperparâmetros.	29		
+fundamentacao	6	1	4.3 Scikit-learn e Ecossistema de Ferramentas	26		
+fundamentacao	7	1	Scikit-learn é uma biblioteca de código aberto em Python que oferece implementações eficientes de algoritmos de classificação, regressão, clustering e redução de dimensionalidade (PEDREGOSA et al., 2011). Sua interface consistente e documentação abrangente a tornam ideal para integração com sistemas de AutoML.	29		
+fundamentacao	8	1	4.4 Aprendizado por Reforço Aplicado a AutoML	26		
+fundamentacao	9	1	O aprendizado por reforço (RL) tem sido aplicado com sucesso na automação de projetos de ML. Zoph e Le (2017) utilizaram RL para busca de arquiteturas de redes neurais (NAS – Neural Architecture Search), inspirando adaptações para pipelines genéricos de ML. Neste trabalho, um agente de RL será treinado para selecionar e ajustar modelos do Scikit-learn maximizando métricas de desempenho.	29		
+metodologia	1	1	5 METODOLOGIA	25		
+metodologia	2	1	5.1 Seleção de Conjuntos de Dados	26		
+metodologia	3	1	Serão utilizados conjuntos de dados clássicos da literatura, como Iris, Digits, Wine (classificação), Boston Housing (regressão) e MNIST (visão computacional). Todos estão disponíveis no Scikit-learn ou no OpenML.	29		
+metodologia	4	1	5.2 Implementação do Agente Autônomo	26		
+metodologia	5	1	O agente será implementado em Python, usando a biblioteca Stable-Baselines3 para RL. O ambiente será customizado usando OpenAI Gym, onde:	29		
+metodologia	6	1	•Estados: representação do pipeline atual (features, algoritmo, hiperparâmetros).	29		
+metodologia	6	2	•Ações: escolha de algoritmo, ajuste de hiperparâmetros, seleção de features.	29		
+metodologia	6	3	•Recompensa: métrica de desempenho (ex.: acurácia, F1-score).	29		
+metodologia	7	1	5.3 Configuração Manual de Modelos	26		
+metodologia	8	1	Para comparação, serão treinados modelos equivalentes usando busca em grade (GridSearchCV) e busca aleatória (RandomizedSearchCV) do Scikit-learn.	29		
+metodologia	9	1	5.4 Métricas de Avaliação	26		
+metodologia	10	1	•Acurácia, Precisão, Recall, F1-Score (classificação)	29		
+metodologia	10	2	•MSE, RMSE, R² (regressão)	29		
+metodologia	10	3	•Tempo de treinamento e inferência	29		
+metodologia	10	4	•Uso de CPU e memória	29		
+metodologia	11	1	5.5 Análise Comparativa	26		
+metodologia	12	1	Os resultados do agente autônomo serão comparados estatisticamente com as abordagens manuais usando teste t-Student e ANOVA.	29		
+cronograma	1	1	6. CRONOGRAMA	25		
+cronograma	2	1	Este cronograma foi elaborado com base no calendário oficial da UNIVESP 2025, nas funções designadas aos membros do grupo e na proposta de projeto escolhida em Ciência de Dados. O objetivo é organizar as atividades, responsabilidades e prazos para a entrega das etapas do TCC.	29		
+cronograma	3	1	•Quinzena 1 e Quinzena 2 – início 11/08/2025 a 24/08/2025	29		
+cronograma	4	1	- Escolhendo o Tema;	29		
+cronograma	4	2	- Delimitação do tema e objetivos.	29		
+cronograma	5	1	Gestão de Projetos    Edna / PaschoalPlanejar e Elaborar o cronograma nas funções designadas aos membros do grupo e na proposta escolhida em Ciência de Dados.	29		
+cronograma	5	2	Organizar as atividades, responsabilidades e prazos para a entrega das etapas do TCC.	29		
+cronograma	5	3	Divisão dos papéis (acadêmico, projeto, pesquisa e acadêmico).	29		
+cronograma	5	4	Cronograma das Reuniões.	29		
+cronograma	5	5	Apresentação dos temas e objetivos de acordo com a proposta escolhida	29		
+cronograma	5	6	Reuniões com a Orientadora e todos os participantes.	29		
+cronograma	5	7	Reuniões Grupo TCC	29		
+cronograma	6	1	Acadêmico                   Cintia / GustavoLevantamento Bibliográfico, Escrita TCC /introdução, Justificativa e Objetivos, referencial teórico, coleta de dados e análise, alinhamento do projeto com os requisitos acadêmicos	29		
+cronograma	7	1	Pesquisa                       Donizete/Lima Levantamento Bibliográfico, revisão da literatura, referencial teórico, coleta de dados e análise	29		
+cronograma	8	1	Desenvolvimento        Wesley/ElydioEstudo dos datasets disponíveis (ou coleta inicial de dados IOT.	29		
+cronograma	9	1	•Quinzena 3 - início 08/09/2025, entrega 16/09/2025, carência 21/09/2025	29		
+cronograma	10	1	- Material e Métodos	29		
+cronograma	11	1	Gestão de Projetos    Edna / PaschoalRevisão final entrega parcial; Introdução, Revisão Bibliográfica, definição do Problema, Justificativa.	29		
+cronograma	12	1	Acadêmica                   Cintia / GustavoRevisão pela dupla acadêmica	29		
+cronograma	13	1	Pesquisa                       Donizete/Lima Pesquisa teórica da análise científica, revisão bibliográfica, analise de dados e resultados	29		
+cronograma	14	1	Desenvolvimento        Wesley/ElydioImplementação prática do projeto, análise das bibliotecas e ferramentas necessárias para a implementação.	29		
+cronograma	15	1	•Quinzena 4 – Início 22/09/2025 a 05/10/2025	29		
+cronograma	16	1	- Pesquisas	29		
+cronograma	17	1	Gestão de Projetos    Edna / PaschoalDefinição da metodologia de análise de dados	29		
+cronograma	18	1	Acadêmica                   Cintia / GustavoEscrita e revisão de relatórios	29		
+cronograma	19	1	Pesquisa                       Donizete/Lima Escrita e revisão de relatórios	29		
+cronograma	20	1	Desenvolvimento        Wesley/ElydioSeleção e preparação do conjunto de dados	29		
+cronograma	20	2	Primeiros experimentos com algoritmos de ML	29		
+cronograma	21	1	•Quinzena 5- Início 06/10/2025 a 19/10/2025	29		
+cronograma	22	1	- Coleta de Dados	29		
+cronograma	23	1	Gestão de Projetos    Edna / Paschoal	29		
+cronograma	24	1	Acadêmica                   Cintia / Gustavo	29		
+cronograma	25	1	Pesquisa                       Donizete/Lima	29		
+cronograma	26	1	Desenvolvimento        Wesley/ElydioImplementação inicial do modelo (prototipagem)	29		
+cronograma	26	2	Documentação do processo no relatório	29		
+cronograma	26	3	Ajustes metodológicos se necessário	29		
+cronograma	27	1	•Quinzena 6 – início 20/10/2025 a 02/11/2025	29		
+cronograma	28	1	- Segunda Entrega - 28/10/2025	29		
+cronograma	28	2	- Carência - 03/11/2025	29		
+cronograma	28	3	- Análise, discussão dos resultados, considerações finais	29		
+cronograma	29	1	Gestão de Projetos    Edna / PaschoalMetodologia, Experimentos iniciais e estrutura de resultados, revisão textual e formatação ABNT.	29		
+cronograma	30	1	Acadêmica                   Cintia / GustavoMetodologia, experimentos iniciais e estrutura de resultados, revisão textual e formatação ABNT.	29		
+cronograma	31	1	Pesquisa                       Donizete/Lima Metodologia, experimentos iniciais e estrutura de resultados, revisão textual e formatação ABNT	29		
+cronograma	32	1	Desenvolvimento        Wesley/ElydioMetodologia, experimentos iniciais e estrutura de resultados, revisão textual e formatação ABNT.	29		
+cronograma	33	1	•Quinzena 7 – Início 03/11/2025, entrega 11/11/2025, carência 16/11/2025	29		
+cronograma	34	1	- Revisão Final	29		
+cronograma	34	2	- Entrega.	29		
+cronograma	35	1	Gestão de Projetos    Edna / PaschoalResultados Finais +Discussão, Considerações Finais. Revisão Completa do documento Final	29		
+cronograma	36	1	Acadêmica                   Cintia / GustavoResultados Finais +Discussão, Considerações Finais. Revisão Completa do documento Final	29		
+cronograma	37	1	Pesquisa                       Donizete/Lima Resultados Finais +Discussão, Considerações Finais. Revisão Completa do documento Final	29		
+cronograma	38	1	Desenvolvimento        Wesley/ElydioResultados Finais +Discussão, Considerações Finais. Revisão Completa do documento Final	29		
+cronograma	38	2	Preparação para a apresentação oral.	29		
+cronograma	39	1	Atividade	29		
+cronograma	39	2	ago/25	29		
+cronograma	39	3	set/25	29		
+cronograma	39	4	out/25	29		
+cronograma	39	5	nov/25	29		
+cronograma	40	1	Definição do Tema	29		
+cronograma	40	2	X	29		
+cronograma	41	1	Revisão Bibliográfica	29		
+cronograma	41	2	XX	29		
+cronograma	42	1	Implementação do Agente	29		
+cronograma	42	2	XX	29		
+cronograma	43	1	Experimentos e Coleta de Dados	29		
+cronograma	43	2	XX	29		
+cronograma	44	1	Análise de Resultados	29		
+cronograma	44	2	X	29		
+cronograma	45	1	Redação Final	29		
+cronograma	45	2	X	29		
+resultados	1	1	7. RESULTADOS ESPERADOS	25		
+resultados	2	1	Espera-se que o agente autônomo atinja desempenho similar ou superior aos métodos manuais, com redução significativa no tempo de desenvolvimento e maior eficiência computacional. Além disso, espera-se que o agente descubra combinações não óbvias de algoritmos e hiperparâmetros.	29		
+consideracoes	1	1	8. CONSIDERAÇÕES FINAIS	25		
+consideracoes	2	1	Este trabalho propõe uma abordagem inovadora para AutoML usando aprendizado por reforço integrado ao Scikit-learn. Os resultados podem contribuir para o desenvolvimento de ferramentas mais acessíveis e eficientes, democratizando o uso de machine learning.	29		
+consideracoes	3	1	Espera-se que agentes de inteligência artificial autônomos apresentem desempenho competitivo em relação às abordagens manuais, sobretudo no que se refere à redução do tempo de execução e à automação do processo de modelagem. Ainda assim, é importante reconhecer que podem emergir desafios significativos, como a necessidade de maior capacidade computacional e a questão da interpretabilidade dos modelos gerados. Esses aspectos demandam análise criteriosa, de modo a oferecer uma visão crítica e equilibrada sobre o uso do AutoML em diferentes contextos.	29		
+consideracoes	4	1	Nesse sentido, este trabalho propôs uma análise sistemática da aplicabilidade de agentes autônomos em projetos de aprendizado de máquina utilizando a suíte Scikit-learn, no âmbito do AutoML. A investigação buscou não apenas avaliar a viabilidade técnica dessa abordagem, mas também refletir sobre suas potencialidades e limitações, considerando cenários tanto acadêmicos quanto corporativos.	29		
+consideracoes	5	1	Como contribuição, espera-se que os resultados obtidos favoreçam uma compreensão mais ampla sobre as vantagens e os desafios do uso de agentes inteligentes em tarefas de modelagem, além de apontar caminhos promissores para a evolução de sistemas de AutoML mais eficientes e adaptativos. Por fim, abre-se espaço para pesquisas futuras voltadas à integração entre AutoML e agentes baseados em aprendizado por reforço, de modo a ampliar o impacto dessas tecnologias no avanço da ciência de dados e no desenvolvimento de soluções inovadoras para o mercado.	29		
+referencias	1	1	REFERÊNCIAS	25		
+referencias	2	1	ABNT – Associação Brasileira de Normas Técnicas. NBR 14724: Informação e documentação. Trabalhos Acadêmicos - Apresentação. Rio de Janeiro: ABNT, 2002.	31		
+referencias	3	1	FEURER, M. et al. Auto-sklearn 2.0: Hands-free AutoML via Meta-Learning. In: Advances in Neural Information Processing Systems, 2019.	31		
+referencias	4	1	PEDREGOSA, F. et al. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, v. 12, p. 2825–2830, 2011.	31		
+referencias	5	1	RUSSELL, S.; NORVIG, P. Artificial Intelligence: A Modern Approach. 4. ed. New Jersey: Pearson, 2020.	31		
+referencias	6	1	ZOPH, B.; LE, Q. V. Neural Architecture Search with Reinforcement Learning. In: International Conference on Learning Representations (ICLR), 2017.	31		
+referencias	7	1	ABNT. NBR 14724: Informação e documentação – Trabalhos acadêmicos – Apresentação. Rio de Janeiro: ABNT, 2002.	31		
+referencias	8	1	BAKER, B.; GUPTA, O.; NAIK, N.; RASKAR, R. Designing Neural Network Architectures using Reinforcement Learning. ICLR, 2017.	31		
+referencias	9	1	ELSKEN, T.; METZEN, J. H.; HUTTER, F. Neural Architecture Search: A Survey. Journal of Machine Learning Research, v. 20, n. 55, p. 1–21, 2019.	31		
+referencias	10	1	FEURER, M. et al. Auto-Sklearn 2.0: Hands-free AutoML via Meta-Learning. In: Advances in Neural Information Processing Systems, 2019.	31		
+referencias	11	1	FEURER, M.; KLEIN, A.; EGGENSPERGER, K.; et al. Efficient and Robust Automated Machine Learning. NeurIPS, 2015.	31		
+referencias	12	1	GRUCA, A.; DA SILVA, N. Métricas de Avaliação em Aprendizado de Máquina: Uma Revisão Sistemática. Brazilian Journal of Data Science, v. 2, n. 1, p. 45–60, 2020.	31		
+referencias	13	1	HUTTER, F.; KOTTHOFF, L.; VANSCHOREN, J. (Eds.). Automated Machine Learning: Methods, Systems, Challenges. Springer, 2019.	31		
+referencias	14	1	PEDREGOSA, F. et al. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, v. 12, p. 2825–2830, 2011.	31		
+referencias	15	1	RUSSELL, S.; NORVIG, P. Artificial Intelligence: A Modern Approach. 4. ed. Nova Jersey: Pearson, 2020.	31		
+referencias	16	1	ZHONG, Z.; YAN, J.; WU, W.; et al. Practical Block-wise Neural Network Architecture Generation. CVPR, 2018.	31		
+referencias	17	1	ZOPH, B.; LE, Q. V. Neural Architecture Search with Reinforcement Learning. ICLR, 2017.	31		

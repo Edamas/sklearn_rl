@@ -17,6 +17,73 @@ def render_formatacao_e_apresentacao():
     
     
         st.divider()
+        st.header("Relatório e Estilos ABNT")
+
+        st.subheader("Conteúdo do Relatório")
+        df_relatorio = pd.read_csv(st.session_state['files']['relatorio_1_projeto'], sep='\t', engine='python')
+
+        # Add hierarchical numbering and a boolean field for numbering display
+        df_relatorio['num_hierarquica'] = df_relatorio['secao_id'] + '.' + df_relatorio['paragrafo_id'].astype(str) + '.' + df_relatorio['linha_id'].astype(str)
+        df_relatorio['exibir_num'] = True # Default to True, can be changed by user if needed
+
+        st.info("Selecione uma linha do relatório para ver os detalhes.")
+        selected_index_relatorio = f.df_select_rows(df_relatorio, selection_mode='single-row', key="relatorio_selector")
+
+        if selected_index_relatorio is not None and selected_index_relatorio in df_relatorio.index:
+            selected_linha_relatorio = df_relatorio.loc[selected_index_relatorio]
+            st.subheader("Ficha da Linha do Relatório")
+            st.markdown(f.get_card_style(), unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'><font color='#FFD700'>Seção:</font> {selected_linha_relatorio['secao_id']}</font></h5>
+                    <p class='card-text'><font color='#ADD8E6'>Parágrafo ID:</font> {selected_linha_relatorio['paragrafo_id']}</p>
+                    <p class='card-text'><font color='#90EE90'>Linha ID:</font> {selected_linha_relatorio['linha_id']}</p>
+                    <p class='card-text'><font color='#FFA07A'>Texto:</font> {selected_linha_relatorio['texto']}</p>
+                    <p class='card-text'><font color='#4682B4'>Estilo ID:</font> {selected_linha_relatorio['estilo_id']}</p>
+                    <p class='card-text'><font color='#FFD700'>Formato Específico:</font> {selected_linha_relatorio['formato_especifico']}</p>
+                    <p class='card-text'><font color='#ADD8E6'>Observações:</font> {selected_linha_relatorio['observacoes']}</p>
+                    <p class='card-text'><font color='#90EE90'>Numeração Hierárquica:</font> {selected_linha_relatorio['num_hierarquica']}</p>
+                    <p class='card-text'><font color='#FFA07A'>Exibir Numeração:</font> {selected_linha_relatorio['exibir_num']}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("Nenhuma linha do relatório selecionada.")
+
+        st.subheader("Estilos ABNT")
+        df_formatacao = pd.read_csv(st.session_state['files']['formatacao'], sep='\t', engine='python')
+
+        st.info("Selecione um estilo para ver os detalhes.")
+        selected_index_formatacao = f.df_select_rows(df_formatacao, selection_mode='single-row', key="formatacao_selector")
+
+        if selected_index_formatacao is not None and selected_index_formatacao in df_formatacao.index:
+            selected_estilo = df_formatacao.loc[selected_index_formatacao]
+            st.subheader("Ficha do Estilo")
+            st.markdown(f.get_card_style(), unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'><font color='#FFD700'>Estilo ID:</font> {selected_estilo['estilo_id']}</font></h5>
+                    <p class='card-text'><font color='#ADD8E6'>Nome do Estilo:</font> {selected_estilo['nome_estilo']}</p>
+                    <p class='card-text'><font color='#90EE90'>Fonte:</font> {selected_estilo['fonte_nome']} ({selected_estilo['fonte_tamanho']}pt)</p>
+                    <p class='card-text'><font color='#FFA07A'>Alinhamento:</font> {selected_estilo['alinhamento']}</p>
+                    <p class='card-text'><font color='#4682B4'>Recuo Primeira Linha:</font> {selected_estilo['recuo_primeira_linha']}</p>
+                    <p class='card-text'><font color='#FFD700'>Espaçamento Antes:</font> {selected_estilo['espacamento_antes']}</p>
+                    <p class='card-text'><font color='#ADD8E6'>Espaçamento Depois:</font> {selected_estilo['espacamento_depois']}</p>
+                    <p class='card-text'><font color='#90EE90'>Espaçamento Entre Linhas:</font> {selected_estilo['espacamento_entre_linhas']}</p>
+                    <p class='card-text'><font color='#FFA07A'>Negrito:</font> {selected_estilo['negrito']}</p>
+                    <p class='card-text'><font color='#4682B4'>Itálico:</font> {selected_estilo['italico']}</p>
+                    <p class='card-text'><font color='#FFD700'>Sublinhado:</font> {selected_estilo['sublinhado']}</p>
+                    <p class='card-text'><font color='#ADD8E6'>Cor da Fonte:</font> {selected_estilo['cor_fonte']}</p>
+                    <p class='card-text'><font color='#90EE90'>Observações:</font> {selected_estilo['observacoes']}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.info("Nenhum estilo selecionado.")
+
+        st.divider()
         st.header("Registro de Atividades")
         f.show_registro_atividades_by_function("Formatação e Apresentação")
         st.divider()
