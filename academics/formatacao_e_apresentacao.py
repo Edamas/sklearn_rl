@@ -85,46 +85,45 @@ def render_formatacao_e_apresentacao():
             st.info("Nenhum estilo selecionado.")
 
         st.divider()
-        st.header("Visualização do Relatório Formatado")
+        with st.expander("Visualização do Relatório Formatado", expanded=False):
+            # Read the dataframes again to ensure they are up-to-date
+            df_relatorio = pd.read_csv(st.session_state['files']['relatorio_1_projeto'], sep='\t', engine='python')
+            df_formatacao = pd.read_csv(st.session_state['files']['formatacao'], sep='\t', engine='python')
 
-        # Read the dataframes again to ensure they are up-to-date
-        df_relatorio = pd.read_csv(st.session_state['files']['relatorio_1_projeto'], sep='\t', engine='python')
-        df_formatacao = pd.read_csv(st.session_state['files']['formatacao'], sep='\t', engine='python')
+            # Merge the dataframes to get the visual code for each line
+            df_merged = pd.merge(df_relatorio, df_formatacao, on='estilo_id', how='left')
 
-        # Merge the dataframes to get the visual code for each line
-        df_merged = pd.merge(df_relatorio, df_formatacao, on='estilo_id', how='left')
+            # Generate the formatted report content
+            formatted_report_content = ""
+            for index, row in df_merged.iterrows():
+                text_content = row['texto']
+                visual_code_template = row['codigo_visual']
+                num_hierarquica = row['num_hierarquica']
+                exibir_num = row['exibir_num']
 
-        # Generate the formatted report content
-        formatted_report_content = ""
-        for index, row in df_merged.iterrows():
-            text_content = row['texto']
-            visual_code_template = row['codigo_visual']
-            num_hierarquica = row['num_hierarquica']
-            exibir_num = row['exibir_num']
+                # Apply specific formatting (bold, italic, underline) if present in 'formato_especifico'
+                # This is a simplified example, a more robust solution would parse the 'formato_especifico' field
+                if 'negrito' in str(row['formato_especifico']).lower():
+                    text_content = f"<b>{text_content}</b>"
+                if 'italico' in str(row['formato_especifico']).lower():
+                    text_content = f"<i>{text_content}</i>"
+                if 'sublinhado' in str(row['formato_especifico']).lower():
+                    text_content = f"<u>{text_content}</u>"
 
-            # Apply specific formatting (bold, italic, underline) if present in 'formato_especifico'
-            # This is a simplified example, a more robust solution would parse the 'formato_especifico' field
-            if 'negrito' in str(row['formato_especifico']).lower():
-                text_content = f"<b>{text_content}</b>"
-            if 'italico' in str(row['formato_especifico']).lower():
-                text_content = f"<i>{text_content}</i>"
-            if 'sublinhado' in str(row['formato_especifico']).lower():
-                text_content = f"<u>{text_content}</u>"
+                # Add hierarchical numbering if 'exibir_num' is True
+                if exibir_num:
+                    text_content = f"{num_hierarquica} {text_content}"
 
-            # Add hierarchical numbering if 'exibir_num' is True
-            if exibir_num:
-                text_content = f"{num_hierarquica} {text_content}"
+                # Replace the placeholder in codigo_visual with the actual text content
+                # Assuming the visual_code_template has a placeholder like '</span>' at the end
+                if visual_code_template and '</span>' in visual_code_template:
+                    formatted_line = visual_code_template.replace('</span>', f'{text_content}</span>')
+                else:
+                    formatted_line = f"<div>{text_content}</div>" # Fallback if no visual code or placeholder
 
-            # Replace the placeholder in codigo_visual with the actual text content
-            # Assuming the visual_code_template has a placeholder like '</span>' at the end
-            if visual_code_template and '</span>' in visual_code_template:
-                formatted_line = visual_code_template.replace('</span>', f'{text_content}</span>')
-            else:
-                formatted_line = f"<div>{text_content}</div>" # Fallback if no visual code or placeholder
+                formatted_report_content += formatted_line + "<br>" # Add a line break for readability
 
-            formatted_report_content += formatted_line + "<br>" # Add a line break for readability
-
-        st.markdown(formatted_report_content, unsafe_allow_html=True)
+            st.markdown(formatted_report_content, unsafe_allow_html=True)
 
         st.divider()
         st.header("Registro de Atividades")
