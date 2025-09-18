@@ -87,7 +87,7 @@ sklearn.base.BiclusterMixin	D_training/estimators_docs/processed_estimator_docs/
 sklearn.base.ClassifierMixin	D_training/estimators_docs/processed_estimator_docs/sklearn.base.ClassifierMixin.txt
 sklearn.base.ClassNamePrefixFeaturesOutMixin	D_training/estimators_docs/processed_estimator_docs/sklearn.base.ClassNamePrefixFeaturesOutMixin.txt
 sklearn.base.clone	D_training/estimators_docs/processed_estimator_docs/sklearn.base.clone.txt
-sklearn.base.ClusterMixin	D_training/estimators_docs/processed_estimator_docs/sklearn.base.ClusterMixin.txt
+sklearn.base.ClusterMixin	D_training/estimators_docs/processed_estimator_docs/sklearn.cluster.ClusterMixin.txt
 sklearn.base.DensityMixin	D_training/estimators_docs/processed_estimator_docs/sklearn.base.DensityMixin.txt
 sklearn.base.is_classifier	D_training/estimators_docs/processed_estimator_docs/sklearn.base.is_classifier.txt
 sklearn.base.is_clusterer	D_training/estimators_docs/processed_estimator_docs/sklearn.base.is_clusterer.txt
@@ -253,7 +253,7 @@ sklearn.mixture.BayesianGaussianMixture	D_training/estimators_docs/processed_est
 sklearn.mixture.GaussianMixture	D_training/estimators_docs/processed_estimator_docs/sklearn.mixture.GaussianMixture.txt
 sklearn.model_selection.GridSearchCV	D_training/estimators_docs/processed_estimator_docs/sklearn.model_selection.GridSearchCV.txt
 sklearn.model_selection.HalvingGridSearchCV	D_training/estimators_docs/processed_estimator_docs/sklearn.model_selection.HalvingGridSearchCV.txt
-sklearn.model_selection.HalvingRandomSearchCV	D_training/estimators_docs/processed_estimator_docs/sklearn.model_selection.HalvingRandomSearchCV.txt
+sklearn.model_selection.HalvingRandomSearchCV	D_training/estimators_docs/processed_estimator_docs/sklearn.random_selection.HalvingRandomSearchCV.txt
 sklearn.model_selection.RandomizedSearchCV	D_training/estimators_docs/processed_estimator_docs/sklearn.model_selection.RandomizedSearchCV.txt
 sklearn.multiclass.OneVsOneClassifier	D_training/estimators_docs/processed_estimator_docs/sklearn.multiclass.OneVsOneClassifier.txt
 sklearn.multiclass.OneVsRestClassifier	D_training/estimators_docs/processed_estimator_docs/sklearn.multiclass.OneVsRestClassifier.txt
@@ -374,3 +374,5 @@ tratamento_estimators	notebooks/tratamento_estimators.ipynb
 app_1	old_version_19ea5f2/app.py
 functions_1	old_version_19ea5f2/functions.py
 menu_1	old_version_19ea5f2/menu.py
+relatorio_1_projeto	docs/relatorio_1_projeto.tsv
+formatacao	docs/formatacao.tsv
