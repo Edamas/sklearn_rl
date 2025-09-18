@@ -180,57 +180,81 @@ class AgentRL:
 
             # 2. Tratar parâmetros dinâmicos
             processed_params = {}
-            for param_name, param_value in params_dict.items():
-                if isinstance(param_value, str):
-                    if param_value == 'n_samples' and n_samples is not None:
-                        processed_params[param_name] = n_samples
-                    elif param_value == 'n_features' and n_features is not None:
-                        processed_params[param_name] = n_features
-                    elif param_value == 'n_classes' and n_classes is not None:
-                        processed_params[param_name] = n_classes
-                    elif param_value == 'min_samples_per_class' and y_data is not None:
-                        processed_params[param_name] = y_data.value_counts().min()
-                    elif param_value == 'n_components' and n_features is not None:
-                        # Default to min(n_samples, n_features) - 1, or a reasonable fraction
-                        val = min(n_samples, n_features) - 1 if n_samples and n_features else None
-                        if val is not None and val <= 0: # Ensure n_components is at least 1
-                            val = 1
-                        processed_params[param_name] = val
-                    elif param_value == 'n_clusters' and n_samples is not None:
-                        # Default to min(n_samples // 2, n_classes) or a reasonable number
-                        val = min(n_samples // 2, n_classes) if n_samples and n_classes else None
-                        if val is not None and val <= 0: # Ensure n_clusters is at least 1
-                            val = 1
-                        processed_params[param_name] = val
-                    elif param_value == 'n_output_features' and n_features is not None: # Placeholder for output features
-                        # This would typically be determined by the transformer itself, or a subsequent step
-                        # For now, we can set it to n_features or a calculated value if context allows
-                        processed_params[param_name] = n_features # Example: pass through
-                    elif param_value == 'sum_n_components' and n_features is not None: # Placeholder for sum of components
-                        # This would be sum of n_components from multiple transformers
-                        processed_params[param_name] = n_features # Example: pass through
-                    # --- Lógica para variáveis especiais como kernel, sigma, mean ---
-                    # O agente precisaria de regras ou um mapeamento para calcular esses valores
-                    # ou instanciar classes específicas (e.g., sklearn.gaussian_process.kernels.RBF)
-                    # Exemplo (requer importação de RBF se for uma classe):
-                    # elif param_name == 'kernel' and param_value == 'RBF':
-                    #     from sklearn.gaussian_process.kernels import RBF
-                    #     processed_params[param_name] = RBF()
-                    # elif param_name == 'sigma' and X_data is not None:
-                    #     processed_params[param_name] = np.std(X_data) # Exemplo: desvio padrão dos dados
-                    # elif param_name == 'mean' and X_data is not None:
-                    #     processed_params[param_name] = np.mean(X_data) # Exemplo: média dos dados
-                    elif param_value == 'float':
-                        # Get min/max for the specific parameter from parameters_df
-                        param_info = self.parameters_df[(self.parameters_df['param_name'] == param_name) & 
-                                                        (self.parameters_df['estimators_list'].str.contains(estimator_name, na=False))].iloc[0]
-                        min_val = float(param_info['param_min'])
-                        max_val = float(param_info['param_max'])
-                        processed_params[param_name] = np.random.uniform(min_val, max_val)
-                    else:
-                        processed_params[param_name] = param_value
-                else:
-                    processed_params[param_name] = param_value
+            for param_name, param_value_from_steps_config in params_dict.items():
+                # Find the parameter definition in self.parameters_df
+                param_info_rows = self.parameters_df[
+                    (self.parameters_df['param_name'] == param_name) &
+                    (self.parameters_df['estimators_list'].apply(lambda x: estimator_name in ast.literal_eval(x) if pd.notna(x) else False))
+                ]
+
+                if not param_info_rows.empty:
+                    param_info = param_info_rows.iloc[0] # Take the first matching row
+                    param_dtype = param_info['param_dtype']
+                    param_standard = param_info['param_standard']
+                    param_min = param_info['param_min']
+                    param_max = param_info['param_max']
+                    param_list = ast.literal_eval(param_info['param_list']) # Convert string to list
+
+                    # Prioritize param_standard if it's not NaN and param_value_from_steps_config is a placeholder
+                    if pd.notna(param_standard) and (param_value_from_steps_config == 'float' or param_value_from_steps_config == 'int' or param_value_from_steps_config == 'bool'):
+                        # Convert param_standard to the correct type
+                        if 'float' in param_dtype:
+                            processed_params[param_name] = float(param_standard)
+                        elif 'int' in param_dtype:
+                            processed_params[param_name] = int(param_standard)
+                        elif 'bool' in param_dtype:
+                            processed_params[param_name] = str(param_standard).lower() == 'true'
+                        else:
+                            processed_params[param_name] = param_standard # Fallback
+                    elif param_list: # If there's a list of valid options
+                        # If param_value_from_steps_config is one of the valid options, use it
+                        if param_value_from_steps_config in param_list:
+                            processed_params[param_name] = param_value_from_steps_config
+                        else: # Otherwise, pick randomly from the list
+                            processed_params[param_name] = np.random.choice(param_list)
+                    elif 'float' in param_dtype and pd.notna(param_min) and pd.notna(param_max):
+                        # Generate random float within min/max
+                        processed_params[param_name] = np.random.uniform(float(param_min), float(param_max))
+                    elif 'int' in param_dtype and pd.notna(param_min) and pd.notna(param_max):
+                        # Safely convert min/max to int, handling float strings
+                        try:
+                            min_val_int = int(float(param_min)) # Convert to float first, then int
+                            max_val_int = int(float(param_max)) # Convert to float first, then int
+                            processed_params[param_name] = np.random.randint(min_val_int, max_val_int + 1)
+                        except ValueError:
+                            # If conversion still fails (e.g., non-numeric string), fall back or raise error
+                            print(f"Warning: Could not convert param_min/max for {param_name} to int. Skipping this parameter.")
+                            pass # Skip this parameter if it causes an error
+                    else: # Fallback to original logic for special string values or direct copy
+                        if isinstance(param_value_from_steps_config, str):
+                            if param_value_from_steps_config == 'n_samples' and n_samples is not None:
+                                processed_params[param_name] = n_samples
+                            elif param_value_from_steps_config == 'n_features' and n_features is not None:
+                                processed_params[param_name] = n_features
+                            elif param_value_from_steps_config == 'n_classes' and n_classes is not None:
+                                processed_params[param_name] = n_classes
+                            elif param_value_from_steps_config == 'min_samples_per_class' and y_data is not None:
+                                processed_params[param_name] = y_data.value_counts().min()
+                            elif param_value_from_steps_config == 'n_components' and n_features is not None:
+                                val = min(n_samples, n_features) - 1 if n_samples and n_features else None
+                                if val is not None and val <= 0:
+                                    val = 1
+                                processed_params[param_name] = val
+                            elif param_value_from_steps_config == 'n_clusters' and n_samples is not None:
+                                val = min(n_samples // 2, n_classes) if n_samples and n_classes else None
+                                if val is not None and val <= 0:
+                                    val = 1
+                                processed_params[param_name] = val
+                            elif param_value_from_steps_config == 'n_output_features' and n_features is not None:
+                                processed_params[param_name] = n_features
+                            elif param_value_from_steps_config == 'sum_n_components' and n_features is not None:
+                                processed_params[param_name] = n_features
+                            else:
+                                processed_params[param_name] = param_value_from_steps_config # Use the value as is
+                        else:
+                            processed_params[param_name] = param_value_from_steps_config # Use the value as is
+                else: # Parameter not found in parameters.tsv, use value from steps_config directly
+                    processed_params[param_name] = param_value_from_steps_config
             
             # Instanciar o estimador com os parâmetros processados
             instance = estimator_class(**processed_params)

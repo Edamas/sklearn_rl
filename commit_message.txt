@@ -1,4 +1,0 @@
-fix: Aplica correções memorizadas ao parameters.tsv
-
-- Executa `apply_parameter_corrections.py` para re-aplicar as correções de parâmetros memorizadas ao `D_training/parameters.tsv`.
-- Adiciona `apply_parameter_corrections.py` ao repositório.

@@ -358,11 +358,19 @@ def results():
                 df_plot_preds['Plot_Index'] = range(len(df_plot_preds))
 
                 fig_preds = px.scatter(df_plot_preds, x='Plot_Index', y=[target_col_name, prediction_col_name],
-                                    title=f"Target vs Predição para {target_col_name}")
+                                    title=f"{dataset_name} - Análise de Erro do {selected_trial.get('estimator_name', 'N/A')} - Score Final: {selected_trial.get('score', 'N/A')}")
                 # Definir estilos específicos para cada trace
                 fig_preds.for_each_trace(
-                    lambda trace: trace.update(mode='markers', marker=dict(symbol='circle-open', size=3, opacity=0.5, color='red')) if trace.name == target_col_name
-                    else trace.update(mode='markers', marker=dict(symbol='circle', opacity=0.5, size=2, color='blue'))
+                    lambda trace: trace.update(
+                        mode='markers', 
+                        marker=dict(symbol='circle-open', size=3, opacity=0.5, color='#FF8080'),
+                        name=f"Target"
+                    ) if trace.name == target_col_name
+                    else trace.update(
+                        mode='markers', 
+                        marker=dict(symbol='circle', opacity=0.5, size=2, color='#8080FF'),
+                        name=f"{selected_trial.get('estimator_name', 'N/A')}-{selected_trial.get('episode_index', 'N/A')}"
+                    )
                 )
                 fig_preds.update_layout(hovermode="x unified")
                 st.plotly_chart(fig_preds, width='stretch')

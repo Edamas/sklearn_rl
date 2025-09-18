@@ -84,6 +84,9 @@ def render_desenvolvimento_software():
         st.header("Histórico de Commits Git")
         st.markdown("Visualize os commits mais recentes do repositório, com detalhes sobre cada alteração.")
 
+        if st.button("Atualizar Commits"):
+            st.info("Para atualizar a lista de commits, por favor, solicite ao agente que execute o script `create_git_commits_tsv.py`. Após a execução, recarregue a página para ver as atualizações.")
+
         # Read commits from TSV file
         try:
             df_commits = pd.read_csv(st.session_state['files']['git_commits'], sep='\t')
@@ -93,8 +96,6 @@ def render_desenvolvimento_software():
         except FileNotFoundError:
             st.error("Arquivo 'docs/git_commits.tsv' não encontrado. Por favor, gere o arquivo de commits.")
             df_commits = pd.DataFrame(columns=['Hash', 'Autor', 'Data', 'Mensagem'])
-
-        st.dataframe(df_commits, hide_index=True, width='stretch')
 
         selected_index_commit = f.df_select_rows(df_commits, selection_mode='single-row', key="commits_selector", prompt=None)
 

@@ -12,15 +12,7 @@ def render_formatacao_e_apresentacao():
         st.header("Gestão de Relatórios")
         st.markdown("Este módulo representa um esforço de inovação nos processos de relatórios acadêmicos, conforme as rubricas estabelecidas. Nosso objetivo é otimizar a geração de documentos, buscando performance e resultados que permitam ao próprio aplicativo gerar PDFs totalmente em conformidade com as normas ABNT, reduzindo a carga manual de formatação.")
 
-        st.divider()
-        st.header("Dinâmica para Vídeo")
-        with st.expander("Roteiro", expanded=False):
-            if 'roteiro_video' in st.session_state['files']:
-                with open(st.session_state['files']['roteiro_video'], 'r', encoding='utf-8') as f_file:
-                    roteiro_video = f_file.read()
-                st.markdown(roteiro_video)
-            else:
-                st.error("Caminho para 'roteiro_video' não encontrado em st.session_state['files'].")
+
 
         st.subheader("Estilos ABNT")
         df_formatacao_display = pd.read_csv(st.session_state['files']['formatacao'], sep='\t')
