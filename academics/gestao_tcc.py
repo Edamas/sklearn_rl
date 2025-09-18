@@ -18,28 +18,25 @@ def render_gestao_tcc():
         f.show_cronograma_by_function("Gestão do TCC")
         st.divider()
         st.subheader("Rubricas relacionadas")
-        # Obter o DataFrame filtrado da função
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Gestão do TCC")
 
         if not df_filtered_rubricas.empty:
-            # Preparar o DataFrame para exibição interativa
             df_display = df_filtered_rubricas[['rubrica']].copy()
             df_display.rename(columns={'rubrica': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
             
-            selected_index = f.df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_tcc")
+            selected_index = f.df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_tcc", prompt=None)
 
             if selected_index is not None and selected_index in df_filtered_rubricas.index:
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info("Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Gestão do TCC' encontrada.")
 
@@ -196,8 +193,9 @@ def render_gestao_tcc():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Estratégias de Relatório")
-        st.markdown("##### Outputs\n- Objetivos e Justificativas")
+        st.markdown("##### Inputs\n- Orientações da Univesp/AVA\n- Rubricas de avaliação\n- Cronograma oficial do TCC\n- Comunicações da orientação\n- Registro de atividades do grupo\n- Pesquisas teóricas (do setor de pesquisa)\n- Materiais de base e biblioteca acadêmica (do setor acadêmico)")
+        st.markdown("##### Outputs\n- Definição de justificativa, objetivos, inovações\n- Estratégias técnicas (infraestrutura, comunicação, plano, cronograma)\n- Plano de gestão de RH (liderança servidora, democrática e liberal)\n- Comunicação com setor de pesquisa e acadêmico")
         st.divider()
         st.subheader("Requisitos")
-        st.markdown("- Delinear área de estudo.\n- Apresentar autores.")
+        st.markdown("##### Requisitos do TCC\n- Definição clara da justificativa e objetivos do TCC.\n- Elaboração de um plano de projeto abrangente (cronograma, recursos).\n- Gestão eficaz da equipe e comunicação entre os membros.\n- Alinhamento com as diretrizes da Univesp para o TCC.")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Delinear as inovações propostas pelo agente de IA.\n- Definir as estratégias técnicas para o desenvolvimento do agente.\n- Garantir a viabilidade e relevância da proposta do agente.")

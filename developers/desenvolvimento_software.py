@@ -80,6 +80,42 @@ def render_desenvolvimento_software():
         
 
         st.divider()
+
+        st.header("Histórico de Commits Git")
+        st.markdown("Visualize os commits mais recentes do repositório, com detalhes sobre cada alteração.")
+
+        # Read commits from TSV file
+        try:
+            df_commits = pd.read_csv(st.session_state['files']['git_commits'], sep='\t')
+        except KeyError:
+            st.error("Arquivo 'git_commits.tsv' não encontrado em st.session_state['files']. Certifique-se de que ele está listado em files.tsv.")
+            df_commits = pd.DataFrame(columns=['Hash', 'Autor', 'Data', 'Mensagem'])
+        except FileNotFoundError:
+            st.error("Arquivo 'docs/git_commits.tsv' não encontrado. Por favor, gere o arquivo de commits.")
+            df_commits = pd.DataFrame(columns=['Hash', 'Autor', 'Data', 'Mensagem'])
+
+        st.dataframe(df_commits, hide_index=True, width='stretch')
+
+        selected_index_commit = f.df_select_rows(df_commits, selection_mode='single-row', key="commits_selector", prompt=None)
+
+        if selected_index_commit is not None and selected_index_commit in df_commits.index:
+            selected_commit = df_commits.loc[selected_index_commit]
+            st.subheader("Detalhes do Commit")
+            st.markdown(f.get_card_style(), unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='card'>
+                <div class='card-body'>
+                    <h5 class='card-title'><font color='#FFD700'>Hash:</font> {selected_commit['Hash']}</font></h5>
+                    <p class='card-text'><font color='#ADD8E6'>Autor:</font> {selected_commit['Autor']}</p>
+                    <p class='card-text'><font color='#90EE90'>Data:</font> {selected_commit['Data']}</p>
+                    <p class='card-text'><font color='#FFA07A'>Mensagem:</font> {selected_commit['Mensagem']}</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            pass # Removido: st.info("Nenhum commit selecionado.")
+
+        st.divider()
         st.header("Registro de Atividades")
         f.show_registro_atividades_by_function("Desenvolvimento de Software")
         st.divider()
@@ -101,14 +137,13 @@ def render_desenvolvimento_software():
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Desenvolvimento de Software' encontrada.")
 
@@ -131,5 +166,9 @@ def render_desenvolvimento_software():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Requisitos da Proposta")
-        st.markdown("##### Outputs\n- Código e Artefatos visuais")
+        st.markdown("##### Inputs\n- Requisitos da Proposta (funcionais e não funcionais)\n- Resultados experimentais da Pesquisa Científica\n- Diretrizes de arquitetura e design\n- Tecnologias e bibliotecas selecionadas (Python, Streamlit, Scikit-learn, Pandas, NumPy)\n- Diretrizes de modularidade, consistência e robustez")
+        st.markdown("##### Outputs\n- Código-fonte do agente de IA autônomo\n- Ambiente de desenvolvimento configurado\n- Aplicação Streamlit interativa\n- Artefatos visuais (gráficos, tabelas, vídeos)\n- Repositório GitHub atualizado\n- Versões do protótipo (v1.0, v1.1, etc.)")
+        st.divider()
+        st.subheader("Requisitos")
+        st.markdown("##### Requisitos do TCC\n- Implementação de um protótipo funcional do agente de IA.\n- Geração de artefatos visuais para o TCC (gráficos, tabelas).\n- Conformidade com as diretrizes de apresentação do TCC.")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Desenvolvimento de um agente de IA autônomo capaz de interagir com o Scikit-learn.\n- Modularidade e escalabilidade do código.\n- Manutenibilidade e boas práticas de programação.\n- Capacidade de gerar resultados reproduzíveis.\n- Integração com a plataforma Streamlit para visualização.")

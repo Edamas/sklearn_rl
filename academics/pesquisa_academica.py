@@ -13,28 +13,25 @@ def render_pesquisa_academica():
         st.markdown("A fundamentação aborda conceitos de agentes inteligentes, sistemas autônomos, AutoML e a biblioteca Scikit-learn, com base em autores como Russell & Norvig (2020), Pedregosa et al. (2011) e Feurer et al. (2019).")
         st.divider()
         st.subheader("Rubricas relacionadas")
-        # Obter o DataFrame filtrado da função
         df_filtered_rubricas = get_rubricas_by_function_score_8("Pesquisa Acadêmica")
 
         if not df_filtered_rubricas.empty:
-            # Preparar o DataFrame para exibição interativa
             df_display = df_filtered_rubricas[['rubrica']].copy()
             df_display.rename(columns={'rubrica': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
             
-            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_academica")
+            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_academica", prompt=None)
 
             if selected_index is not None and selected_index in df_filtered_rubricas.index:
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Pesquisa Acadêmica' encontrada.")
         
@@ -46,10 +43,9 @@ def render_pesquisa_academica():
         No entanto, é importante ressaltar que o agente de RL desenvolvido neste projeto tem potencial para se tornar um produto. Ele pode ser expandido para uma ferramenta interativa que auxilia estudantes e pesquisadores na seleção de algoritmos e configuração de parâmetros do Scikit-learn, otimizando o fluxo de trabalho de modelagem preditiva.
         """)
         
-        df_temas = pd.read_csv('docs/temas_de_TCC_Univesp.tsv', sep='\t', engine='python')
+        df_temas = pd.read_csv(st.session_state['files']['temas_de_TCC_Univesp'], sep='\t', engine='python')
         
-        st.info("Selecione um tema na tabela abaixo para ver os detalhes.")
-        selected_index = f.df_select_rows(df_temas, selection_mode='single-row', key=f"temas_tcc_univesp")
+        selected_index = f.df_select_rows(df_temas, selection_mode='single-row', key=f"temas_tcc_univesp", prompt=None)
 
         if selected_index is not None and selected_index in df_temas.index:
             selected_tema = df_temas.loc[selected_index]
@@ -66,7 +62,7 @@ def render_pesquisa_academica():
             </div>
             """, unsafe_allow_html=True)
         else:
-            st.info("Nenhum tema selecionado.")
+            pass # Removido: st.info("Nenhum tema selecionado.")
         st.divider()
         st.header("Registro de Atividades")
         f.show_registro_atividades_by_function("Pesquisa Acadêmica")
@@ -92,8 +88,9 @@ def render_pesquisa_academica():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Bibliografia do curso")
-        st.markdown("##### Outputs\n- Embasamento teórico")
+        st.markdown("##### Inputs\n- Objetivos e justificativas do TCC\n- Exploração de bibliotecas online e livros\n- Referências principais e secundárias da disciplina de TCC\n- Orientações da Univesp/AVA\n- Comunicações da orientadora, banca avaliadora e grupo")
+        st.markdown("##### Outputs\n- Referências bibliográficas (organizadas)\n- Embasamento teórico para o TCC\n- Análise de temas de TCCs da Univesp\n- Fundamentação teórica (agentes inteligentes, AutoML, Scikit-learn)")
         st.divider()
         st.subheader("Requisitos")
-        st.markdown("- Pesquisar bases científicas.\n- Usar gerenciador de referências.")
+        st.markdown("##### Requisitos do TCC\n- Levantamento bibliográfico abrangente e relevante.\n- Organização e citação correta das referências (ABNT).\n- Desenvolvimento de uma fundamentação teórica sólida.\n- Análise crítica de temas e abordagens existentes.")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Pesquisa sobre tecnologias e algoritmos de IA/ML relevantes para o agente.\n- Identificação de lacunas na literatura que o agente pode preencher.\n- Avaliação da viabilidade científica e técnica da proposta do agente.")

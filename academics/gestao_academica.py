@@ -21,28 +21,25 @@ def render_gestao_academica():
         f.show_registro_atividades_by_function("Gestão Acadêmica")
         st.divider()
         st.subheader("Rubricas relacionadas")
-        # Obter o DataFrame filtrado da função
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Gestão Acadêmica")
 
         if not df_filtered_rubricas.empty:
-            # Preparar o DataFrame para exibição interativa
             df_display = df_filtered_rubricas[['rubrica']].copy()
             df_display.rename(columns={'rubrica': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
             
-            selected_index = f.df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_academica")
+            selected_index = f.df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_gestao_academica", prompt=None)
 
             if selected_index is not None and selected_index in df_filtered_rubricas.index:
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info("Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Gestão Acadêmica' encontrada.")
 
@@ -65,8 +62,9 @@ def render_gestao_academica():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Orientações e Rubricas")
-        st.markdown("##### Outputs\n- Entregas e Registros no AVA")
+        st.markdown("##### Inputs\n- Orientações da Univesp/AVA\n- Rubricas de avaliação\n- Cronograma oficial do TCC\n- Comunicações da orientação\n- Registro de atividades do grupo")
+        st.markdown("##### Outputs\n- Entregas do grupo no AVA\n- Comunicações e resumos para o grupo\n- Organização de arquivos acadêmicos\n- Feedback da orientação")
         st.divider()
         st.subheader("Requisitos")
-        st.markdown("- Gestão de prazos.")
+        st.markdown("##### Requisitos do TCC\n- Cumprimento de prazos e requisitos do AVA.\n- Comunicação eficaz com a coordenação do TCC.\n- Organização e arquivamento de documentos acadêmicos.")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Garantir que o desenvolvimento do agente esteja alinhado com os objetivos acadêmicos do TCC.\n- Acompanhar o progresso do projeto para assegurar a viabilidade das entregas.")

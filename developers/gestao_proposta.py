@@ -269,14 +269,13 @@ def render_gestao_proposta():
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Gestão da Proposta' encontrada.")
         st.divider()
@@ -298,5 +297,9 @@ def render_gestao_proposta():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Objetivos do TCC\n- Histórico da seleção")
-        st.markdown("##### Outputs\n- Backlog e Sprints\n- Planejamento do escopo")
+        st.markdown("##### Inputs\n- Ideias iniciais de projetos (brainstorming)\n- Critérios de avaliação de propostas\n- Resultados da votação para seleção da proposta\n- Objetivos e justificativas do TCC\n- Requisitos de alto nível do projeto\n- Riscos gerais do projeto\n- Cronograma de marcos\n- Stakeholders chave")
+        st.markdown("##### Outputs\n- Proposta finalista selecionada\n- Detalhes da proposta (atributos, valores)\n- Project Charter (justificativa, objetivos mensuráveis, requisitos, riscos, cronograma, stakeholders)\n- TCC Model Canvas (parcerias, atividades, recursos, proposta de valor, relacionamento, canais, segmentos de clientes, estrutura de custos, fontes de receita)\n- Backlog e planejamento de sprints")
+        st.divider()
+        st.subheader("Requisitos")
+        st.markdown("##### Requisitos do TCC\n- Definição clara e abrangente da proposta do TCC.\n- Alinhamento da proposta com os objetivos acadêmicos e as diretrizes da Univesp.\n- Documentação formal da proposta (Project Charter, TCC Model Canvas).")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Especificação dos requisitos funcionais e não funcionais do agente de IA.\n- Definição do escopo e das limitações do agente.\n- Identificação dos recursos necessários para o desenvolvimento do agente.\n- Análise de riscos e estratégias de mitigação para o agente.")

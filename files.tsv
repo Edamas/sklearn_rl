@@ -365,7 +365,7 @@ all_scores	notebooks/all_scores.ipynb
 displays	notebooks/displays.ipynb
 displays_1	notebooks/displays.tsv
 modules_master	notebooks/modules_master.ipynb
-scores	notebooks/scores.tsv
+socres	notebooks/scores.tsv
 sklearn_metrics	notebooks/sklearn_metrics.tsv
 sklearn_modules_exploration	notebooks/sklearn_modules_exploration.csv
 sklearn_modules_exploration_1	notebooks/sklearn_modules_exploration.ipynb
@@ -376,3 +376,4 @@ functions_1	old_version_19ea5f2/functions.py
 menu_1	old_version_19ea5f2/menu.py
 relatorio_1_projeto	docs/relatorio_1_projeto.tsv
 formatacao	docs/formatacao.tsv
+git_commits	docs/git_commits.tsv

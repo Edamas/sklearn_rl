@@ -337,7 +337,6 @@ def show_cronograma_by_function(function_name):
             df_display = df_filtered_cronograma[['Quinzena', 'Início', 'Fim', 'Tarefa', 'Responsável']].copy()
             df_display.rename(columns={'Quinzena': 'Quinzena', 'Início': 'Início', 'Fim': 'Fim', 'Tarefa': 'Tarefa', 'Responsável': 'Responsável'}, inplace=True)
 
-            st.info("Selecione uma tarefa na tabela abaixo para ver os detalhes.")
             selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"cronograma_{function_name.replace(' ', '_')}_selector")
 
             if selected_index is not None and selected_index in df_filtered_cronograma.index:
@@ -354,7 +353,7 @@ def show_cronograma_by_function(function_name):
                     else:
                         st.markdown(f"**<font color='#4682B4'>Responsável:</font>** A definir", unsafe_allow_html=True)
             else:
-                st.info("Nenhuma tarefa selecionada para esta função.")
+                pass # Removido: st.info("Nenhuma tarefa selecionada para esta função.")
         else:
             st.info(f"Nenhuma tarefa encontrada para a função '{function_name}' no cronograma.")
     except FileNotFoundError:
@@ -377,7 +376,6 @@ def show_registro_atividades_by_function(function_name):
             df_display['Data'] = df_display['Data'].dt.strftime('%d/%m/%Y %H:%M')
             df_display.rename(columns={'Data': 'Data', 'Evento': 'Atividade', 'Responsável': 'Responsável'}, inplace=True)
 
-            st.info("Selecione uma atividade na tabela abaixo para ver os detalhes.")
             selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"registro_atividades_{function_name.replace(' ', '_')}_selector")
 
             if selected_index is not None and selected_index in df_filtered_registro.index:
@@ -391,7 +389,7 @@ def show_registro_atividades_by_function(function_name):
                     st.markdown(f"**<font color='#FF6347'>Responsável:</font>** {selected_activity['Responsável']}", unsafe_allow_html=True)
                     st.markdown(f"**<font color='#4682B4'>Observações:</font>** {selected_activity['Observações']}", unsafe_allow_html=True)
             else:
-                st.info("Nenhuma atividade selecionada para esta função.")
+                pass # Removido: st.info("Nenhuma atividade selecionada para esta função.")
         else:
             st.info(f"Nenhuma atividade encontrada para a função '{function_name}' no registro.")
     except FileNotFoundError:
@@ -416,7 +414,6 @@ def show_disciplinas_relacionadas_vri(function_name: Optional[str] = None):
         if not df_filtered_disciplinas.empty:
             df_display = df_filtered_disciplinas[['Bimestre', 'Disciplina', 'Relação com Projeto', 'Funções Relacionadas']].copy()
 
-            st.info("Selecione uma disciplina na tabela abaixo para ver os detalhes.")
             selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"disciplinas_relacionadas_{function_name.replace(' ', '_') if function_name else 'all'}_selector")
 
             if selected_index is not None and selected_index in df_filtered_disciplinas.index:
@@ -432,7 +429,7 @@ def show_disciplinas_relacionadas_vri(function_name: Optional[str] = None):
                     st.markdown(f"**<font color='#FFD700'>Conteúdo Programático:</font>** {selected_discipline['Conteúdo programático']}", unsafe_allow_html=True)
                     st.markdown(f"**<font color='#FF6347'>Funções Relacionadas:</font>** {selected_discipline['Funções Relacionadas']}", unsafe_allow_html=True)
             else:
-                st.info("Nenhuma disciplina selecionada ou nenhuma disciplina relacionada à função atual.")
+                pass # Removido: st.info("Nenhuma disciplina selecionada ou nenhuma disciplina relacionada à função atual.")
         else:
             st.info(f"Nenhuma disciplina encontrada para a função '{function_name}' nas disciplinas relacionadas.")
     except FileNotFoundError:
@@ -450,7 +447,6 @@ def show_referencias_by_function(function_name: str):
 
         if not df_filtered.empty:
             st.header("Referências e Fontes")
-            st.info("Selecione uma referência na tabela abaixo para ver os detalhes.")
 
             df_display = df_filtered[['referência', 'utilizado_em']].copy()
             df_display.rename(columns={'referência': 'Referência', 'utilizado_em': 'Utilizado em'}, inplace=True)
@@ -467,7 +463,7 @@ def show_referencias_by_function(function_name: str):
                     if pd.notna(selected_ref['utilizado_em']):
                         st.markdown(f"**<font color='#90EE90'>Utilizado em:</font>** {selected_ref['utilizado_em']}", unsafe_allow_html=True)
             else:
-                st.info("Nenhuma referência selecionada.")
+                pass # Removido: st.info("Nenhuma referência selecionada.")
         else:
             st.header("Referências e Fontes")
             st.info(f"Nenhuma referência encontrada para a função '{function_name}'.")

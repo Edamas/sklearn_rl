@@ -30,14 +30,13 @@ def render_documentacao_software():
                 selected_rubrica = df_filtered_rubricas.loc[selected_index]
                 st.subheader("Ficha da Rubrica")
                 
-                # Exibir a ficha da rubrica com a formatação desejada
                 st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
                 st.markdown(f"    Aplicação no projeto:")
                 st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
             else:
-                st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+                pass # Removido: st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
         else:
             st.info("Nenhuma rubrica relacionada à função 'Documentação de Software' encontrada.")
 
@@ -61,5 +60,9 @@ def render_documentacao_software():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Docs técnicos e de libs")
-        st.markdown("##### Outputs\n- Documentação \"traduzida\"")
+        st.markdown("##### Inputs\n- Documentação técnica dos desenvolvedores\n- Especificações do projeto\n- Documentação de bibliotecas e frameworks utilizados\n- Requisitos do TCC e da proposta")
+        st.markdown("##### Outputs\n- Documentação técnica clara e concisa\n- Manuais de uso (se aplicável)\n- Relatórios de progresso da documentação\n- Glossário de termos técnicos")
+        st.divider()
+        st.subheader("Requisitos")
+        st.markdown("##### Requisitos do TCC\n- Elaboração de documentação técnica que suporte o TCC.\n- Clareza e precisão na descrição de funcionalidades e arquitetura.\n- Conformidade com padrões de documentação (se houver).")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Documentar a arquitetura e implementação do agente de IA.\n- Descrever os algoritmos e modelos utilizados pelo agente.\n- Registrar os resultados dos experimentos e análises do agente.")

@@ -75,20 +75,19 @@ def render_pesquisa_cientifica():
         df_display = df_filtered_rubricas[['rubrica']].copy()
         df_display.rename(columns={'rubrica': 'Selecione uma rubrica para ver os detalhes'}, inplace=True)
         
-        selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_cientifica")
+        selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"rubricas_pesquisa_cientifica", prompt=None)
 
         if selected_index is not None and selected_index in df_filtered_rubricas.index:
             selected_rubrica = df_filtered_rubricas.loc[selected_index]
             st.subheader("Ficha da Rubrica")
             
-            # Exibir a ficha da rubrica com a formatação desejada
             st.markdown(f"**<font color='#FFD700'>Entrega {selected_rubrica['item_entrega']}: {selected_rubrica['entrega']}</font>**", unsafe_allow_html=True)
             st.markdown(f"  **<font color='#ADD8E6'>Subitem {selected_rubrica['subitem']}: {selected_rubrica['competencia']}</font>**", unsafe_allow_html=True)
             st.markdown(f"    **<font color='#90EE90'>Rubrica {selected_rubrica['item_rubrica']}: {selected_rubrica['rubrica']}</font>**", unsafe_allow_html=True)
             st.markdown(f"    Aplicação no projeto:")
             st.markdown(f"      {selected_rubrica['aplicacao_no_projeto']}")
         else:
-            st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
+            pass # Removido: st.info(f"Nenhuma rubrica selecionada ou nenhuma rubrica relacionada à função atual.")
     else:
         st.info("Nenhuma rubrica relacionada à função 'Pesquisa Científica' encontrada.")
 
@@ -112,5 +111,9 @@ def render_pesquisa_cientifica():
         st.dataframe(df.style.apply(highlight_row, axis=1), hide_index=True, width='stretch')
         st.divider()
         st.subheader("Artefatos")
-        st.markdown("##### Inputs\n- Pesquisa de mercado")
-        st.markdown("##### Outputs\n- Resultados experimentais")
+        st.markdown("##### Inputs\n- Fundamentação teórica (agentes inteligentes, AutoML, Scikit-learn)\n- Metodologia proposta (seleção de dados, implementação de agente, configuração manual, comparação de desempenho, discussão de resultados)\n- Tipos de agentes de IA autônomos (Aleatório, Aleatório Ponderado, Meta-Aprendizado, Algoritmo Genético, Otimização Bayesiana)\n- Fluxo de trabalho do agente Scikit-learn (Input, Processamento, Saídas)\n- Dados de experimentos e resultados preliminares")
+        st.markdown("##### Outputs\n- Resultados experimentais (comparação de desempenho dos agentes)\n- Análise e discussão dos resultados\n- Identificação de ganhos, limitações e melhorias\n- Conhecimento sobre o comportamento dos diferentes tipos de agentes\n- Contribuições para a área de AutoML e RL")
+        st.divider()
+        st.subheader("Requisitos")
+        st.markdown("##### Requisitos do TCC\n- Definição clara da metodologia de pesquisa.\n- Seleção e aplicação de métricas de avaliação adequadas.\n- Análise crítica e interpretação dos resultados.\n- Contribuição para o conhecimento científico na área.")
+        st.markdown("##### Requisitos da Proposta (sobre o agente)\n- Implementação e avaliação de diferentes tipos de agentes de IA.\n- Comparação de desempenho dos agentes com baselines.\n- Análise do fluxo de trabalho do agente com Scikit-learn.\n- Identificação de estratégias de otimização para o agente.")
