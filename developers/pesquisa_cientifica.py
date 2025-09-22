@@ -59,13 +59,7 @@ def render_pesquisa_cientifica():
 
         
 
-    st.divider()
-    st.header("Registro de Atividades")
-    f.show_registro_atividades_by_function("Pesquisa Científica")
-    st.divider()
-    st.header("Cronograma e Entregas")
-    f.show_cronograma_by_function("Pesquisa Científica")
-    st.divider()
+
     st.subheader("Rubricas relacionadas")
     # Obter o DataFrame filtrado da função
     df_filtered_rubricas = get_rubricas_by_function_score_8("Pesquisa Científica")

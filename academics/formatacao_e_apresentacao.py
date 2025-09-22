@@ -148,12 +148,7 @@ def render_formatacao_e_apresentacao():
             else:
                 st.error("Caminho para 'roteiro_video' não encontrado em st.session_state['files'].")
 
-        st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Formatação e Apresentação")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Formatação e Apresentação")
+
         st.divider()
         st.header("Rubricas relacionadas")
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Formatação e Apresentação")

@@ -116,13 +116,7 @@ def render_desenvolvimento_software():
         else:
             pass # Removido: st.info("Nenhum commit selecionado.")
 
-        st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Desenvolvimento de Software")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Desenvolvimento de Software")
-        st.divider()
+
         st.subheader("Rubricas relacionadas")
         # Obter o DataFrame filtrado da função
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Desenvolvimento de Software")

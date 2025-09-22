@@ -64,11 +64,7 @@ def render_pesquisa_academica():
         else:
             pass # Removido: st.info("Nenhum tema selecionado.")
         st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Pesquisa Acadêmica")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Pesquisa Acadêmica")
+
         st.divider()
         st.header("Disciplinas Relacionadas")
         f.show_disciplinas_relacionadas_vri("Pesquisa Acadêmica")

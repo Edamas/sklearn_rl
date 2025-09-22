@@ -11,12 +11,7 @@ def render_gestao_tcc():
         st.header("Proposta do Projeto")
         st.markdown("""**Resumo:** O objetivo é analisar o desempenho de agentes de IA autônomos na utilização da suíte Scikit-learn em projetos de AutoML, visando automatizar etapas como preparação de dados e seleção de algoritmos para otimizar tempo e recursos.\n\n**Justificativa:** O campo do Aprendizado de Máquina (ML) é complexo. A automação (AutoML) surge para democratizar seu acesso. Este trabalho propõe o uso de Aprendizado por Reforço (RL) para preencher a lacuna de abordagens mais inteligentes em AutoML.""")
         st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Gestão do TCC")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Gestão do TCC")
-        st.divider()
+
         st.subheader("Rubricas relacionadas")
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Gestão do TCC")
 

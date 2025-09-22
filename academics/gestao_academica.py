@@ -13,12 +13,7 @@ def render_gestao_academica():
     with col1:
         st.markdown("O membro acadêmico no time Academics se comunica com a parte administrativa ou executiva do grupo (de 8 pessoas) e com o sistema AVA, cuidando das entregas do grupo para a disciplina de TCC. Enquanto a turma de pesquisa pode focar em conteúdos de outras disciplinas, o acadêmico se dedica à disciplina de TCC, comunicando ao grupo resumos e informações importantes. Também interage com o fórum e organiza os arquivos acadêmicos.")
         st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Gestão Acadêmica")
-        
-        st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Gestão Acadêmica")
+
         st.divider()
         st.subheader("Rubricas relacionadas")
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Gestão Acadêmica")

@@ -8,13 +8,7 @@ def render_documentacao_software():
     with col1:
         st.markdown("No time Developers, o membro com foco acadêmico converte a tecnicidade dos desenvolvedores e as especificidades do projeto em termos escritos e encorpados. A revisão final é feita pelo acadêmico do time Academics, mas cada membro revisa a parte do seu 'par' de setor, aplicando suas competências em processos de aplicação diferentes, mas da mesma natureza.")
         
-        st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Documentação de Software")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Documentação de Software")
-        st.divider()
+
         st.subheader("Rubricas relacionadas")
         # Obter o DataFrame filtrado da função
         df_filtered_rubricas = f.get_rubricas_by_function_score_8("Documentação de Software")

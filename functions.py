@@ -326,76 +326,101 @@ def get_rubricas_by_function_score_8(function_name: str) -> pd.DataFrame:
 
     return filtered_df
 
-def show_cronograma_by_function(function_name):
-    cronograma_path = st.session_state['files']['cronograma']
+def show_data_by_function(function_name, data_type):
+    config = {
+        'cronograma': {
+            'file_key': 'cronograma',
+            'date_col': None,
+            'sort_by': None,
+            'ascending': True,
+            'display_cols': ['Quinzena', 'Início', 'Fim', 'Tarefa', 'Responsável'],
+            'rename_cols': {'Quinzena': 'Quinzena', 'Início': 'Início', 'Fim': 'Fim', 'Tarefa': 'Tarefa', 'Responsável': 'Responsável'},
+            'details_title': 'Ficha da Tarefa',
+            'details_fields': {
+                'Quinzena': 'Quinzena',
+                'Período': lambda r: f"{r['Início']} a {r['Fim']}",
+                'Função': 'Função',
+                'Tarefa': 'Tarefa',
+                'Responsável': lambda r: r.get('Responsável', 'A definir')
+            }
+        },
+        'registro_de_atividades': {
+            'file_key': 'registro_de_atividades',
+            'date_col': 'Data',
+            'sort_by': 'Data',
+            'ascending': False,
+            'display_cols': ['Data', 'Evento', 'Responsável'],
+            'rename_cols': {'Data': 'Data', 'Evento': 'Atividade', 'Responsável': 'Responsável'},
+            'details_title': 'Ficha da Atividade',
+            'details_fields': {
+                'Data': lambda r: r['Data'].strftime('%d/%m/%Y %H:%M'),
+                'Canal': 'Canal',
+                'Evento': 'Evento',
+                'Responsável': 'Responsável',
+                'Observações': 'Observações'
+            }
+        }
+    }
+
+    cfg = config.get(data_type)
+    if not cfg:
+        st.error(f"Tipo de dado '{data_type}' não configurado.")
+        return
+
+    file_path = st.session_state['files'][cfg['file_key']]
     try:
-        df_cronograma = pd.read_csv(cronograma_path, sep='\t')
+        df = pd.read_csv(file_path, sep='\t', engine='python')
+        if cfg['date_col']:
+            df[cfg['date_col']] = pd.to_datetime(df[cfg['date_col']], format='%d/%m/%Y %H:%M', errors='coerce')
+            df.dropna(subset=[cfg['date_col']], inplace=True)
         
-        df_filtered_cronograma = df_cronograma[df_cronograma['Função'] == function_name].copy()
+        if cfg['sort_by']:
+            df = df.sort_values(by=cfg['sort_by'], ascending=cfg['ascending'])
 
-        if not df_filtered_cronograma.empty:
-            df_display = df_filtered_cronograma[['Quinzena', 'Início', 'Fim', 'Tarefa', 'Responsável']].copy()
-            df_display.rename(columns={'Quinzena': 'Quinzena', 'Início': 'Início', 'Fim': 'Fim', 'Tarefa': 'Tarefa', 'Responsável': 'Responsável'}, inplace=True)
+        df_filtered = df[df['Função'] == function_name].copy() if function_name else df.copy()
 
-            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"cronograma_{function_name.replace(' ', '_')}_selector")
+        if not df_filtered.empty:
+            df_display = df_filtered[cfg['display_cols']].copy()
+            if cfg['date_col'] and not df_display.empty:
+                df_display[cfg['date_col']] = df_display[cfg['date_col']].dt.strftime('%d/%m/%Y %H:%M')
+            df_display.rename(columns=cfg['rename_cols'], inplace=True)
 
-            if selected_index is not None and selected_index in df_filtered_cronograma.index:
-                selected_task = df_filtered_cronograma.loc[selected_index]
-                st.subheader("Ficha da Tarefa")
+            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"{data_type}_{function_name.replace(' ', '_') if function_name else 'all'}_selector")
+
+            if selected_index is not None and selected_index in df_filtered.index:
+                selected_item = df_filtered.loc[selected_index]
+                st.subheader(cfg['details_title'])
                 
                 with st.container(border=True):
-                    st.markdown(f"**<font color='#FFD700'>Quinzena:</font>** {selected_task['Quinzena']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#ADD8E6'>Período:</font>** {selected_task['Início']} a {selected_task['Fim']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#90EE90'>Função:</font>** {selected_task['Função']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#FF6347'>Tarefa:</font>** {selected_task['Tarefa']}", unsafe_allow_html=True)
-                    if pd.notna(selected_task['Responsável']) and selected_task['Responsável'] != '':
-                        st.markdown(f"**<font color='#4682B4'>Responsável:</font>** {selected_task['Responsável']}", unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"**<font color='#4682B4'>Responsável:</font>** A definir", unsafe_allow_html=True)
-            else:
-                pass # Removido: st.info("Nenhuma tarefa selecionada para esta função.")
+                    for label, field in cfg['details_fields'].items():
+                        value = None
+                        if callable(field):
+                            value = field(selected_item)
+                        else:
+                            value = selected_item.get(field)
+                        
+                        if pd.notna(value) and value != '':
+                            # Usando um esquema de cores simples para diferenciar os campos
+                            color = "#FFD700" # Dourado para o primeiro campo
+                            if label == 'Período' or label == 'Canal': color = '#ADD8E6' # Azul claro
+                            elif label == 'Função' or label == 'Evento': color = '#90EE90' # Verde claro
+                            elif label == 'Tarefa' or label == 'Responsável': color = '#FF6347' # Tomate
+                            else: color = '#4682B4' # SteelBlue para os demais
+                            
+                            st.markdown(f"**<font color='{color}'>{label}:</font>** {value}", unsafe_allow_html=True)
+
         else:
-            st.info(f"Nenhuma tarefa encontrada para a função '{function_name}' no cronograma.")
+            st.info(f"Nenhum dado encontrado para a função '{function_name}' em {data_type.replace('_', ' ')}.")
     except FileNotFoundError:
-        st.error(f"Arquivo de cronograma não encontrado em: {cronograma_path}")
+        st.error(f"Arquivo de {data_type.replace('_', ' ')} não encontrado em: {file_path}")
     except Exception as e:
-        st.error(f"Ocorreu um erro ao carregar ou processar o cronograma: {e}")
+        st.error(f"Ocorreu um erro ao carregar ou processar {data_type.replace('_', ' ')}: {e}")
+
+def show_cronograma_by_function(function_name):
+    show_data_by_function(function_name, 'cronograma')
 
 def show_registro_atividades_by_function(function_name):
-    registro_path = st.session_state['files']['registro_de_atividades']
-    try:
-        df_registro = pd.read_csv(registro_path, sep='\t')
-        df_registro['Data'] = pd.to_datetime(df_registro['Data'], format='%d/%m/%Y %H:%M', errors='coerce')
-        df_registro.dropna(subset=['Data'], inplace=True)
-        df_registro = df_registro.sort_values(by='Data', ascending=False)
-
-        df_filtered_registro = df_registro[df_registro['Função'] == function_name].copy()
-
-        if not df_filtered_registro.empty:
-            df_display = df_filtered_registro[['Data', 'Evento', 'Responsável']].copy()
-            df_display['Data'] = df_display['Data'].dt.strftime('%d/%m/%Y %H:%M')
-            df_display.rename(columns={'Data': 'Data', 'Evento': 'Atividade', 'Responsável': 'Responsável'}, inplace=True)
-
-            selected_index = df_select_rows(df_display, selection_mode='single-row', key=f"registro_atividades_{function_name.replace(' ', '_')}_selector")
-
-            if selected_index is not None and selected_index in df_filtered_registro.index:
-                selected_activity = df_filtered_registro.loc[selected_index]
-                st.subheader("Ficha da Atividade")
-                
-                with st.container(border=True):
-                    st.markdown(f"**<font color='#FFD700'>Data:</font>** {selected_activity['Data'].strftime('%d/%m/%Y %H:%M')}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#ADD8E6'>Canal:</font>** {selected_activity['Canal']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#90EE90'>Evento:</font>** {selected_activity['Evento']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#FF6347'>Responsável:</font>** {selected_activity['Responsável']}", unsafe_allow_html=True)
-                    st.markdown(f"**<font color='#4682B4'>Observações:</font>** {selected_activity['Observações']}", unsafe_allow_html=True)
-            else:
-                pass # Removido: st.info("Nenhuma atividade selecionada para esta função.")
-        else:
-            st.info(f"Nenhuma atividade encontrada para a função '{function_name}' no registro.")
-    except FileNotFoundError:
-        st.error(f"Arquivo de registro de atividades não encontrado em: {registro_path}")
-    except Exception as e:
-        st.error(f"Ocorreu um erro ao carregar ou processar o registro de atividades: {e}")
+    show_data_by_function(function_name, 'registro_de_atividades')
 
 def show_disciplinas_relacionadas_vri(function_name: Optional[str] = None):
     disciplinas_path = st.session_state['files']['disciplinas_relacionadas']

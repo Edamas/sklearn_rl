@@ -13,8 +13,6 @@ from developers.desenvolvimento_software import render_desenvolvimento_software
 
 # Importa páginas legadas e a página principal do agente
 from A_inputs.A1_datasets import datasets
-from C_agent_config.C2_actions.estimators_action import show_estimators
-from C_agent_config.C2_actions.parameters_action import show_parameters
 from C_agent_config.C2_actions.sklearn_concepts_action import show_sklearn_concepts
 
 def get_pages_config():
@@ -37,10 +35,8 @@ def get_pages_config():
             st.Page(render_pesquisa_cientifica, title="Pesquisa Científica", icon=":material/analytics:"),
             st.Page(render_desenvolvimento_software, title="Desenvolvimento de Software", icon=":material/terminal:"),
         ],
-        "A Processar": [
-            st.Page(show_estimators, title="Estimadores", icon=":material/table_chart:"),
-            st.Page(show_parameters, title="Parâmetros", icon=":material/tune:"),
-            st.Page(show_sklearn_concepts, title="Conceitos do Scikit-learn", icon=":material/school:"),
+        "Dashboard & Conceitos": [
+            st.Page(show_sklearn_concepts, title="Dashboard & Conceitos", icon=":material/dashboard:"),
         ],
     }
     return pages

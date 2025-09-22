@@ -248,12 +248,7 @@ def render_gestao_proposta():
 ''', unsafe_allow_html=True)
 
         st.divider()
-        st.header("Registro de Atividades")
-        f.show_registro_atividades_by_function("Gestão da Proposta")
-        st.divider()
-        st.header("Cronograma e Entregas")
-        f.show_cronograma_by_function("Gestão da Proposta")
-        st.divider()
+
         st.subheader("Rubricas relacionadas")
         # Obter o DataFrame filtrado da função
         df_filtered_rubricas = get_rubricas_by_function_score_8("Gestão da Proposta")
